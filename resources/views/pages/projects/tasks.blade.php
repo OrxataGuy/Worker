@@ -1,4 +1,4 @@
-@extends('frames.main')
+@extends('layouts.main')
 @section('projects-section', 'active')
 @section('title', 'Tareas')
 @section('breadcrumb')
@@ -63,31 +63,41 @@
                       @endif
                   </td>
                   <td id="time-{{ $task->id }}">
+                    @if($task->counting == 1)
+                    -
+                    @else
                    {{ $task->time }}
+                   @endif
                 </td>
                   <td id="price-{{ $task->id }}">
-                       {{ $task->price }}
+                    @if($task->counting == 1)
+                    -
+                    @else
+                   {{ $task->price }}
+                   @endif
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-primary btn-sm" href="#">
-                          <i class="fas fa-folder">
-                          </i>
-                          Abrir
-                      </a>
                       <a class="btn btn-info btn-sm" href="#">
-                          <i class="fas fa-pencil-alt">
+                          <i class="fas fa-eye">
                           </i>
-                          Empezar
                       </a>
-                      <a class="btn btn-danger btn-sm" href="#">
-                        <i class="fas fa-trash">
+                      <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
+
+                        @if($task->counting == 0)
+                        <i class="fas fa-play active" id="run-{{ $task->id }}">
+                          </i>
+                          <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
                         </i>
-                        Pausar
-                    </a>
-                    <a class="btn btn-danger btn-sm" href="#">
-                        <i class="fas fa-trash">
+                        @else
+                        <i class="fas fa-play active" id="run-{{ $task->id }}" style="display: none;">
                         </i>
-                        Terminar
+                        <i class="fas fa-pause" id="pause-{{ $task->id }}" >
+                      </i>
+                        @endif
+                      </a>
+                    <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" href="#">
+                        <i class="fas fa-stop">
+                        </i>
                     </a>
                   </td>
               </tr>
@@ -97,4 +107,54 @@
     </div>
     <!-- /.card-body -->
   </div>
+@endsection
+
+@section('scripts')
+<script>
+    function toggleCounter (id) {
+        $.ajax({
+            url: "{{ route('tasks.toggle', ['project' => $project->id]) }}",
+            type: "POST",
+            data: {id: id},
+            success: data => {
+                if(data.value[0] != '-' && data.value[0] == 0) $(`#stop-${id}`).addClass('disabled');
+                $(`#time-${id}`)[0].innerText = data.value[0];
+                $(`#price-${id}`)[0].innerText = data.value[1];
+            }
+        })
+    }
+
+    function toggleStatus(e, id) {
+        let old = stat = oldc = newc = ''
+        if ($(`#run-${id}`).hasClass('active')) {
+            old = 'run'
+            stat = 'pause'
+            oldc = 'success'
+            newc = 'warning'
+        }else{
+            old = 'pause'
+            stat = 'run'
+            oldc = 'warning'
+            newc = 'success'
+        }
+
+        $(`#${old}-${id}`).removeClass('active');
+        $(`#${old}-${id}`).css('display', 'none');
+        $(e).removeClass(`btn-${oldc}`)
+        $(e).addClass(`btn-${newc}`)
+        $(`#${stat}-${id}`).css('display', 'initial');
+        $(`#${stat}-${id}`).addClass('active');
+        $(`#stop-${id}`).removeClass('disabled');
+        toggleCounter(id);
+
+    }
+</script>
+@endsection
+@section('styles')
+<style>
+.animation__timer {
+  -webkit-animation: wobble 1500ms infinite;
+  animation: wobble 1500ms infinite;
+}
+</style>
 @endsection

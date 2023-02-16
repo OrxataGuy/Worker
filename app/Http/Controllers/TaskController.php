@@ -9,6 +9,8 @@ use App\Models\Project;
 use App\Models\Client;
 use App\Models\Task;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class TaskController extends Controller
 {
@@ -16,5 +18,17 @@ class TaskController extends Controller
     {
         $project = Project::with('client')->find($project);
         return $project ? view('pages.projects.tasks', ['project' => $project]) : view('errors.404');
+    }
+
+    public function toggleCounter(Request $request) : JsonResponse {
+        $task = Task::find($request->get('id'));
+        if ($task->counting) $task->counting = 0;
+        else $task->counting = 1;
+        $task->save();
+        $value = $task->calculate();
+        return response()->json(array(
+            'status' => '200',
+            'value' => $value
+        ));
     }
 }

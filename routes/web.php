@@ -33,5 +33,6 @@ Route::prefix('projects')->group(function () {
 
     Route::prefix('{project}')->group(function () {
         Route::get('/', [Tasks::class, 'index'])->name('tasks');
+        Route::post('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
     });
 });

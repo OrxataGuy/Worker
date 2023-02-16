@@ -1,4 +1,4 @@
-@extends('frames.main')
+@extends('layouts.main')
 @section('title', 'Bienvenido')
 
 @section('content')

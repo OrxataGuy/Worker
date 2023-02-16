@@ -21,6 +21,8 @@ class CreateTasksTable extends Migration
             $table->text('details')->nullable();
             $table->double('price', 8, 2)->default(0);
             $table->double('time', 8, 0)->default(0);
+            $table->timestamp('last_run')->nullable();
+            $table->tinyInteger('counting')->default(0);
             $table->tinyInteger('finished')->default(0);
             $table->text('solution')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete()->cascadeOnUpdate();

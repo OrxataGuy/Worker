@@ -1,4 +1,4 @@
-@extends('frames.main')
+@extends('layouts.main')
 @section('clients-section', 'active')
 @section('title', 'Clientes')
 @section('breadcrumb')

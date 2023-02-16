@@ -17,6 +17,15 @@ class Project extends Model
         return $taskComplete*100/$taskCount;
     }
 
+    public function calculate() {
+        $time = 0;
+        foreach ($this->tasks as $task)
+            $time += $task->time;
+        $this->time = $time;
+        $this->price = $this->price_per_minute*$time;
+        $this->save();
+    }
+
     public function tasks () {
         return $this->hasMany(Task::class);
     }

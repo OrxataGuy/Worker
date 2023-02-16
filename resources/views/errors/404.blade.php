@@ -1,4 +1,4 @@
-@extends('frames.page')
+@extends('layouts.page')
 
 @section('content')
 <div class="error-page">

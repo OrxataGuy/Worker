@@ -1,4 +1,4 @@
-@extends('frames.main')
+@extends('layouts.main')
 @section('projects-section', 'active')
 @section('title', 'Proyectos')
 @section('section-name', 'Proyectos')
@@ -75,7 +75,7 @@
                         {{ $project->price }}
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-primary btn-sm" href="#">
+                      <a class="btn btn-primary btn-sm" href="{{ route('tasks', ['project' => $project->id]) }}">
                           <i class="fas fa-folder">
                           </i>
                           Abrir

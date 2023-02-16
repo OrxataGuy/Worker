@@ -15,7 +15,8 @@ class ClientController extends Controller
 {
     public function index() : View
     {
-        return Client::count() > 0 ? view('pages.clients.index') : view('pages.clients.create');
+        $clients = Client::with('projects')->get();
+        return Client::count() > 0 ? view('pages.clients.index', ['clients' => $clients]) : view('pages.clients.create');
     }
 
     public function create(Request $request) : View {
@@ -36,8 +37,6 @@ class ClientController extends Controller
         Task::create([
             'title' => "Creación de proyecto en la aplicación",
             'description' => "Se da de alta el proyecto en la aplicación",
-            'time' => 10,
-            'price' => \Auth::user()->price_per_minute*10,
             'project_id' => $project->id
         ]);
 
