@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController as Home;
+use App\Http\Controllers\ClientController as Clients;
+use App\Http\Controllers\ProjectController as Projects;
+use App\Http\Controllers\TaskController as Tasks;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,4 +21,16 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [Home::class, 'index'])->name('home');
+
+Route::prefix('clients')->group(function () {
+    Route::get('/', [Clients::class, 'index'])->name('clients');
+});
+
+Route::prefix('projects')->group(function () {
+    Route::get('/', [Projects::class, 'index'])->name('projects');
+
+    Route::prefix('{project}')->group(function () {
+        Route::get('/', [Tasks::class, 'index'])->name('tasks');
+    });
+});

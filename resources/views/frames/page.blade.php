@@ -22,38 +22,14 @@
 
   <!-- include('partials.splash') -->
 
-  @include('partials.splash')
-
-  @include('partials.header')
-
-
-  @include('partials.aside')
-
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="margin:0;">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">@yield('section-name')</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                @yield('breadcrumb')
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
+       <!-- /.content-header -->
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
        @yield('content')
         <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
