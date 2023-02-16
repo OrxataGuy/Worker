@@ -17,7 +17,7 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id')->nullable();
             $table->string('name');
-            $table->text('desciption')->nullable();
+            $table->text('description')->nullable();
             $table->double('price', 8, 2)->default(0);
             $table->double('time', 8, 0)->default(0);
             $table->double('price_per_minute', 8, 2)->default(0);

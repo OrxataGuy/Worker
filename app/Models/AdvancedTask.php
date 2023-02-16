@@ -11,4 +11,7 @@ class AdvancedTask extends Model
 
     protected $fillable = ['id', 'task_id', 'document_id', 'description'];
 
+    public function task () {
+        return $this->belongsTo(Task::class);
+    }
 }

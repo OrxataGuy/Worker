@@ -25,6 +25,7 @@ Route::get('/', [Home::class, 'index'])->name('home');
 
 Route::prefix('clients')->group(function () {
     Route::get('/', [Clients::class, 'index'])->name('clients');
+    Route::post('create', [Clients::class, 'create'])->name('clients.create');
 });
 
 Route::prefix('projects')->group(function () {

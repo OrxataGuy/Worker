@@ -11,4 +11,8 @@ class Client extends Model
 
     protected $fillable = ['id', 'name', 'email', 'phone', 'user_id'];
 
+    public function projects() {
+        return $this->hasMany(Project::class);
+    }
+
 }

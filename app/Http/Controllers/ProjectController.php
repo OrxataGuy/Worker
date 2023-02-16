@@ -14,6 +14,7 @@ class ProjectController extends Controller
 {
     public function index() : View
     {
-        return view('pages.projects.index');
+        $clients = Client::with('projects')->get();
+        return view('pages.projects.index', ['clients' => $clients]);
     }
 }

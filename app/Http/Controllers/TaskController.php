@@ -14,7 +14,7 @@ class TaskController extends Controller
 {
     public function index($project) : View
     {
-        $project = Project::find($project);
+        $project = Project::with('client')->find($project);
         return $project ? view('pages.projects.tasks', ['project' => $project]) : view('errors.404');
     }
 }
