@@ -19,7 +19,6 @@ class CreateTechnologyProjectTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('technology_id')->references('id')->on('technologies')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->timestamps();
         });
     }
 
