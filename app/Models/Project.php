@@ -17,6 +17,14 @@ class Project extends Model
         return $taskComplete*100/$taskCount;
     }
 
+    public function registerPayment() {
+        $amount = 0;
+        foreach($this->payments as $payment)
+            $amount += $payment->amount;
+        $this->paid = $amount;
+        $this->save();
+    }
+
     public function calculate() {
         $time = 0;
         foreach ($this->tasks as $task)
@@ -28,6 +36,10 @@ class Project extends Model
 
     public function tasks () {
         return $this->hasMany(Task::class);
+    }
+
+    public function payments () {
+        return $this->hasMany(Payment::class);
     }
 
     public function client () {

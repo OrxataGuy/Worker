@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->double('price', 8, 2)->default(0);
             $table->double('time', 8, 0)->default(0);
             $table->double('price_per_minute', 8, 2)->default(0);
+            $table->double('paid', 8, 2)->default(0);
             $table->foreign('client_id')->nullable()->references('id')->on('clients')->nullOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

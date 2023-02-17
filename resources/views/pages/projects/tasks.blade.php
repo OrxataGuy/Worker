@@ -12,11 +12,8 @@
       <h3 class="card-title">{{ $project->name }}</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-          <i class="fas fa-times"></i>
+        <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
+          <i class="fas fa-plus"></i>
         </button>
       </div>
     </div>
@@ -111,6 +108,11 @@
 
 @section('scripts')
 <script>
+
+    function addTaskForm(id) {
+        Swal.fire('Hola','Mundo','success')
+    }
+
     function toggleCounter (id) {
         $.ajax({
             url: "{{ route('tasks.toggle', ['project' => $project->id]) }}",

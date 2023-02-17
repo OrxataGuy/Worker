@@ -38,7 +38,7 @@
                       Estado
                   </th>
                   <th style="width: 8%" class="text-center">
-                      Precio total
+                      A pagar
                   </th>
                   <th style="width: 20%">
                   </th>
@@ -72,7 +72,7 @@
                     </small>
                 </td>
                   <td>
-                        {{ $project->price }}
+                        {{ $project->price - $project->paid }}
                   </td>
                   <td class="project-actions text-right">
                       <a class="btn btn-primary btn-sm" href="{{ route('tasks', ['project' => $project->id]) }}">
@@ -80,10 +80,15 @@
                           </i>
                           Abrir
                       </a>
-                      <a class="btn btn-info btn-sm" href="#">
+                      <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
                           <i class="fas fa-pencil-alt">
                           </i>
                           Editar
+                      </a>
+                      <a class="btn btn-info btn-sm" href="#" onclick="payForm({{ $project->id }})">
+                        <i class="fas fa-pencil-alt">
+                        </i>
+                            Pago
                       </a>
                       <a class="btn btn-danger btn-sm" href="#">
                           <i class="fas fa-trash">
@@ -99,4 +104,27 @@
     <!-- /.card-body -->
   </div>
 @endforeach
+@endsection
+
+@section('scripts')
+<script>
+    function getProject(id) {
+        return $.ajax({
+            url: "{{ route('project.get') }}",
+            data: {id: id},
+        })
+    }
+
+    function editForm(id) {
+        getProject(id).then(data => {
+            console.log(data)
+        })
+    }
+
+    function payForm(id) {
+        getProject(id).then(data => {
+            console.log(data)
+        })
+    }
+</script>
 @endsection

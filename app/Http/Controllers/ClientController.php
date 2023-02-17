@@ -19,7 +19,7 @@ class ClientController extends Controller
         return Client::count() > 0 ? view('pages.clients.index', ['clients' => $clients]) : view('pages.clients.create');
     }
 
-    public function create(Request $request) : View {
+    public function create(Request $request) {
         $client = Client::create([
             'name' => $request->get('clientName'),
             'email' => $request->get('clientEmail'),
@@ -40,6 +40,6 @@ class ClientController extends Controller
             'project_id' => $project->id
         ]);
 
-        return view('pages.clients.index');
+        return redirect()->route('clients');
     }
 }

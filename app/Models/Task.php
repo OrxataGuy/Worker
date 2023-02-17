@@ -10,7 +10,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'project_id', 'title', 'description', 'details', 'price', 'time', 'finished', 'solution'];
+    protected $fillable = ['id', 'project_id', 'parent_task_id', 'title', 'description', 'details', 'price', 'time', 'finished', 'bug',  'solution'];
 
     public function calculate() {
         if ($this->counting) {
@@ -29,8 +29,42 @@ class Task extends Model
         return [$this->time, $this->price];
     }
 
+    public function patch($description) {
+        $patch_count = Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 0)->count();
+        $task = Task::create([
+            'project_id' => $this->project_id,
+            'title' => '[PARCHE #'.(++$patch_count).'] '.$this->title,
+            'description' => $description,
+            'details' => $this->details,
+            'parent_task_id' => $this->id
+        ]);
+        return $task;
+    }
+
+    public function bug($description) {
+        $bug_count = Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 1)->count();
+        $task = Task::create([
+            'project_id' => $this->project_id,
+            'title' => '[BUG #'.(++$bug_count).'] '.$this->title,
+            'description' => $description,
+            'details' => $this->details,
+            'parent_task_id' => $this->id,
+            'bug' => 1,
+            'time' => ($this->time*(-0.5))
+        ]);
+        return $task;
+    }
+
     public function project () {
         return $this->belongsTo(Project::class);
+    }
+
+    public function children() {
+        return $this->hasMany(Task::class);
+    }
+
+    public function root() {
+        return $this->belongsTo(Task::class, 'parent_task_id');
     }
 
     public function advanced_tasks () {

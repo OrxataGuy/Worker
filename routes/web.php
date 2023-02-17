@@ -23,16 +23,27 @@ Auth::routes();
 
 Route::get('/', [Home::class, 'index'])->name('home');
 
-Route::prefix('clients')->group(function () {
-    Route::get('/', [Clients::class, 'index'])->name('clients');
-    Route::post('create', [Clients::class, 'create'])->name('clients.create');
-});
-
-Route::prefix('projects')->group(function () {
-    Route::get('/', [Projects::class, 'index'])->name('projects');
-
-    Route::prefix('{project}')->group(function () {
-        Route::get('/', [Tasks::class, 'index'])->name('tasks');
-        Route::post('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'clients'], function () {
+        Route::get('/', [Clients::class, 'index'])->name('clients');
+        Route::post('create', [Clients::class, 'create'])->name('clients.create');
     });
+
+    Route::group(['prefix' => 'projects'], function () {
+        Route::get('/', [Projects::class, 'index'])->name('projects');
+
+        Route::get('get', [Projects::class, 'get'])->name('project.get');
+        Route::post('create', [Projects::class, 'create'])->name('project.create');
+        Route::put('update', [Projects::class, 'update'])->name('project.update');
+        Route::delete('delete', [Projects::class, 'delete'])->name('project.delete');
+
+        Route::prefix('{project}')->group(function () {
+            Route::get('/', [Tasks::class, 'index'])->name('tasks');
+            Route::post('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
+            Route::post('reopen', [Tasks::class, 'reopen'])->name('tasks.reopen');
+            Route::post('finish', [Tasks::class, 'finish'])->name('tasks.finish');
+        });
+    });
+
+
 });

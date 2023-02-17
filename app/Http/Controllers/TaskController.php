@@ -31,4 +31,23 @@ class TaskController extends Controller
             'value' => $value
         ));
     }
+
+    public function reopen(Request $request) : JsonResponse {
+        $task = Task::find($request->get('id'));
+        $value = $request->get('bug') == 1 ? $task->bug() : $task->patch();
+        return response()->json(array(
+            'status' => '200',
+            'value' => $value
+        ));
+    }
+
+    public function finish(Request $request) : JsonResponse {
+        $task = Task::find($request->get('id'));
+        $task->finished = 1;
+        $task->save();
+        return response()->json(array(
+            'status' => '200',
+        ));
+
+    }
 }
