@@ -42,4 +42,34 @@ class ClientController extends Controller
 
         return redirect()->route('clients');
     }
+
+    public function get(Request $request) : JsonResponse {
+        $client = Client::find($request->get('id'));
+        return response()->json(array(
+            'status' => '200',
+            'value' => $client
+        ));
+    }
+
+    public function update(Request $request) : JsonResponse {
+        $client = Client::find($request->get('id'));
+
+        $client->name = $request->get('name');
+        $client->email = $request->get('email');
+        $client->phone = $request->get('phone');
+        $client->save();
+
+        return response()->json(array(
+            'status' => '200',
+            'value' => $client
+        ));
+    }
+
+    public function delete(Request $request) : JsonResponse {
+        $client = Client::find($request->get('id'));
+        $client->delete();
+        return response()->json(array(
+            'status' => '200',
+        ));
+    }
 }
