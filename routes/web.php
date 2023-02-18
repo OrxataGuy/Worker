@@ -26,7 +26,10 @@ Route::get('/', [Home::class, 'index'])->name('home');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'clients'], function () {
         Route::get('/', [Clients::class, 'index'])->name('clients');
+        Route::get('get', [Clients::class, 'get'])->name('clients.get');
         Route::post('create', [Clients::class, 'create'])->name('clients.create');
+        Route::put('update', [Clients::class, 'update'])->name('clients.update');
+        Route::post('delete', [Clients::class, 'delete'])->name('clients.finish');
     });
 
     Route::group(['prefix' => 'projects'], function () {
@@ -41,7 +44,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', [Tasks::class, 'index'])->name('tasks');
             Route::post('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
             Route::post('reopen', [Tasks::class, 'reopen'])->name('tasks.reopen');
+
+            Route::get('get', [Tasks::class, 'get'])->name('tasks.get');
+            Route::post('create', [Tasks::class, 'create'])->name('tasks.create');
+            Route::put('update', [Tasks::class, 'update'])->name('project.update');
             Route::post('finish', [Tasks::class, 'finish'])->name('tasks.finish');
+
         });
     });
 

@@ -110,14 +110,7 @@
 <script>
 
     function addTaskForm(id) {
-        Swal.fire({
-            title: 'Crear tarea',
-            html: ``,
-            confirmButtonText: 'Crear',
-            preConfirm: () => {
-
-            }
-        })
+        Swal.fire('Hola','Mundo','success')
     }
 
     function toggleCounter (id) {

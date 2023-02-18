@@ -21,24 +21,7 @@ class ProjectController extends Controller
     }
 
     public function get(Request $request) : JsonResponse {
-        $project = Project::find($request->get('id'));
-        return response()->json(array(
-            'status' => '200',
-            'value' => $project
-        ));
-    }
-
-    public function pay(Request $request) : JsonResponse {
-        $project = Project::find($request->get('id'));
-
-        Payment::create([
-            'project_id' => $project->id,
-            'client_id' => $project->client_id,
-            'amount' => $request->get('paid')
-        ]);
-
-        $project->registerPayment();
-
+        $project = Project::with('tasks')->find($request->get('id'));
         return response()->json(array(
             'status' => '200',
             'value' => $project
@@ -77,6 +60,23 @@ class ProjectController extends Controller
         $project->delete();
         return response()->json(array(
             'status' => '200',
+        ));
+    }
+
+    public function pay(Request $request) : JsonResponse {
+        $project = Project::find($request->get('id'));
+
+        Payment::create([
+            'project_id' => $project->id,
+            'client_id' => $project->client_id,
+            'amount' => $request->get('paid')
+        ]);
+
+        $project->registerPayment();
+
+        return response()->json(array(
+            'status' => '200',
+            'value' => $project
         ));
     }
 }

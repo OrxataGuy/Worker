@@ -16,7 +16,7 @@ class CreateAdvancedTasksTable extends Migration
         Schema::create('advanced_tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
-            $table->unsignedBigInteger('document_id');
+            $table->unsignedBigInteger('document_id')->nullable();
             $table->text('description')->nullable();
             $table->foreign('task_id')->references('id')->on('tasks')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('document_id')->references('id')->on('documents')->cascadeOnDelete()->cascadeOnUpdate();
