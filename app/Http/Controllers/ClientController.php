@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use App\Models\Project;
 use App\Models\Client;
 use App\Models\Task;
-use App\Models\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClientController extends Controller

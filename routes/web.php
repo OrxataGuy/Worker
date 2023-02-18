@@ -21,6 +21,8 @@ use App\Http\Controllers\TaskController as Tasks;
 
 Auth::routes();
 
+Route::get('pau', [Home::class,'pau'])->name('pau');
+
 Route::get('/', [Home::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function () {

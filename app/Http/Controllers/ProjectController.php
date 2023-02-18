@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Models\Project;
 use App\Models\Client;
 use App\Models\Payment;
-use App\Models\Task;
-use App\Models\User;
 
 class ProjectController extends Controller
 {
