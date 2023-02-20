@@ -1,19 +1,20 @@
 @extends('layouts.main')
 @section('projects-section', 'active')
-@section('title', 'Tareas')
+@section('title', 'Tarea')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('projects') }}">Proyectos</a></li>
     <li class="breadcrumb-item">{{ $project->client->name }}</li>
-    <li class="breadcrumb-item active">{{ $project->name }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('tasks', ['project' => $project->id]) }}">{{ $project->name }}</a></li>
+    <li class="breadcrumb-item active">{{ $task->title }}</li>
     @endsection
+@section('section-name', $task->title)
 @section('content')
 <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">{{ $project->name }}</h3>
-
+    <div class="card-header" data-card-widget="collapse" title="Collapse">
+      <h3 class="card-title">Controles de la tarea</h3>
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
-          <i class="fas fa-plus"></i>
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+          <i class="fas fa-minus"></i>
         </button>
       </div>
     </div>
@@ -21,44 +22,39 @@
       <table class="table table-striped projects">
           <thead>
               <tr>
-                  <th style="width: 1%">
-                      #
-                  </th>
-                  <th style="width: 20%">
-                      Nombre
-                  </th>
-                  <th style="width: 30%">
-                      Descripción
-                  </th>
+                <th>
+                    Estado
+                </th>
                   <th>
                       Minutos
                   </th>
-                  <th style="width: 8%" class="text-center">
+                  <th>
                       Precio
-                  </th>
-                  <th style="width: 20%">
                   </th>
               </tr>
           </thead>
           <tbody>
-            @foreach($project->tasks as $task)
               <tr>
-                  <td>
-                      {{ $task->id }}
-                  </td>
-                  <td>
-                      <a>
-                        {{ $task->title }}
-                      </a>
-                  </td>
-                  <td>
-                      {{ $task->description }}
-                      @if($task->details)
-                      <small>
-                        Hay más detalles.
-                    </small>
+                <td class="project-actions text-left">
+                    <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
+
+                      @if($task->counting == 0)
+                      <i class="fas fa-play active" id="run-{{ $task->id }}">
+                        Iniciar </i>
+                        <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
+                            Pausar</i>
+                      @else
+                      <i class="fas fa-play active" id="run-{{ $task->id }}" style="display: none;">
+                        Iniciar </i>
+                      <i class="fas fa-pause" id="pause-{{ $task->id }}" >
+                        Pausar </i>
                       @endif
-                  </td>
+                    </a>
+                  <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" href="#">
+                      <i class="fas fa-stop">
+                      Finalizar</i>
+                  </a>
+                </td>
                   <td id="time-{{ $task->id }}">
                     @if($task->counting == 1)
                     -
@@ -73,44 +69,165 @@
                    {{ $task->price }}
                    @endif
                   </td>
-                  <td class="project-actions text-right">
-                      <a class="btn btn-info btn-sm" href="#">
-                          <i class="fas fa-eye">
-                          </i>
-                      </a>
-                      <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
 
-                        @if($task->counting == 0)
-                        <i class="fas fa-play active" id="run-{{ $task->id }}">
-                          </i>
-                          <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
-                        </i>
-                        @else
-                        <i class="fas fa-play active" id="run-{{ $task->id }}" style="display: none;">
-                        </i>
-                        <i class="fas fa-pause" id="pause-{{ $task->id }}" >
-                      </i>
-                        @endif
-                      </a>
-                    <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" href="#">
-                        <i class="fas fa-stop">
-                        </i>
-                    </a>
-                  </td>
               </tr>
-              @endforeach
           </tbody>
       </table>
     </div>
     <!-- /.card-body -->
+</div>
+<div class="card">
+    <div class="card-header" data-card-widget="collapse" title="Collapse">
+    <h3 class="card-title">Descripción @if($task->details)y detalles @endif </h3>
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+    </div>
   </div>
+  <div class="card-body">
+    <h5>Descripción de la tarea</h5>
+    <p onclick="updateDescription({{ $task->id }}, this)">{!! nl2br($task->description) !!}</p>
+    <h5>Detalles</h5>
+    <p onclick="updateDetails({{ $task->id }}, this)">@if($task->details) {!! nl2br($task->details) !!} @else No hay detalles. @endif</p>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+<div class="card">
+    <div class="card-header" >
+    <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Detalles adicionales </h3>
+    <div class="card-tools">
+        <button type="button" class="btn btn-tool" onclick="addAdvancedTask({{ $task->id }})">
+            <i class="fas fa-plus"></i>
+          </button>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+        <thead>
+            <tr>
+              <th>
+                  Tipo
+              </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+          @foreach ($advanced_tasks as $atask)
+            <tr>
+              <td class="project-actions text-left">
+                 @if(!$atask->document)
+                  Comentario
+                  @else
+                  {{ strtoupper($atask->document->type) }}
+                  @endif
+              </td>
+                <td id="time-{{ $task->id }}">
+                  @if(!$atask->document)
+                      {!! nl2br($atask->description) !!}
+                  @else
+                      @switch($atask->document->type)
+                          @case('img')
+                              <img src="{{ $atask->document->url }}" alt="{{ $atask->description }}" />
+                              @break
+                          @default
+                              <a class="btn btn-primary" href="{{ $atask->document->url }}" target="_blank" title="{{ $atask->description }}">Ver adjunto</a>
+                          @break
+                      @endswitch
+
+                 @endif
+              </td>
+
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+
 @endsection
 
 @section('scripts')
 <script>
 
-    function addTaskForm(id) {
-        Swal.fire('Hola','Mundo','success')
+    function updateDescription(id, el) {
+        Swal.fire({
+            title: 'Actualizar descripción',
+            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${el.innerText}</textarea>`,
+            confirmButtonText: 'Confirmar',
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text}
+            }
+        }).then(res => {
+            if (res.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    data: {
+                        id: id,
+                        description: res.value.text
+                    },
+                    success: data => {
+                        el.innerText = res.value.text;
+                    }
+                })
+            }
+        })
+    }
+
+    function updateDetails(id, el) {
+        Swal.fire({
+            title: 'Actualizar detalles',
+            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${el.innerText}</textarea>`,
+            confirmButtonText: 'Confirmar',
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text}
+            }
+        }).then(res => {
+            if (res.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    data: {
+                        id: id,
+                        details: res.value.text
+                    },
+                    success: data => {
+                        el.innerText = res.value.text;
+                    }
+                })
+            }
+        })
+    }
+
+    function addAdvancedTask(id) {
+        Swal.fire({
+            title: 'Añadir detalles',
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><input type="text" class="swal2-º" placeholder="URL" style="width:100%" />`,
+            confirmButtonText: 'Confirmar',
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text}
+            }
+        }).then(res => {
+            if (res.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: "",
+                    data: {
+
+                    },
+                    success: data => {
+
+                    }
+                })
+            }
+        })
     }
 
     function toggleCounter (id) {

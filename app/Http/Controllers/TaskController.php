@@ -20,6 +20,12 @@ class TaskController extends Controller
         return $project ? view('pages.projects.tasks', ['project' => $project]) : view('errors.404');
     }
 
+    public function view($project, $task) {
+        $task = Task::with('project')->find($task);
+        $advanced_tasks = AdvancedTask::with('document')->where('task_id', '=', $task)->get();
+        return view('pages.projects.task', ['project' => $task->project, 'task' => $task, 'advanced_tasks' => $advanced_tasks]);
+    }
+
     public function toggleCounter(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
         if ($task->counting) $task->counting = 0;
@@ -66,9 +72,9 @@ class TaskController extends Controller
     public function update(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
 
-        $task->title = $request->get('title');
-        $task->description = $request->get('description');
-        $task->details = $request->get('details');
+        if($request->get('title')) $task->title = $request->get('title');
+        if($request->get('description')) $task->description = $request->get('description');
+        if($request->get('details')) $task->details = $request->get('details');
         $task->save();
 
         return response()->json(array(

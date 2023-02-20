@@ -21,8 +21,6 @@ use App\Http\Controllers\TaskController as Tasks;
 
 Auth::routes();
 
-Route::get('pau', [Home::class,'pau'])->name('pau');
-
 Route::get('/', [Home::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -44,12 +42,14 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::prefix('{project}')->group(function () {
             Route::get('/', [Tasks::class, 'index'])->name('tasks');
+
+            Route::get('/view/{task}', [Tasks::class, 'view'])->name('task.view');
             Route::post('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
             Route::post('reopen', [Tasks::class, 'reopen'])->name('tasks.reopen');
 
             Route::get('get', [Tasks::class, 'get'])->name('tasks.get');
             Route::post('create', [Tasks::class, 'create'])->name('tasks.create');
-            Route::put('update', [Tasks::class, 'update'])->name('project.update');
+            Route::put('update', [Tasks::class, 'update'])->name('tasks.update');
             Route::post('finish', [Tasks::class, 'finish'])->name('tasks.finish');
 
         });

@@ -74,7 +74,7 @@
                    @endif
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-info btn-sm" href="#">
+                      <a class="btn btn-info btn-sm" href="{{ route('task.view', ['task' => $task, 'project' => $project]) }}">
                           <i class="fas fa-eye">
                           </i>
                       </a>
@@ -112,12 +112,33 @@
     function addTaskForm(id) {
         Swal.fire({
             title: 'Crear tarea',
-            html: ``,
+            html: `<input type="text" placeholder="Título" id="title" style="width:100%;" class="swal2-form" />
+            <br/><br/>
+            <textarea id="desc" class="swal2-form" style="width:100%"  rows="5" placeholder="Descripción"></textarea>
+            <br/><br/><textarea id="details" class="swal2-form" style="width:100%"   rows="5" placeholder="Detalles"></textarea>`,
             confirmButtonText: 'Crear',
             preConfirm: () => {
+                const title = $("#title").val(),
+                description = $("#desc").val(),
+                details = $("#details").val();
 
+                return {title: title, description: description, details: details}
             }
-        })
+        }).then(res => {
+            if (res.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('tasks.create', ['project' => $project->id]) }}",
+                    data: {
+                        project_id: id,
+                        title : res.value.title,
+                        description: res.value.description,
+                        details: res.value.details
+                    },
+                    success: data => Swal.fire('Tarea creada', 'La página se va a actualizar', 'success').then(() => location.reload())
+                })
+            }
+        });
     }
 
     function toggleCounter (id) {
