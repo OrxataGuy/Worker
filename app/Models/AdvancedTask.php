@@ -15,7 +15,7 @@ class AdvancedTask extends Model
         return $this->belongsTo(Task::class);
     }
 
-    public function documents () {
-        return $this->hasMany(Document::class);
+    public function document () {
+        return $this->belongsTo(Document::class);
     }
 }

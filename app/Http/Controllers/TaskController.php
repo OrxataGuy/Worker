@@ -22,7 +22,7 @@ class TaskController extends Controller
 
     public function view($project, $task) {
         $task = Task::with('project')->find($task);
-        $advanced_tasks = AdvancedTask::with('document')->where('task_id', '=', $task)->get();
+        $advanced_tasks = AdvancedTask::with('document')->where('task_id', '=', $task->id)->where('visible', 1)->get();
         return view('pages.projects.task', ['project' => $task->project, 'task' => $task, 'advanced_tasks' => $advanced_tasks]);
     }
 
@@ -40,7 +40,7 @@ class TaskController extends Controller
 
     public function reopen(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
-        $value = $request->get('bug') == 1 ? $task->bug() : $task->patch();
+        $value = $request->get('bug') == 1 ? $task->bug($request->get('description')) : $task->patch($request->get('description'));
         return response()->json(array(
             'status' => '200',
             'value' => $value
@@ -74,7 +74,8 @@ class TaskController extends Controller
 
         if($request->get('title')) $task->title = $request->get('title');
         if($request->get('description')) $task->description = $request->get('description');
-        if($request->get('details')) $task->details = $request->get('details');
+        if ($request->get('details') == 'drop.')  $task->details = null;
+        else if ($request->get('details')) $task->details = $request->get('details');
         $task->save();
 
         return response()->json(array(
@@ -83,10 +84,19 @@ class TaskController extends Controller
         ));
     }
 
+    public function delInfo(Request $request) : JsonResponse {
+        $advanced = AdvancedTask::find($request->get('id'));
+        $advanced->visible = 0;
+        $advanced->save();
+        return response()->json(array(
+            'status' => '200',
+        ));
+    }
+
     public function addInfo(Request $request) : JsonResponse {
-        $document_id = '';
+        $document_id = null;
         $task = Task::find($request->get('id'));
-        if($request->get('url')) {
+        if($request->get('url') && $request->get('type') && $request->get('name')) {
             $document = Document::create([
                 'name' => $request->get('name'),
                 'type' => $request->get('type'),
@@ -101,7 +111,7 @@ class TaskController extends Controller
 
         ]);
 
-        $advanced = AdvancedTask::where('task_id', '=', $task->id)->with('documents')->get();
+        $advanced = AdvancedTask::where('task_id', '=', $task->id)->with('document')->get();
 
         return response()->json(array(
             'status' => '200',
@@ -112,6 +122,7 @@ class TaskController extends Controller
     public function finish(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
         $task->finished = 1;
+        $task->solution = $request->get('solution');
         $task->save();
         return response()->json(array(
             'status' => '200',

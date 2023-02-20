@@ -9,6 +9,24 @@
     @endsection
 @section('section-name', $task->title)
 @section('content')
+@if($task->finished==1)
+<div class="card">
+    <div class="card-header bg-success" data-card-widget="collapse" title="Collapse">
+    <h3 class="card-title">Solución propuesta </h3>
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5>{{ $task->updated_at }}</h5>
+    <p>{{ $task->solution }}</p>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+@else
 <div class="card">
     <div class="card-header" data-card-widget="collapse" title="Collapse">
       <h3 class="card-title">Controles de la tarea</h3>
@@ -50,7 +68,7 @@
                         Pausar </i>
                       @endif
                     </a>
-                  <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" href="#">
+                  <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
                       <i class="fas fa-stop">
                       Finalizar</i>
                   </a>
@@ -76,6 +94,10 @@
     </div>
     <!-- /.card-body -->
 </div>
+@endif
+
+
+
 <div class="card">
     <div class="card-header" data-card-widget="collapse" title="Collapse">
     <h3 class="card-title">Descripción @if($task->details)y detalles @endif </h3>
@@ -110,8 +132,8 @@
               <th>
                   Tipo
               </th>
-                <th>
-                </th>
+                <th>Contenido</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -139,7 +161,10 @@
 
                  @endif
               </td>
-
+              <td><a class="btn btn-danger btn-sm" onclick="delete_advanced({{ $atask->id }})" href="#">
+                <i class="fas fa-trash">
+                </i>
+            </a></td>
             </tr>
             @endforeach
         </tbody>
@@ -148,10 +173,25 @@
   <!-- /.card-body -->
 </div>
 
+
+
 @endsection
 
 @section('scripts')
 <script>
+
+    function delete_advanced(id) {
+        $.ajax({
+                    type: 'PUT',
+                    url: "{{ route('tasks.del.details', ['project' => $project->id]) }}",
+                    data: {
+                        id: id,
+                    },
+                    success: data => {
+                        location.reload()
+                    }
+                })
+    }
 
     function updateDescription(id, el) {
         Swal.fire({
@@ -184,6 +224,8 @@
             title: 'Actualizar detalles',
             html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${el.innerText}</textarea>`,
             confirmButtonText: 'Confirmar',
+            showDenyButton: true,
+            denyButtonText: 'Borrar',
             preConfirm: () => {
                 const text = $("#text").val();
                 return {text: text}
@@ -201,6 +243,18 @@
                         el.innerText = res.value.text;
                     }
                 })
+            }else if(res.isDenied) {
+                $.ajax({
+                    type: 'PUT',
+                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    data: {
+                        id: id,
+                        details: 'drop.'
+                    },
+                    success: data => {
+                        el.innerText = 'No hay detalles.';
+                    }
+                })
             }
         })
     }
@@ -208,27 +262,58 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><input type="text" class="swal2-º" placeholder="URL" style="width:100%" />`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><br/><br/><input type="text" id="title" class="swal2-form" placeholder="Nombre de archivo" style="width:80%" /><select id="type" class="swal2-"><option value="" disabled selected>Tipo</option><option value="img">IMG</option><option value="pdf">PDF</option><option value="other">OTRO</option></select>`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
-                const text = $("#text").val();
-                return {text: text}
+
+                const text = $("#text").val(),
+                    name = $("#title").val(),
+                    url = $("#url").val(),
+                    type = $("#type").val();
+                return {description: text, name: name, type: type, url: url}
             }
         }).then(res => {
             if (res.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: "",
+                    url: "{{ route('tasks.add.details', ['project' => $project->id]) }}",
                     data: {
-
+                        id: id,
+                        name: res.value.name,
+                        type: res.value.type,
+                        url: res.value.url,
+                        description: res.value.description
                     },
                     success: data => {
-
+                        location.reload();
                     }
                 })
             }
         })
     }
+
+    function endCounter(id) {
+        Swal.fire({
+            title: 'Finalizar tarea',
+            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-form"></textarea>`,
+            confirmButtonText: "Finalizar",
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text}
+            }
+        }).then(res => {
+            if(res.isConfirmed){
+                $.ajax({
+            url: "{{ route('tasks.finish', ['project' => $project->id]) }}",
+            type: "PUT",
+            data: {id: id, solution: res.value.text},
+            success: data => {
+                location.reload();
+            }
+            })
+        }
+    })
+}
 
     function toggleCounter (id) {
         $.ajax({

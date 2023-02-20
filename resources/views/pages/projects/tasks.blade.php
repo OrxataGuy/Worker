@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             @foreach($project->tasks as $task)
-              <tr>
+              <tr class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @endif">
                   <td>
                       {{ $task->id }}
                   </td>
@@ -78,6 +78,7 @@
                           <i class="fas fa-eye">
                           </i>
                       </a>
+                      @if($task->finished==0)
                       <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
 
                         @if($task->counting == 0)
@@ -92,10 +93,20 @@
                       </i>
                         @endif
                       </a>
-                    <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" href="#">
+                    <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
                         <i class="fas fa-stop">
                         </i>
                     </a>
+                    @else
+                    <a class="btn btn-warning btn-sm" onclick="reopen({{ $task->id }}, 0)" href="#">
+                        <i class="fas fa-plus">
+                        </i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" onclick="reopen({{ $task->id }}, 1)" href="#">
+                        <i class="fas fa-bug">
+                        </i>
+                    </a>
+                    @endif
                   </td>
               </tr>
               @endforeach
@@ -108,6 +119,27 @@
 
 @section('scripts')
 <script>
+
+    function reopen(id, bug) {
+        Swal.fire({
+            title: 'Reabrir tarea',
+            html: bug ? `<textarea id="text" placeholder="Explicación del bug" class="swal2-form" style="width: 100%" rows="6"></textarea>` : `<textarea id="text" placeholder="Explicación de la ampliación" class="swal2-form" style="width: 100%" rows="6"></textarea>`,
+            confirmButtonText: 'Confirmar',
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text};
+            }
+        }).then(res => {
+            if(res.isConfirmed){
+                $.ajax({
+                    url: "{{ route('tasks.reopen', ['project' => $project->id]) }}",
+                    type: 'POST',
+                    data: {id: id, bug: bug, description: res.value.text},
+                    success: () => location.reload()
+                })
+            }
+        })
+    }
 
     function addTaskForm(id) {
         Swal.fire({
@@ -140,6 +172,29 @@
             }
         });
     }
+
+    function endCounter(id) {
+        Swal.fire({
+            title: 'Finalizar tarea',
+            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-form"></textarea>`,
+            confirmButtonText: "Finalizar",
+            preConfirm: () => {
+                const text = $("#text").val();
+                return {text: text}
+            }
+        }).then(res => {
+            if(res.isConfirmed){
+                $.ajax({
+            url: "{{ route('tasks.finish', ['project' => $project->id]) }}",
+            type: "PUT",
+            data: {id: id, solution: res.value.text},
+            success: data => {
+                location.reload();
+            }
+            })
+        }
+    })
+}
 
     function toggleCounter (id) {
         $.ajax({

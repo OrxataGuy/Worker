@@ -50,7 +50,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('get', [Tasks::class, 'get'])->name('tasks.get');
             Route::post('create', [Tasks::class, 'create'])->name('tasks.create');
             Route::put('update', [Tasks::class, 'update'])->name('tasks.update');
-            Route::post('finish', [Tasks::class, 'finish'])->name('tasks.finish');
+            Route::put('finish', [Tasks::class, 'finish'])->name('tasks.finish');
+
+            Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.add.details');
+            Route::put('del', [Tasks::class, 'delInfo'])->name('tasks.del.details');
 
         });
     });

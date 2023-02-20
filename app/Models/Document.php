@@ -11,4 +11,8 @@ class Document extends Model
 
     protected $fillable = ['id', 'name', 'type', 'url'];
 
+    public function advanced_tasks() {
+        return $this->hasMany(AdvancedTask::class);
+    }
+
 }

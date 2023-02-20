@@ -85,8 +85,8 @@
                           </i>
                           Editar
                       </a>
-                      <a class="btn btn-info btn-sm" href="#" onclick="payForm({{ $project->id }})">
-                        <i class="fas fa-pencil-alt">
+                      <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
+                        <i class="fas fa-dollar-sign">
                         </i>
                             Pago
                       </a>
