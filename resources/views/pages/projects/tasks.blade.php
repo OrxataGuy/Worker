@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             @foreach($project->tasks as $task)
-              <tr class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @endif">
+              <tr id="row-{{ $task->id }}" class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @endif">
                   <td>
                       {{ $task->id }}
                   </td>
@@ -59,16 +59,16 @@
                     </small>
                       @endif
                   </td>
-                  <td id="time-{{ $task->id }}">
+                  <td id="time-{{ $task->id }}" class=" @if($task->counting == 1) counting @endif">
                     @if($task->counting == 1)
-                    -
-                    @else
-                   {{ $task->time }}
+                   {{ $task->getCurrentTime() }}
+                   @else
+                   {{ $task->getTime() }}
                    @endif
                 </td>
                   <td id="price-{{ $task->id }}">
-                    @if($task->counting == 1)
-                    -
+                    @if($task->counting==1)
+                        -
                     @else
                    {{ $task->price }}
                    @endif
@@ -87,9 +87,9 @@
                           <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
                         </i>
                         @else
-                        <i class="fas fa-play active" id="run-{{ $task->id }}" style="display: none;">
+                        <i class="fas fa-play" id="run-{{ $task->id }}" style="display: none;">
                         </i>
-                        <i class="fas fa-pause" id="pause-{{ $task->id }}" >
+                        <i class="fas fa-pause active" id="pause-{{ $task->id }}" >
                       </i>
                         @endif
                       </a>
@@ -119,6 +119,28 @@
 
 @section('scripts')
 <script>
+
+    $(() => {
+        $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
+    });
+
+    var counting = 0;
+    function startCounter(id) {
+        let str = $(`#time-${id}`).html().trim();
+        counting = 1;
+        let mins = parseInt(str.split(':')[0]),
+            secs = parseInt(str.split(':')[1]);
+        setInterval(() => {
+            if (counting == 0) return;
+            if(++secs==60) {
+                mins+=1;
+                secs = 0;
+            }
+            let m = (mins+'').length == 1 ? `0${mins}` : mins,
+                s = (secs+'').length == 1 ? `0${secs}` : secs;
+            $(`#time-${id}`).html(`${m}:${s}`);
+        }, 1000)
+    }
 
     function reopen(id, bug) {
         Swal.fire({
@@ -202,6 +224,7 @@
             type: "POST",
             data: {id: id},
             success: data => {
+                console.log(data)
                 if(data.value[0] != '-' && data.value[0] == 0) $(`#stop-${id}`).addClass('disabled');
                 $(`#time-${id}`)[0].innerText = data.value[0];
                 $(`#price-${id}`)[0].innerText = data.value[1];
@@ -216,11 +239,15 @@
             stat = 'pause'
             oldc = 'success'
             newc = 'warning'
+            $(`#row-${id}`).addClass('bg-warning')
+            startCounter(id);
         }else{
             old = 'pause'
             stat = 'run'
             oldc = 'warning'
             newc = 'success'
+            $(`#row-${id}`).removeClass('bg-warning')
+            counting = 0;
         }
 
         $(`#${old}-${id}`).removeClass('active');

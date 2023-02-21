@@ -62,9 +62,9 @@
                         <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
                             Pausar</i>
                       @else
-                      <i class="fas fa-play active" id="run-{{ $task->id }}" style="display: none;">
+                      <i class="fas fa-play" id="run-{{ $task->id }}" style="display: none;">
                         Iniciar </i>
-                      <i class="fas fa-pause" id="pause-{{ $task->id }}" >
+                      <i class="fas fa-pause active" id="pause-{{ $task->id }}" >
                         Pausar </i>
                       @endif
                     </a>
@@ -73,11 +73,11 @@
                       Finalizar</i>
                   </a>
                 </td>
-                  <td id="time-{{ $task->id }}">
+                  <td id="time-{{ $task->id }}" class="@if($task->counting == 1) counting @endif">
                     @if($task->counting == 1)
-                    -
+                    {{ $task->getCurrentTime() }}
                     @else
-                   {{ $task->time }}
+                   {{ $task->getTime() }}
                    @endif
                 </td>
                   <td id="price-{{ $task->id }}">
@@ -179,6 +179,27 @@
 
 @section('scripts')
 <script>
+     $(() => {
+        $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
+    });
+
+    var counting = 0;
+    function startCounter(id) {
+        let str = $(`#time-${id}`).html().trim();
+        counting = 1;
+        let mins = parseInt(str.split(':')[0]),
+            secs = parseInt(str.split(':')[1]);
+        setInterval(() => {
+            if (counting == 0) return;
+            if(++secs==60) {
+                mins+=1;
+                secs = 0;
+            }
+            let m = (mins+'').length == 1 ? `0${mins}` : mins,
+                s = (secs+'').length == 1 ? `0${secs}` : secs;
+            $(`#time-${id}`).html(`${m}:${s}`);
+        }, 1000)
+    }
 
     function delete_advanced(id) {
         $.ajax({
@@ -335,11 +356,13 @@
             stat = 'pause'
             oldc = 'success'
             newc = 'warning'
+            startCounter(id);
         }else{
             old = 'pause'
             stat = 'run'
             oldc = 'warning'
             newc = 'success'
+            counting = 0;
         }
 
         $(`#${old}-${id}`).removeClass('active');

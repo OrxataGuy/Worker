@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Manel',
             'email' => 'm@ster',
-            'password' => '$2y$10$ZWbpuj9rbjV7OIW5tC8vdusHi/jyKnk8CjeXqbqi9Ng09BT/bwWa.'
+            'password' => '$2y$10$ZWbpuj9rbjV7OIW5tC8vdusHi/jyKnk8CjeXqbqi9Ng09BT/bwWa.',
+            'price_per_minute' => 0.25
         ]);
         // \App\Models\User::factory(10)->create();
     }
