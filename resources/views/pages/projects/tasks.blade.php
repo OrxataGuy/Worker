@@ -124,14 +124,14 @@
         $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
     });
 
-    var counting = 0;
+    var counting = {};
     function startCounter(id) {
         let str = $(`#time-${id}`).html().trim();
-        counting = 1;
+        counting[id] = 1;
         let mins = parseInt(str.split(':')[0]),
             secs = parseInt(str.split(':')[1]);
         setInterval(() => {
-            if (counting == 0) return;
+            if (counting[id] == 0) return;
             if(++secs==60) {
                 mins+=1;
                 secs = 0;
@@ -247,7 +247,7 @@
             oldc = 'warning'
             newc = 'success'
             $(`#row-${id}`).removeClass('bg-warning')
-            counting = 0;
+            counting[id] = 0;
         }
 
         $(`#${old}-${id}`).removeClass('active');
