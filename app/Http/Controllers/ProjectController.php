@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Models\Project;
 use App\Models\Client;
 use App\Models\Payment;
-use App\Models\Task;
-use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -26,6 +24,12 @@ class ProjectController extends Controller
             'status' => '200',
             'value' => $project
         ));
+    }
+
+    public function add($client) : View
+    {
+        $client = Client::find($client);
+        return view('pages.clients.create', ['client' => $client]);
     }
 
     public function create(Request $request) : JsonResponse {
@@ -46,7 +50,6 @@ class ProjectController extends Controller
         $project = Project::find($request->get('id'));
 
         $project->name = $request->get('name');
-        $project->description = $request->get('description');
         $project->save();
 
         return response()->json(array(

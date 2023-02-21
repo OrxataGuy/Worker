@@ -18,8 +18,10 @@ class CreateAdvancedTasksTable extends Migration
             $table->unsignedBigInteger('task_id');
             $table->unsignedBigInteger('document_id')->nullable();
             $table->text('description')->nullable();
+            $table->tinyInteger('visible')->default(1);
             $table->foreign('task_id')->references('id')->on('tasks')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('document_id')->references('id')->on('documents')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamps();
         });
     }
 

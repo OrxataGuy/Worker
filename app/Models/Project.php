@@ -14,7 +14,7 @@ class Project extends Model
     public function getPercentStatus() {
         $taskCount = $this->tasks->count();
         $taskComplete = $this->tasks->where('finished', 1)->count();
-        return $taskComplete*100/$taskCount;
+        return round($taskComplete*100/$taskCount,2);
     }
 
     public function registerPayment() {
@@ -44,5 +44,9 @@ class Project extends Model
 
     public function client () {
         return $this->belongsTo(Client::class);
+    }
+
+    public function technologies() {
+        return $this->belongsToMany(Technology::class, 'technology_project');
     }
 }

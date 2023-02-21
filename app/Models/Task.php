@@ -16,39 +16,80 @@ class Task extends Model
         if ($this->counting) {
             $this->last_run = $this->updated_at;
             $this->save();
-            return ['-', '-'];
+            return [$this->getTime(), '-'];
         }
 
-        $start = new DateTime($this->last_run);
-        $end = new DateTime($this->updated_at);
-        $minutes = round(($end->getTimestamp() - $start->getTimestamp())/60);
-        $this->time += $minutes;
-        $this->price = $this->project->price_per_minute*$this->time;
+        $start = (new DateTime($this->last_run))->getTimestamp();
+        $end = (new DateTime($this->updated_at))->getTimestamp();
+
+        $time = ($end - $start)/60;
+        $this->time += $time;
+        if($this->time > 0) {
+            $this->mins = (int)($this->time);
+            $this->secs = ($this->time*60)%60;
+        }
+        $this->price = round($this->project->price_per_minute*$this->time, 2);
         $this->save();
         $this->project->calculate();
-        return [$this->time, $this->price];
+        return [$this->getTime(), $this->price];
+    }
+
+    public function patches() {
+        return Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 0)->count();
+    }
+
+    public function bugs() {
+        return Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 1)->count();
     }
 
     public function patch($description) {
-        $patch_count = Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 0)->count();
+        $original_task = $this;
+        while($original_task->parent_task_id)
+            $original_task = Task::find($original_task->parent_task_id);
+        $patch_count = Task::where('parent_task_id', '=', $original_task->id)->where('bug', '=', 0)->count();
         $task = Task::create([
             'project_id' => $this->project_id,
-            'title' => '[PARCHE #'.(++$patch_count).'] '.$this->title,
+            'title' => '[PARCHE #'.(++$patch_count).'] '.$original_task->title,
             'description' => $description,
-            'details' => $this->details,
-            'parent_task_id' => $this->id
+            'details' => $original_task->details,
+            'parent_task_id' => $original_task->id
         ]);
         return $task;
     }
 
+    public function getTime() {
+        $mins = strlen($this->mins) == 1 ? "0$this->mins" : $this->mins;
+        $secs = strlen($this->secs) == 1 ? "0$this->secs" : $this->secs;
+
+        return "$mins:$secs";
+    }
+
+    public function getCurrentTime() {
+        $start = (new DateTime($this->last_run))->getTimestamp();
+        $end = (new DateTime(now()))->getTimestamp();
+
+        $time = $this->time + ($end - $start)/60;
+        $this->mins = (int)($time);
+        $this->secs = ($time*60)%60;
+        $this->save();
+
+        $mins = strlen($this->mins) == 1 ? "0$this->mins" : $this->mins;
+        $secs = strlen($this->secs) == 1 ? "0$this->secs" : $this->secs;
+
+        return "$mins:$secs";
+    }
+
     public function bug($description) {
-        $bug_count = Task::where('parent_task_id', '=', $this->id)->where('bug', '=', 1)->count();
+        $original_task = $this;
+        while($original_task->parent_task_id)
+            $original_task = Task::find($original_task->parent_task_id);
+        $bug_count = Task::where('parent_task_id', '=', $original_task->id)->where('bug', '=', 1)->count();
         $task = Task::create([
             'project_id' => $this->project_id,
-            'title' => '[BUG #'.(++$bug_count).'] '.$this->title,
+            'title' => '[BUG #'.(++$bug_count).'] '.$original_task->title,
             'description' => $description,
-            'details' => $this->details,
-            'parent_task_id' => $this->id,
+            'details' => $original_task->details,
+            'parent_task_id' => $original_task->id,
             'bug' => 1,
             'time' => ($this->time*(-0.5))
         ]);

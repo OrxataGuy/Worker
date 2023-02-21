@@ -10,11 +10,11 @@
 @foreach($clients as $client)
 <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Proyectos de {{ $client->name }}</h3>
+      <h3 class="card-title" data-card-widget="collapse" title="Collapse">Proyectos de {{ $client->name }}</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
+        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('project.add', ['client' => $client->id]) }}'">
+          <i class="fas fa-plus"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
           <i class="fas fa-times"></i>
@@ -85,12 +85,12 @@
                           </i>
                           Editar
                       </a>
-                      <a class="btn btn-info btn-sm" href="#" onclick="payForm({{ $project->id }})">
-                        <i class="fas fa-pencil-alt">
+                      <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
+                        <i class="fas fa-dollar-sign">
                         </i>
                             Pago
                       </a>
-                      <a class="btn btn-danger btn-sm" href="#">
+                      <a class="btn btn-danger btn-sm" href="#" onclick="abortForm({{ $project->id }})">
                           <i class="fas fa-trash">
                           </i>
                           Cancelar
@@ -117,13 +117,133 @@
 
     function editForm(id) {
         getProject(id).then(data => {
-            console.log(data)
+            Swal.fire({
+                title: 'Editar nombre del proyecto',
+                html: `<input type="text" name="text" id="text" placeholder="Nuevo nombre del proyecto" value="${data.value.name}" class="swal2-form" />`,
+                confirmButtonText: 'Confirmar nombre',
+                preConfirm: () => {
+                    const text = $("#text").val();
+                    return {text: text}
+                }
+            }).then(res => {
+                if(res.isConfirmed)
+                    $.ajax({
+                        type: 'PUT',
+                        url: "{{ route('project.update') }}",
+                        data: {
+                            id: id,
+                            name: res.value.text
+                        },
+                        success: e => location.reload()
+                    })
+            })
+        })
+    }
+
+    function abortForm(id) {
+        Swal.fire({
+            title: '¿Seguro que quieres cancelar el proyecto?',
+            text: "Esta acción no se puede deshacer. Cuando se cancele el proyecto se eliminarán todas las tareas del proyecto.",
+            confirmButtonText: 'Eliminar proyecto'
+        }).then(res => {
+            if(res.isConfirmed) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: "{{ route('project.delete') }}",
+                    data: {id: id},
+                    success: e => location.reload()
+                })
+            }
         })
     }
 
     function payForm(id) {
         getProject(id).then(data => {
-            console.log(data)
+            Swal.fire({
+                title: 'Dar de alta pago',
+                text: 'Selecciona la naturaleza del pago.',
+                showDenyButton: true,
+                confirmButtonText: 'Pagar tareas realizadas',
+                denyButtonText: 'Pago a cuenta'
+            }).then(r => {
+                if(r.isConfirmed) {
+                    let tasks = [];
+                    data.value.tasks.forEach(t => {
+                        if (t.finished && !t.paid) tasks.push(t);
+                    });
+                    let tasksHtml = '';
+                    tasks.forEach((t, a) => tasksHtml += `<label><input type="checkbox" class="pay-task" price="${t.price}" value="${t.id}" /> ${t.title}</label> <br />`)
+                    if(tasks.length > 0) {
+                        Swal.fire({
+                            title: 'Dar de alta pago de tareas',
+                            html: `<p>Selecciona tareas que se pagan</p>${tasksHtml}`,
+                            confirmButtonText: 'Confirmar pago',
+                            willOpen: () => {
+                                let amount = 0;
+                                $('.pay-task').on('change', () => {
+                                    amount = 0;
+                                    $('.pay-task').toArray().forEach(t => {
+                                        if(t.checked) amount += parseFloat(t.attributes['price'].value);
+                                        $('.swal2-confirm')[0].innerText = `Confirmar pago (${amount}€)`
+                                    })
+                                })
+                            },
+                            preConfirm: () => {
+                                const tasks = [];
+                                let amount = 0;
+                                $('.pay-task').toArray().forEach(t => {
+                                        if(t.checked) {
+                                            amount += parseFloat(t.attributes['price'].value)
+                                            tasks.push(t.value)
+                                        }
+                                });
+                                return {pay: amount, tasks: tasks, text: ''}
+                            }
+                        }).then(res => {
+                            if(res.isConfirmed) {
+                                $.ajax({
+                                    url: "{{ route('project.pay') }}",
+                                    type: 'POST',
+                                    data: {
+                                        id: id,
+                                        amount: res.value.pay,
+                                        concept: '',
+                                        tasks: res.value.tasks.join(',')
+                                    },
+                                    success: d => location.reload()
+                                })
+                            }
+                        })
+                    } else {
+                        Swal.fire('Nada que pagar', 'Por ahora no quedan tareas pendientes por pagar.', 'info')
+                    }
+                }else if(r.isDenied) {
+                    Swal.fire({
+                        title: 'Dar de alta pago a cuenta',
+                        html: `<input type="text" placeholder="Concepto" class="swal2-input" id="text" /><input type="number" step="0.1" placeholder="Cantidad pagada" class="swal2-input" id="pay" />`,
+                        confirmButtonText: 'Confirmar pago',
+                        preConfirm: () => {
+                            const p = $("#pay").val(),
+                                text = $("#text").val();
+                            return {pay: p, text: text, tasks: []}
+                        }
+                    }).then(res => {
+                        if(res.isConfirmed) {
+                            $.ajax({
+                                url: "{{ route('project.pay') }}",
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    amount: res.value.pay,
+                                    concept: res.value.text,
+                                    tasks: res.value.tasks.join(',')
+                                },
+                                success: d => location.reload()
+                            })
+                        }
+                    })
+                }
+            })
         })
     }
 </script>

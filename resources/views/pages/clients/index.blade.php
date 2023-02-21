@@ -10,8 +10,8 @@
       <h3 class="card-title">Clientes</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
+        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('clients.add') }}'">
+          <i class="fas fa-plus"></i>
         </button>
       </div>
     </div>
@@ -62,17 +62,19 @@
                       <a class="btn btn-primary btn-sm" href="#">
                           <i class="fas fa-eye">
                           </i>
-                          Ver
                       </a>
+                      <a class="btn btn-success btn-sm" href="{{ route('project.add', ['client' => $client->id]) }}">
+                        <i class="fas fa-plus">
+                        </i>
+                        Proyecto
+                    </a>
                       <a class="btn btn-info btn-sm" href="#">
                           <i class="fas fa-pencil-alt">
                           </i>
-                          Editar
                       </a>
                       <a class="btn btn-danger btn-sm" href="#">
                           <i class="fas fa-trash">
                           </i>
-                          Eliminar
                       </a>
                   </td>
               </tr>

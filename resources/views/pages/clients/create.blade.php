@@ -12,26 +12,27 @@
         <div class="col-md-6">
         <div class="card card-primary">
             <div class="card-header">
-            <h3 class="card-title">Cliente</h3>
+            <h3 class="card-title">@if(!isset($client)) Nuevo @endif Cliente</h3>
 
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-                </button>
+
             </div>
             </div>
             <div class="card-body">
             <div class="form-group">
                 <label for="inputName">Nombre</label>
-                <input type="text" id="inputName" name="clientName" class="form-control">
+                @if(isset($client))
+                    <input type="hidden" id="client_id" name="client_id" value="{{ $client->id }}" />
+                @endif
+                <input type="text" id="inputName" name="clientName" @if(isset($client)) value="{{ $client->name }}" readonly @endif class="form-control">
             </div>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="email" id="inputEmail" name="clientEmail" class="form-control">
+                <input type="email" id="inputEmail" name="clientEmail" @if(isset($client)) value="{{ $client->email }}" readonly @endif class="form-control">
             </div>
             <div class="form-group">
                 <label for="inputPhone">Teléfono</label>
-                <input type="tel" id="inputPhone" name="clientPhone" class="form-control">
+                <input type="tel" id="inputPhone" name="clientPhone" @if(isset($client)) value="{{ $client->phone }}" readonly @endif class="form-control">
             </div>
             </div>
             <!-- /.card-body -->
@@ -41,12 +42,9 @@
         <div class="col-md-6">
         <div class="card card-secondary">
             <div class="card-header">
-            <h3 class="card-title">Proyecto</h3>
-
+            <h3 class="card-title">@if(!isset($client)) Primer @else Nuevo @endif proyecto</h3>
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-                </button>
+
             </div>
             </div>
             <div class="card-body">
@@ -66,7 +64,12 @@
     </div>
     <div class="row">
         <div class="col-12">
-        <input type="submit" value="Crear Cliente" class="btn btn-success float-right">
+             @if(isset($client))
+             <input type="submit" value="Crear Proyecto" class="btn btn-success float-right">
+             @else
+             <input type="submit" value="Crear Cliente" class="btn btn-success float-right">
+                @endif
+
         </div>
     </div>
 </form>

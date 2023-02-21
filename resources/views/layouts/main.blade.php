@@ -79,6 +79,7 @@
 <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<script src="{{ asset('plugins/showdown/showdown.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
 <script>
     $.ajaxSetup({
