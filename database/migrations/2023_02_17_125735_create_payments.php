@@ -13,7 +13,7 @@ class CreateTablePayments extends Migration
      */
     public function up()
     {
-        Schema::create('table_payments', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('project_id');

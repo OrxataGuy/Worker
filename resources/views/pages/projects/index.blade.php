@@ -13,8 +13,8 @@
       <h3 class="card-title">Proyectos de {{ $client->name }}</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
+        <button type="button" class="btn btn-tool">
+          <i class="fas fa-plus"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
           <i class="fas fa-times"></i>
@@ -123,7 +123,27 @@
 
     function payForm(id) {
         getProject(id).then(data => {
-            console.log(data)
+            Swal.fire({
+                title: 'Dar de alta pago',
+                html: `<input type="number" step="0.1" placeholder="Cantidad pagada" class="swal2-input" id="pay" />`,
+                confirmButtonText: 'Confirmar pago',
+                preConfirm: () => {
+                    const p = $("#pay").val();
+                    return {pay: p}
+                }
+            }).then(res => {
+                if(res.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('project.pay') }}",
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            amount: res.value.pay
+                        },
+                        success: d => location.reload()
+                    })
+                }
+            })
         })
     }
 </script>

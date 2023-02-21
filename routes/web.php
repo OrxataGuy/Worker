@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\ClientController as Clients;
 use App\Http\Controllers\ProjectController as Projects;
 use App\Http\Controllers\TaskController as Tasks;
+use App\Http\Controllers\PaymentController as Payments;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('create', [Projects::class, 'create'])->name('project.create');
         Route::put('update', [Projects::class, 'update'])->name('project.update');
         Route::delete('delete', [Projects::class, 'delete'])->name('project.delete');
+
+        Route::post('pay', [Payments::class, 'create'])->name('project.pay');
 
         Route::prefix('{project}')->group(function () {
             Route::get('/', [Tasks::class, 'index'])->name('tasks');
