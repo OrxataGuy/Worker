@@ -8,7 +8,6 @@ window.moment = require('moment');
 window.dt = require('datatables.net');
 window.select2 = require('select2');
 
-
 try {
     require('bootstrap');
 } catch (e) {}

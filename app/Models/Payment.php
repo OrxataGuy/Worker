@@ -9,7 +9,7 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'project_id', 'client_id', 'amount'];
+    protected $fillable = ['id', 'project_id', 'client_id', 'amount', 'concept'];
 
     public function client() {
         $this->belongsTo(Client::class);

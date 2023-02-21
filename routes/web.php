@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'clients'], function () {
         Route::get('/', [Clients::class, 'index'])->name('clients');
         Route::get('get', [Clients::class, 'get'])->name('clients.get');
+        Route::get('add', [Clients::class, 'add'])->name('clients.add');
         Route::post('create', [Clients::class, 'create'])->name('clients.create');
         Route::put('update', [Clients::class, 'update'])->name('clients.update');
         Route::post('delete', [Clients::class, 'delete'])->name('clients.finish');
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [Projects::class, 'index'])->name('projects');
 
         Route::get('get', [Projects::class, 'get'])->name('project.get');
+        Route::get('add/{client}', [Projects::class, 'add'])->name('project.add');
         Route::post('create', [Projects::class, 'create'])->name('project.create');
         Route::put('update', [Projects::class, 'update'])->name('project.update');
         Route::delete('delete', [Projects::class, 'delete'])->name('project.delete');

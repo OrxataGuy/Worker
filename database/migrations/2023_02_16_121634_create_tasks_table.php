@@ -28,6 +28,7 @@ class CreateTasksTable extends Migration
             $table->tinyInteger('counting')->default(0);
             $table->tinyInteger('bug')->default(0);
             $table->tinyInteger('finished')->default(0);
+            $table->tinyInteger('paid')->default(0);
             $table->text('solution')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('parent_task_id')->references('id')->on('tasks')->nullOnDelete()->cascadeOnUpdate();

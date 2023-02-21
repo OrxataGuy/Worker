@@ -17,10 +17,11 @@ class CreateTablePayments extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('project_id');
+            $table->text('concept');
             $table->double('amount', 8, 2);
             $table->timestamps();
-            $table->foreign('client_id')->references('id')->on('clients')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('client_id')->references('id')->on('clients')->nullOnDelete()()->cascadeOnUpdate();
+            $table->foreign('project_id')->references('id')->on('projects')->nullOnDelete()->cascadeOnUpdate();
 
         });
     }

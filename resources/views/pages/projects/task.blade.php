@@ -111,7 +111,7 @@
     <h5>Descripción de la tarea</h5>
     <p onclick="updateDescription({{ $task->id }}, this)">{!! nl2br($task->description) !!}</p>
     <h5>Detalles</h5>
-    <p onclick="updateDetails({{ $task->id }}, this)">@if($task->details) {!! nl2br($task->details) !!} @else No hay detalles. @endif</p>
+    <p class="task-details" onclick="updateDetails({{ $task->id }}, this)">@if($task->details) {!! nl2br($task->details) !!} @else No hay detalles. @endif</p>
   </div>
   <!-- /.card-body -->
 </div>
@@ -146,7 +146,7 @@
                   {{ strtoupper($atask->document->type) }}
                   @endif
               </td>
-                <td id="time-{{ $task->id }}">
+                <td id="time-{{ $task->id }}" class="task-details" >
                   @if(!$atask->document)
                       {!! nl2br($atask->description) !!}
                   @else
@@ -179,8 +179,11 @@
 
 @section('scripts')
 <script>
+    const mkdown = new showdown.Converter();
+
      $(() => {
         $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
+        $('.task-details').toArray().forEach(e => $(e).html(mkdown.makeHtml(e.innerText)))
     });
 
     var counting = {};
@@ -243,7 +246,7 @@
     function updateDetails(id, el) {
         Swal.fire({
             title: 'Actualizar detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${el.innerText}</textarea>`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${mkdown.makeMarkdown(el.innerHTML)}</textarea>`,
             confirmButtonText: 'Confirmar',
             showDenyButton: true,
             denyButtonText: 'Borrar',
@@ -262,6 +265,7 @@
                     },
                     success: data => {
                         el.innerText = res.value.text;
+                        $('.task-details').toArray().forEach(e => $(e).html(mkdown.makeHtml(e.innerText)))
                     }
                 })
             }else if(res.isDenied) {

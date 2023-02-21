@@ -121,6 +121,9 @@ class TaskController extends Controller
 
     public function finish(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
+        if ($task->counting) $task->counting = 0;
+        $task->save();
+        $task->calculate();
         $task->finished = 1;
         $task->solution = $request->get('solution');
         $task->save();

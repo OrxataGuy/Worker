@@ -15,16 +15,24 @@ class ClientController extends Controller
     public function index() : View
     {
         $clients = Client::with('projects')->get();
-        return Client::count() > 0 ? view('pages.clients.index', ['clients' => $clients]) : view('pages.clients.create');
+        return Client::count() > 0 ? view('pages.clients.index', ['clients' => $clients]) : redirect()->route('clients.add');
+    }
+
+    public function add() : View
+    {
+        return view('pages.clients.create');
     }
 
     public function create(Request $request) {
-        $client = Client::create([
-            'name' => $request->get('clientName'),
-            'email' => $request->get('clientEmail'),
-            'phone' => $request->get('clientPhone'),
-            'user_id' => \Auth::user()->id
-        ]);
+        if ($request->get('client_id'))
+            $client = Client::find($request->get('client_id'));
+        else
+            $client = Client::create([
+                'name' => $request->get('clientName'),
+                'email' => $request->get('clientEmail'),
+                'phone' => $request->get('clientPhone'),
+                'user_id' => \Auth::user()->id
+            ]);
 
         $project = Project::create([
             'name' => $request->get('projectName'),
@@ -34,8 +42,8 @@ class ClientController extends Controller
         ]);
 
         Task::create([
-            'title' => "Creación de proyecto en la aplicación",
-            'description' => "Se da de alta el proyecto en la aplicación",
+            'title' => "Planificación del proyecto",
+            'description' => "Planificación de todos los aspectos del proyecto.",
             'project_id' => $project->id
         ]);
 

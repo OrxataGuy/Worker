@@ -26,6 +26,12 @@ class ProjectController extends Controller
         ));
     }
 
+    public function add($client) : View
+    {
+        $client = Client::find($client);
+        return view('pages.clients.create', ['client' => $client]);
+    }
+
     public function create(Request $request) : JsonResponse {
         $project = Project::create([
             'client_id' => $request->get('client_id'),
@@ -44,7 +50,6 @@ class ProjectController extends Controller
         $project = Project::find($request->get('id'));
 
         $project->name = $request->get('name');
-        $project->description = $request->get('description');
         $project->save();
 
         return response()->json(array(
