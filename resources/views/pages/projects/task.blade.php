@@ -211,9 +211,7 @@
                     data: {
                         id: id,
                     },
-                    success: data => {
-                        location.reload()
-                    }
+                    success: data => Swal.fire("Detalle eliminado", "El detalle se ha eliminado correctamente. La página se va a recargar.", "success").then(() => location.reload())
                 })
     }
 

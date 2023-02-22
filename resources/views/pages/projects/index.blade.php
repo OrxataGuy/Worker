@@ -127,15 +127,17 @@
                 }
             }).then(res => {
                 if(res.isConfirmed)
-                    $.ajax({
-                        type: 'PUT',
-                        url: "{{ route('project.update') }}",
-                        data: {
-                            id: id,
-                            name: res.value.text
-                        },
-                        success: e => location.reload()
-                    })
+                    if(res.value.text)
+                        $.ajax({
+                            type: 'PUT',
+                            url: "{{ route('project.update') }}",
+                            data: {
+                                id: id,
+                                name: res.value.text
+                            },
+                            success: e => Swal.fire("Actualización existosa", "El proyecto se ha actualizado correctamente. La página se va a recargar.", "success").then(() => location.reload())
+                        })
+                    else Swal.fire("Faltan datos", "No se ha podido editar el proyecto.", "error")
             })
         })
     }
@@ -151,7 +153,7 @@
                     type: 'DELETE',
                     url: "{{ route('project.delete') }}",
                     data: {id: id},
-                    success: e => location.reload()
+                    success: e => Swal.fire('Proyecto eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })
             }
         })
@@ -210,7 +212,7 @@
                                         concept: '',
                                         tasks: res.value.tasks.join(',')
                                     },
-                                    success: d => location.reload()
+                                    success: d => Swal.fire('Pago realizado', 'La página se recargará.', 'success').then(() => location.reload())
                                 })
                             }
                         })
@@ -238,7 +240,7 @@
                                     concept: res.value.text,
                                     tasks: res.value.tasks.join(',')
                                 },
-                                success: d => location.reload()
+                                success: d => Swal.fire('Pago realizado', 'La página se recargará.', 'success').then(() => location.reload())
                             })
                         }
                     })

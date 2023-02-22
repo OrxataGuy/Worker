@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\Client;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -33,5 +35,26 @@ class PaymentController extends Controller
         }
 
         return response()->json(array('status' => 200, 'value' => $payment));
+    }
+
+    public function view($id) : View {
+        $client = Client::find($id);
+        $payments = Payment::where('client_id', '=', $client->id)->with('project')->get();
+        return view('pages.clients.payments', ['client' => $client, 'payments' => $payments]);
+    }
+
+    public function update(Request $request) : JsonResponse {
+        $payment = Payment::find($request->get('id'));
+        $payment->confirmed = 1;
+        $payment->save();
+        return response()->json(array('status' => 200, 'value' => $payment));
+    }
+
+    public function delete(Request $request) : JsonResponse {
+        $payment = Payment::find($request->get('id'));
+        $project = Project::find($payment->project_id);
+        $payment->delete();
+        $project->registerPayment();
+        return response()->json(array('status' => 200));
     }
 }
