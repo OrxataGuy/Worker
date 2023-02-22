@@ -37,10 +37,10 @@ class PaymentController extends Controller
         return response()->json(array('status' => 200, 'value' => $payment));
     }
 
-    public function view($id) : View {
+    public function view($id) {
         $client = Client::find($id);
         $payments = Payment::where('client_id', '=', $client->id)->with('project')->get();
-        return view('pages.clients.payments', ['client' => $client, 'payments' => $payments]);
+        return $client->payments->count() ? view('pages.clients.payments', ['client' => $client, 'payments' => $payments]) : redirect()->route('clients');
     }
 
     public function update(Request $request) : JsonResponse {

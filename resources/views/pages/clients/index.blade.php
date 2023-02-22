@@ -59,7 +59,7 @@
                         {{ $client->projects->count() }}
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-primary btn-sm" href="{{ route('payment.view', ['id' => $client->id]) }}">
+                      <a class="btn btn-primary btn-sm @if($client->payments->count() == 0) disabled @endif" href="{{ route('payment.view', ['id' => $client->id]) }}">
                           <i class="fas fa-eye">
                           </i>
                       </a>
