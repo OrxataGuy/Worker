@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClientController extends Controller
 {
-    public function index() : View
+    public function index()
     {
         $clients = Client::with('projects')->get();
         return Client::count() > 0 ? view('pages.clients.index', ['clients' => $clients]) : redirect()->route('clients.add');
@@ -47,7 +47,7 @@ class ClientController extends Controller
             'project_id' => $project->id
         ]);
 
-        return redirect()->route('clients');
+        return $request->get('client_id') ? redirect()->route('projects') : redirect()->route('clients');
     }
 
     public function get(Request $request) : JsonResponse {
