@@ -12,10 +12,10 @@ class Payment extends Model
     protected $fillable = ['id', 'project_id', 'client_id', 'amount', 'concept'];
 
     public function client() {
-        $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function project() {
-        $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class);
     }
 }
