@@ -20,6 +20,7 @@ class CreatePayments extends Migration
             $table->text('concept');
             $table->double('amount', 8, 2);
             $table->tinyInteger('confirmed')->default(0);
+            $table->text('tasks')->nullable();
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('clients')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete()->cascadeOnUpdate();

@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\AdvancedTask;
 use App\Models\Document;
 use App\Models\Task;
+use App\Models\Log;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -27,11 +28,26 @@ class TaskController extends Controller
     }
 
     public function toggleCounter(Request $request) : JsonResponse {
-        $task = Task::find($request->get('id'));
+        $task = Task::with('project')->find($request->get('id'));
         if ($task->counting) $task->counting = 0;
         else $task->counting = 1;
         $task->save();
         $value = $task->calculate();
+        $client = Client::find($task->project->client_id);
+        if($task->counting) Log::create([
+                'user_id' => \Auth::user()->id,
+                'client_id' => $client->id,
+                'project_id' => $task->project->id,
+                'task_id' => $task->id,
+                'description' => "Se reanuda la actividad en la tarea $task->title"
+            ]);
+        else Log::create([
+                'user_id' => \Auth::user()->id,
+                'client_id' => $client->id,
+                'project_id' => $task->project->id,
+                'task_id' => $task->id,
+                'description' => "Se pausa la actividad en la tarea $task->title"
+            ]);
         return response()->json(array(
             'status' => '200',
             'value' => $value
@@ -39,8 +55,25 @@ class TaskController extends Controller
     }
 
     public function reopen(Request $request) : JsonResponse {
-        $task = Task::find($request->get('id'));
+        $task = Task::with('project')->find($request->get('id'));
         $value = $request->get('bug') == 1 ? $task->bug($request->get('description')) : $task->patch($request->get('description'));
+
+        $client = Client::find($task->project->client_id);
+
+        if($request->get('bug') == 1) Log::create([
+                'user_id' => \Auth::user()->id,
+                'client_id' => $client->id,
+                'project_id' => $task->project->id,
+                'task_id' => $task->id,
+                'description' => "Se genera una nueva tarea a partir de un bug encontrado en la tarea $task->title"
+            ]);
+        else Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se genera una nueva tarea a partir de una ampliación pedida para la tarea $task->title"
+        ]);
         return response()->json(array(
             'status' => '200',
             'value' => $value
@@ -63,6 +96,16 @@ class TaskController extends Controller
             'details' => $request->get('details')
         ]);
 
+        $project = Project::with('client')->find($task->project_id);
+
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se genera una nueva tarea para el proyecto #$project->id, $task->title"
+        ]);
+
         return response()->json(array(
             'status' => '200',
             'value' => $task
@@ -78,6 +121,16 @@ class TaskController extends Controller
         else if ($request->get('details')) $task->details = $request->get('details');
         $task->save();
 
+        $project = Project::with('client')->find($task->project_id);
+
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se realiza una modificación en la tarea del proyecto #".$task->project->id."."
+        ]);
+
         return response()->json(array(
             'status' => '200',
             'value' => $task
@@ -88,6 +141,16 @@ class TaskController extends Controller
         $advanced = AdvancedTask::find($request->get('id'));
         $advanced->visible = 0;
         $advanced->save();
+        $task = Task::find($advanced->task_id);
+        $project = Project::with('client')->find($task->project_id);
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se elimina información de una tarea en el proyecto #".$task->project->id."."
+        ]);
+
         return response()->json(array(
             'status' => '200',
         ));
@@ -113,6 +176,14 @@ class TaskController extends Controller
 
         $advanced = AdvancedTask::where('task_id', '=', $task->id)->with('document')->get();
 
+        $project = Project::with('client')->find($task->project_id);
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se añade información a una tarea en el proyecto #".$task->project->id."."
+        ]);
         return response()->json(array(
             'status' => '200',
             'value' => [$task, $advanced]
@@ -129,6 +200,17 @@ class TaskController extends Controller
         $task->finished = 1;
         $task->solution = $request->get('solution');
         $task->save();
+        $project = Project::with('client')->find($task->project_id);
+
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se finaliza una tarea del proyecto #".$task->project->id."."
+        ]);
+
+
         return response()->json(array(
             'status' => '200',
         ));

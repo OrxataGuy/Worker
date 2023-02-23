@@ -42,6 +42,10 @@ class Project extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function logs () {
+        return $this->hasMany(Log::class);
+    }
+
     public function client () {
         return $this->belongsTo(Client::class);
     }

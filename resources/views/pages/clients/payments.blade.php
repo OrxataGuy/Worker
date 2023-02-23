@@ -45,7 +45,7 @@
                      {{ $payment->project->name }}
                   </td>
                   <td>
-                    {{ $payment->concept }}
+                    {!! nl2br($payment->concept) !!}
                   </td>
                   <td>
                     {{ $payment->updated_at }}

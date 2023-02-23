@@ -111,4 +111,8 @@ class Task extends Model
     public function advanced_tasks () {
         return $this->hasMany(AdvancedTask::class);
     }
+
+    public function logs () {
+        return $this->hasMany(Log::class);
+    }
 }

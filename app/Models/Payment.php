@@ -18,4 +18,8 @@ class Payment extends Model
     public function project() {
         return $this->belongsTo(Project::class);
     }
+
+    public function logs () {
+        return $this->hasMany(Log::class);
+    }
 }

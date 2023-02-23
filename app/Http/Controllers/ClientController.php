@@ -8,6 +8,8 @@ use Illuminate\Contracts\View\View;
 use App\Models\Project;
 use App\Models\Client;
 use App\Models\Task;
+use App\Models\Log;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClientController extends Controller
@@ -41,10 +43,18 @@ class ClientController extends Controller
             'client_id' => $client->id
         ]);
 
-        Task::create([
+        $task = Task::create([
             'title' => "Planificación del proyecto",
             'description' => "Planificación de todos los aspectos del proyecto.",
             'project_id' => $project->id
+        ]);
+
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $project->client->id,
+            'project_id' => $project->id,
+            'task_id' => $task->id,
+            'description' => "Se crea el cliente $client->name con el proyecto #".$project->id." como proyecto inicial."
         ]);
 
         return $request->get('client_id') ? redirect()->route('projects') : redirect()->route('clients');
@@ -60,11 +70,17 @@ class ClientController extends Controller
 
     public function update(Request $request) : JsonResponse {
         $client = Client::find($request->get('id'));
-
+        $oldName = $client->name;
         $client->name = $request->get('name');
         $client->email = $request->get('email');
         $client->phone = $request->get('phone');
         $client->save();
+
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $client->id,
+            'description' => "Se modifica el nombre del cliente $oldName, ahora se llama $client->name."
+        ]);
 
         return response()->json(array(
             'status' => '200',
@@ -74,7 +90,13 @@ class ClientController extends Controller
 
     public function delete(Request $request) : JsonResponse {
         $client = Client::find($request->get('id'));
+        Log::create([
+            'user_id' => \Auth::user()->id,
+            'client_id' => $client->id,
+            'description' => "Se elimina el cliente $client->name, junto a sus proyectos y sus pagos."
+        ]);
         $client->delete();
+
         return response()->json(array(
             'status' => '200',
         ));
