@@ -34,7 +34,7 @@
                       Minutos
                   </th>
                   <th style="width: 8%" class="text-center">
-                      Precio
+                      Precio (€)
                   </th>
                   <th style="width: 20%">
                   </th>
@@ -67,11 +67,7 @@
                    @endif
                 </td>
                   <td id="price-{{ $task->id }}">
-                    @if($task->counting==1)
-                        -
-                    @else
                    {{ $task->price }}
-                   @endif
                   </td>
                   <td class="project-actions text-right">
                       <a class="btn btn-info btn-sm" href="{{ route('task.view', ['task' => $task, 'project' => $project]) }}">
@@ -115,6 +111,8 @@
     </div>
     <!-- /.card-body -->
   </div>
+
+  <input type="hidden" id="ppm" value="{{ $project->price_per_minute }}" />
 @endsection
 
 @section('scripts')
@@ -126,19 +124,26 @@
 
     var counting = {};
     function startCounter(id) {
-        let str = $(`#time-${id}`).html().trim();
-        counting[id] = 1;
-        let mins = parseInt(str.split(':')[0]),
-            secs = parseInt(str.split(':')[1]);
-        setInterval(() => {
-            if (counting[id] == 0) return;
+        let str = $(`#time-${id}`).html().trim(),
+            ppm = parseFloat($('#ppm').val())/60,
+            mins = parseInt(str.split(':')[0]),
+            secs = parseInt(str.split(':')[1]),
+            time = mins*60+secs;
+
+        $(`#price-${id}`).html(Math.round(ppm*time*100)/100);
+
+        counting[id] = setInterval(() => {
             if(++secs==60) {
                 mins+=1;
-                secs = 0;
+                secs = 0
             }
+            price = parseFloat($(`#price-${id}`).html())
             let m = (mins+'').length == 1 ? `0${mins}` : mins,
-                s = (secs+'').length == 1 ? `0${secs}` : secs;
+                s = (secs+'').length == 1 ? `0${secs}` : secs,
+                pr = Math.round((price+ppm)*1000)/1000;
+
             $(`#time-${id}`).html(`${m}:${s}`);
+            $(`#price-${id}`).html(pr)
         }, 1000)
     }
 
@@ -247,7 +252,7 @@
             oldc = 'warning'
             newc = 'success'
             $(`#row-${id}`).removeClass('bg-warning')
-            counting[id] = 0;
+            clearInterval(counting[id]);
         }
 
         $(`#${old}-${id}`).removeClass('active');

@@ -16,7 +16,7 @@ class Task extends Model
         if ($this->counting) {
             $this->last_run = $this->updated_at;
             $this->save();
-            return [$this->getTime(), '-'];
+            return [$this->getTime(), $this->price];
         }
 
         $start = (new DateTime($this->last_run))->getTimestamp();
