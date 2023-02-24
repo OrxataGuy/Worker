@@ -28,11 +28,4 @@ class HomeController extends Controller
     {
         return view('pages.home');
     }
-
-    public function pau (Request $request) : JsonResponse {
-        return response()->json(array(
-            'result' => 200,
-            'value' => $request->get('value')
-        ));
-    }
 }

@@ -35,6 +35,9 @@
                       Descripción
                   </th>
                   <th>
+                    Tecnologías
+                  </th>
+                  <th>
                       Estado
                   </th>
                   <th style="width: 8%" class="text-center">
@@ -61,6 +64,19 @@
                   </td>
                   <td>
                       {{ $project->description }}
+                  </td>
+                  <td>
+                   @if($project->technologies()->where('context', '=', 'PLATFORM')->count())
+                        <span title="Plataforma: {{ $project->technologies()->where('context', '=', 'PLATFORM')->first()->name }}" style="cursor:pointer;"><b style="color:darkblue;">P</b></span>
+                    @else
+                        <span title="Backend: {{ $project->technologies()->where('context', '=', 'BACKEND')->first()->name }}" style="cursor:pointer;"><b style="color:red;">B</b></span>
+                        <span title="BD: {{ $project->technologies()->where('context', '=', 'DATABASE')->first()->name }}"style="cursor:pointer;"><b style="color:green;">D</b></span>
+                        <span title="Frontend: {{ $project->technologies()->where('context', '=', 'FRONTEND')->first()->name }}" style="cursor:pointer;"><b style="color:blue;">F</b></span>
+                   @endif
+
+                   @if($project->technologies()->where('context', '=', 'DEVOPS')->count())
+                    <span title="DevOps: {{ $project->technologies()->where('context', '=', 'DEVOPS')->pluck('name')->implode(', ') }}" style="cursor:pointer;"><b style="color:orange;">DO</b></span>
+                   @endif
                   </td>
                   <td class="project_progress">
                     <div class="progress progress-sm">

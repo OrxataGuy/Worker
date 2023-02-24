@@ -36,21 +36,20 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'projects'], function () {
         Route::get('/', [Projects::class, 'index'])->name('projects');
-
         Route::get('get', [Projects::class, 'get'])->name('project.get');
         Route::get('add/{client}', [Projects::class, 'add'])->name('project.add');
         Route::post('create', [Projects::class, 'create'])->name('project.create');
         Route::put('update', [Projects::class, 'update'])->name('project.update');
         Route::delete('delete', [Projects::class, 'delete'])->name('project.delete');
+        Route::post('payment', [Payments::class, 'create'])->name('project.pay');
 
-        Route::post('schedule-payment', [Payments::class, 'create'])->name('project.pay');
+        Route::group(['prefix' => 'payments'], function() {
+            Route::get('{id}', [Payments::class, 'view'])->name('payment.view');
+            Route::put('pay', [Payments::class, 'update'])->name('payment.update');
+            Route::delete('delete-payment', [Payments::class, 'delete'])->name('payment.delete');
+        });
 
-        Route::get('payment/{id}', [Payments::class, 'view'])->name('payment.view');
-        Route::put('pay', [Payments::class, 'update'])->name('payment.update');
-        Route::delete('delete-payment', [Payments::class, 'delete'])->name('payment.delete');
-
-
-        Route::prefix('{project}')->group(function () {
+        Route::group(['prefix' => '{project}'], function () {
             Route::get('/', [Tasks::class, 'index'])->name('tasks');
 
             Route::get('/view/{task}', [Tasks::class, 'view'])->name('task.view');
@@ -67,6 +66,4 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
     });
-
-
 });

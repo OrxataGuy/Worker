@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use App\Models\Project;
 use App\Models\Client;
 use App\Models\Task;
+use App\Models\Technology;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClientController extends Controller
@@ -40,6 +41,22 @@ class ClientController extends Controller
             'price_per_minute' => \Auth::user()->price_per_minute,
             'client_id' => $client->id
         ]);
+
+
+    if($request->has('platform'))
+        $project->technologies()->attach($request->get('platform'));
+    else {
+        if($request->has('backend')) $project->technologies()->attach($request->get('backend'));
+        else $project->technologies()->attach(Technology::where('icon', 'like', '%none.png')->where('context', '=', 'BACKEND')->first()->id);
+        if($request->has('database')) $project->technologies()->attach($request->get('database'));
+        else $project->technologies()->attach(Technology::where('icon', 'like', '%none.png')->where('context', '=', 'DATABASE')->first()->id);
+        if($request->has('frontend')) $project->technologies()->attach($request->get('frontend'));
+        else $project->technologies()->attach(Technology::where('name', '=', 'HTML')->first()->id);
+    }
+
+    if($request->has('devops'))
+        foreach($request->get('devops') as $d)
+            $project->technologies()->attach($d);
 
         Task::create([
             'title' => "Planificación del proyecto",

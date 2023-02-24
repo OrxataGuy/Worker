@@ -18,14 +18,6 @@ class ProjectController extends Controller
         return view('pages.projects.index', ['clients' => $clients]);
     }
 
-    public function get(Request $request) : JsonResponse {
-        $project = Project::with('tasks')->find($request->get('id'));
-        return response()->json(array(
-            'status' => '200',
-            'value' => $project
-        ));
-    }
-
     public function add($client) : View
     {
         $client = Client::find($client);
@@ -40,6 +32,14 @@ class ProjectController extends Controller
             'price_per_minute' => \Auth::user()->price_per_minute
         ]);
 
+        return response()->json(array(
+            'status' => '200',
+            'value' => $project
+        ));
+    }
+
+    public function get(Request $request) : JsonResponse {
+        $project = Project::with('tasks')->find($request->get('id'));
         return response()->json(array(
             'status' => '200',
             'value' => $project

@@ -63,6 +63,57 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-12 col-xs-2">
+        <div class="card card-secondary">
+            <div class="card-header" data-card-widget="collapse" title="Collapse">
+            <h3 class="card-title">Tecnologías a utilizar en el proyecto</h3>
+            <div class="card-tools">
+
+            </div>
+            </div>
+            <div class="card-body">
+                <h4>Backend</h4>
+                <div class="row flex-row flex-nowrap scroll">
+                    @foreach(\App\Models\Technology::where('context', '=', 'BACKEND')->get() as $tech)
+                    <div class="col-md-1 col-xs-3"><label><input type="radio" name="backend" value="{{ $tech->id }}"> <img src="{{ $tech->icon}}" class="clickable" style="max-width:6em; height:5em; vertical-align:middle;text-align:center;"
+                        alt="{{ $tech->name }}" title="{{ $tech->name }}" /></label></div>
+                    @endforeach
+                </div>
+                <h4>Base de datos</h4>
+                <div class="row flex-row flex-nowrap scroll">
+                    @foreach(\App\Models\Technology::where('context', '=', 'DATABASE')->get() as $tech)
+                    <div class="col-md-1"><label><input type="radio" name="database" value="{{ $tech->id }}"> <img src="{{ $tech->icon}}" class="clickable" style="max-width:6em; height:5em; vertical-align:middle;text-align:center;"
+                        alt="{{ $tech->name }}" title="{{ $tech->name }}" /></label></div>
+                    @endforeach
+                </div>
+                <h4>Frontend</h4>
+                <div class="row flex-row flex-nowrap scroll">
+                    @foreach(\App\Models\Technology::where('context', '=', 'FRONTEND')->get() as $tech)
+                    <div class="col-md-1"><label><input type="radio" name="frontend" value="{{ $tech->id }}"> <img src="{{ $tech->icon}}" class="clickable" style="max-width:6em; height:5em; vertical-align:middle;text-align:center;"
+                        alt="{{ $tech->name }}" title="{{ $tech->name }}" /></label></div>
+                    @endforeach
+                </div>
+                <h4>Plataforma</h4>
+                <div class="row flex-row flex-nowrap scroll">
+                    @foreach(\App\Models\Technology::where('context', '=', 'PLATFORM')->get() as $tech)
+                    <div class="col-md-1"><label><input type="radio" name="platform" value="{{ $tech->id }}"> <img src="{{ $tech->icon}}" class="clickable" style="max-width:6em; height:5em; vertical-align:middle;text-align:center;"
+                        alt="{{ $tech->name }}" title="{{ $tech->name }}" /></label></div>
+                    @endforeach
+                </div>
+                <h4>DevOps</h4>
+                <div class="row flex-row flex-nowrap scroll">
+                    @foreach(\App\Models\Technology::where('context', '=', 'DEVOPS')->get() as $tech)
+                    <div class="col-md-1"><label><input type="checkbox" name="devops[]" value="{{ $tech->id }}"> <img src="{{ $tech->icon}}" class="clickable" style="max-width:6em; height:5em; vertical-align:middle;text-align:center;"
+                        alt="{{ $tech->name }}" title="{{ $tech->name }}" /></label></div>
+                    @endforeach
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12">
              @if(isset($client))
              <input type="submit" value="Crear Proyecto" class="btn btn-success float-right">
@@ -73,4 +124,48 @@
         </div>
     </div>
 </form>
+@endsection
+
+@section('styles')
+<style>
+
+  div.scroll {
+        margin: 4px, 4px;
+        padding: 4px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    .clickable {
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+        margin:1em;
+    }
+
+    .clickable:hover { transform: scale(1.05); }
+
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    [type=checkbox] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    [type=radio]:checked + img {
+        outline: 2px solid #f00;
+    }
+
+    [type=checkbox]:checked + img {
+        outline: 2px solid #f00;
+    }
+
+</style>
 @endsection
