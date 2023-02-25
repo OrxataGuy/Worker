@@ -53,7 +53,7 @@
             </ul>
           </li-->
           <li class="nav-item">
-            <a href="{{ route('projects') }}" class="nav-link @yield('projects-section')">
+            <a href="{{ route('projects.index') }}" class="nav-link @yield('projects-section')">
               <i class="nav-icon fas @hasSection('projects-section') fa-folder-open @else fa-folder @endif"></i>
               <p>
                 Proyectos
@@ -61,7 +61,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('clients') }}" class="nav-link @yield('clients-section')">
+            <a href="{{ route('clients.index') }}" class="nav-link @yield('clients-section')">
               <i class="nav-icon fas @hasSection('clients-section') fa-users @else fa-user @endif"></i>
               <p>
                 Clientes

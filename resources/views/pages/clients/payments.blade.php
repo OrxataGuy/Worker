@@ -2,7 +2,7 @@
 @section('clients-section', 'active')
 @section('title', 'Clientes')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('clients') }}">Clientes</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('clients.index') }}">Clientes</a></li>
     <li class="breadcrumb-item active">Pagos de {{ $client->name }}</a></li>
 @endsection
 @section('content')
@@ -87,8 +87,7 @@
             if(res.isConfirmed) {
                 $.ajax({
                     type: 'PUT',
-                    url: "{{ route('payment.update') }}",
-                    data: {id: id},
+                    url: "{{ route('payments.update', ['payment' => ':id']) }}".replace(':id', id),
                     success: e => Swal.fire('Pago confirmado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })
             }
@@ -104,7 +103,7 @@
             if(res.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: "{{ route('payment.delete') }}",
+                    url: "{{ route('payments.delete', ['payment' => ':id']) }}".replace(':id', id),
                     data: {id: id},
                     success: e => Swal.fire('Pago eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })

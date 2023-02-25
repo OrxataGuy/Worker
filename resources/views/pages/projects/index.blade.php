@@ -13,7 +13,7 @@
       <h3 class="card-title" data-card-widget="collapse" title="Collapse">Proyectos de {{ $client->name }}</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('project.add', ['client' => $client->id]) }}'">
+        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('projects.create', ['client' => $client->id]) }}'">
           <i class="fas fa-plus"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
@@ -91,7 +91,7 @@
                         {{ $project->price - $project->paid }}
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-primary btn-sm" href="{{ route('tasks', ['project' => $project->id]) }}">
+                      <a class="btn btn-primary btn-sm" href="{{ route('tasks.index', ['project' => $project->id]) }}">
                           <i class="fas fa-folder">
                           </i>
                           Abrir
@@ -126,8 +126,7 @@
 <script>
     function getProject(id) {
         return $.ajax({
-            url: "{{ route('project.get') }}",
-            data: {id: id},
+            url: "{{ route('projects.show', ['project' => ':id']) }}".replace(':id', id),
         })
     }
 
@@ -146,9 +145,8 @@
                     if(res.value.text)
                         $.ajax({
                             type: 'PUT',
-                            url: "{{ route('project.update') }}",
+                            url: "{{ route('projects.update', ['project' => ':id']) }}".replace(':id', id),
                             data: {
-                                id: id,
                                 name: res.value.text
                             },
                             success: e => Swal.fire("Actualización existosa", "El proyecto se ha actualizado correctamente. La página se va a recargar.", "success").then(() => location.reload())
@@ -167,8 +165,7 @@
             if(res.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: "{{ route('project.delete') }}",
-                    data: {id: id},
+                    url: "{{ route('projects.destroy', ['project' => ':id']) }}".replace(':id', id),
                     success: e => Swal.fire('Proyecto eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })
             }
@@ -220,7 +217,7 @@
                         }).then(res => {
                             if(res.isConfirmed) {
                                 $.ajax({
-                                    url: "{{ route('project.pay') }}",
+                                    url: "{{ route('payments.store') }}",
                                     type: 'POST',
                                     data: {
                                         id: id,
@@ -248,7 +245,7 @@
                     }).then(res => {
                         if(res.isConfirmed) {
                             $.ajax({
-                                url: "{{ route('project.pay') }}",
+                                url: "{{ route('payments.store') }}",
                                 type: 'POST',
                                 data: {
                                     id: id,

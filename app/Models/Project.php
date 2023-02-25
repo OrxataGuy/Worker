@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Project extends Model
 {
@@ -32,6 +33,23 @@ class Project extends Model
         $this->time = $time;
         $this->price = $this->price_per_minute*$time;
         $this->save();
+    }
+
+    public function attachPlatforms(Request $request) {
+        if($request->has('platform'))
+            $this->technologies()->attach($request->get('platform'));
+        else {
+            if($request->has('backend')) $this->technologies()->attach($request->get('backend'));
+            else $this->technologies()->attach(Technology::where('icon', 'like', '%none.png')->where('context', '=', 'BACKEND')->first()->id);
+            if($request->has('database')) $this->technologies()->attach($request->get('database'));
+            else $this->technologies()->attach(Technology::where('icon', 'like', '%none.png')->where('context', '=', 'DATABASE')->first()->id);
+            if($request->has('frontend')) $this->technologies()->attach($request->get('frontend'));
+            else $this->technologies()->attach(Technology::where('name', '=', 'HTML')->first()->id);
+        }
+
+        if($request->has('devops'))
+            foreach($request->get('devops') as $d)
+                $this->technologies()->attach($d);
     }
 
     public function tasks () {

@@ -2,9 +2,9 @@
 @section('projects-section', 'active')
 @section('title', 'Tarea')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('projects') }}">Proyectos</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Proyectos</a></li>
     <li class="breadcrumb-item">{{ $project->client->name }}</li>
-    <li class="breadcrumb-item"><a href="{{ route('tasks', ['project' => $project->id]) }}">{{ $project->name }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('tasks.index', ['project' => $project->id]) }}">{{ $project->name }}</a></li>
     <li class="breadcrumb-item active">{{ $task->title }}</li>
     @endsection
 @section('section-name', $task->title)
@@ -80,13 +80,9 @@
                    {{ $task->getTime() }}
                    @endif
                 </td>
-                  <td id="price-{{ $task->id }}">
-                    @if($task->counting == 1)
-                    -
-                    @else
-                   {{ $task->price }}
-                   @endif
-                  </td>
+                <td id="price-{{ $task->id }}">
+                    {{ $task->price }}
+                   </td>
 
               </tr>
           </tbody>
@@ -146,16 +142,35 @@
                   {{ strtoupper($atask->document->type) }}
                   @endif
               </td>
-                <td id="time-{{ $task->id }}" class="task-details" >
+                <td id="content-{{ $task->id }}" >
                   @if(!$atask->document)
-                      {!! nl2br($atask->description) !!}
+                  <div class="card">
+                    <div class="card-body">
+                        {!! nl2br($atask->description) !!}
+                    </div>
+                </div>
+
                   @else
                       @switch($atask->document->type)
                           @case('img')
-                              <img src="{{ $atask->document->url }}" alt="{{ $atask->description }}" />
+                          <div class="card">
+                            <div class="card-header" data-card-widget="collapse">
+                                {!! nl2br($atask->description) !!}
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ $atask->document->url }}" alt="{{ $atask->description }}" />
+                            </div>
+                        </div>
                               @break
                           @default
-                              <a class="btn btn-primary" href="{{ $atask->document->url }}" target="_blank" title="{{ $atask->description }}">Ver adjunto</a>
+                          <div class="card">
+                            <div class="card-header" data-card-widget="collapse">
+                                {!! nl2br($atask->description) !!}
+                            </div>
+                            <div class="card-body">
+                                <a class="btn btn-primary" href="{{ $atask->document->url }}" target="_blank" title="{{ $atask->description }}">Ver adjunto</a>
+                            </div>
+                        </div>
                           @break
                       @endswitch
 
@@ -174,6 +189,7 @@
 </div>
 
 
+<input type="hidden" id="ppm" value="{{ $project->price_per_minute }}" />
 
 @endsection
 
@@ -188,31 +204,32 @@
 
     var counting = {};
     function startCounter(id) {
-        let str = $(`#time-${id}`).html().trim();
-        counting[id] = 1;
-        let mins = parseInt(str.split(':')[0]),
-            secs = parseInt(str.split(':')[1]);
-        setInterval(() => {
-            if (counting[id] == 0) return;
+        let str = $(`#time-${id}`).html().trim(),
+            ppm = parseFloat($('#ppm').val())/60,
+            mins = parseInt(str.split(':')[0]),
+            secs = parseInt(str.split(':')[1]),
+            time = mins*60+secs;
+        $(`#price-${id}`).html(Math.round(ppm*time*100)/100);
+        counting[id] = setInterval(() => {
             if(++secs==60) {
                 mins+=1;
-                secs = 0;
+                secs = 0
             }
+            price = parseFloat($(`#price-${id}`).html())
             let m = (mins+'').length == 1 ? `0${mins}` : mins,
-                s = (secs+'').length == 1 ? `0${secs}` : secs;
+                s = (secs+'').length == 1 ? `0${secs}` : secs,
+                pr = Math.round((price+ppm)*1000)/1000;
             $(`#time-${id}`).html(`${m}:${s}`);
+            $(`#price-${id}`).html(pr)
         }, 1000)
     }
 
     function delete_advanced(id) {
         $.ajax({
-                    type: 'PUT',
-                    url: "{{ route('tasks.del.details', ['project' => $project->id]) }}",
-                    data: {
-                        id: id,
-                    },
-                    success: data => Swal.fire("Detalle eliminado", "El detalle se ha eliminado correctamente. La página se va a recargar.", "success").then(() => location.reload())
-                })
+                type: 'PUT',
+                url: "{{ route('tasks.info.del', ['task' => ':task', 'info' => ':id']) }}".replace(':task', '{{ $task->id }}').replace(':id', id),
+                success: data => Swal.fire("Detalle eliminado", "El detalle se ha eliminado correctamente. La página se va a recargar.", "success").then(() => location.reload())
+        })
     }
 
     function updateDescription(id, el) {
@@ -228,9 +245,8 @@
             if (res.isConfirmed) {
                 $.ajax({
                     type: 'PUT',
-                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.update', ['task' => ':id']) }}".replace(':id', id),
                     data: {
-                        id: id,
                         description: res.value.text
                     },
                     success: data => {
@@ -256,9 +272,8 @@
             if (res.isConfirmed) {
                 $.ajax({
                     type: 'PUT',
-                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.update', ['task' => ':id']) }}".replace(':id', id),
                     data: {
-                        id: id,
                         details: res.value.text
                     },
                     success: data => {
@@ -269,9 +284,8 @@
             }else if(res.isDenied) {
                 $.ajax({
                     type: 'PUT',
-                    url: "{{ route('tasks.update', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.update', ['task' => ':id']) }}".replace(':id', id),
                     data: {
-                        id: id,
                         details: 'drop.'
                     },
                     success: data => {
@@ -299,9 +313,8 @@
             if (res.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('tasks.add.details', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.info.add', ['task' => ':id']) }}".replace(':id', id),
                     data: {
-                        id: id,
                         name: res.value.name,
                         type: res.value.type,
                         url: res.value.url,
@@ -327,9 +340,9 @@
         }).then(res => {
             if(res.isConfirmed){
                 $.ajax({
-            url: "{{ route('tasks.finish', ['project' => $project->id]) }}",
+            url: "{{ route('tasks.destroy', ['task' => ':id']) }}".replace(':id',id),
             type: "PUT",
-            data: {id: id, solution: res.value.text},
+            data: {solution: res.value.text},
             success: data => {
                 location.reload();
             }
@@ -340,9 +353,8 @@
 
     function toggleCounter (id) {
         $.ajax({
-            url: "{{ route('tasks.toggle', ['project' => $project->id]) }}",
-            type: "POST",
-            data: {id: id},
+            url: "{{ route('tasks.toggle', ['task' => ':id']) }}".replace(':id',id),
+            type: "PUT",
             success: data => {
                 if(data.value[0] != '-' && data.value[0] == 0) $(`#stop-${id}`).addClass('disabled');
                 $(`#time-${id}`)[0].innerText = data.value[0];

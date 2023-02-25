@@ -2,7 +2,7 @@
 @section('projects-section', 'active')
 @section('title', 'Tareas')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('projects') }}">Proyectos</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Proyectos</a></li>
     <li class="breadcrumb-item">{{ $project->client->name }}</li>
     <li class="breadcrumb-item active">{{ $project->name }}</li>
     @endsection
@@ -34,7 +34,7 @@
                       Minutos
                   </th>
                   <th style="width: 8%" class="text-center">
-                      Precio
+                      Precio (€)
                   </th>
                   <th style="width: 20%">
                   </th>
@@ -67,14 +67,10 @@
                    @endif
                 </td>
                   <td id="price-{{ $task->id }}">
-                    @if($task->counting==1)
-                        -
-                    @else
                    {{ $task->price }}
-                   @endif
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-info btn-sm" href="{{ route('task.view', ['task' => $task, 'project' => $project]) }}">
+                      <a class="btn btn-info btn-sm" href="{{ route('tasks.view', ['task' => $task->id]) }}">
                           <i class="fas fa-eye">
                           </i>
                       </a>
@@ -115,33 +111,36 @@
     </div>
     <!-- /.card-body -->
   </div>
+
+  <input type="hidden" id="ppm" value="{{ $project->price_per_minute }}" />
 @endsection
 
 @section('scripts')
 <script>
-
     $(() => {
         $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
     });
-
     var counting = {};
     function startCounter(id) {
-        let str = $(`#time-${id}`).html().trim();
-        counting[id] = 1;
-        let mins = parseInt(str.split(':')[0]),
-            secs = parseInt(str.split(':')[1]);
-        setInterval(() => {
-            if (counting[id] == 0) return;
+        let str = $(`#time-${id}`).html().trim(),
+            ppm = parseFloat($('#ppm').val())/60,
+            mins = parseInt(str.split(':')[0]),
+            secs = parseInt(str.split(':')[1]),
+            time = mins*60+secs;
+        $(`#price-${id}`).html(Math.round(ppm*time*100)/100);
+        counting[id] = setInterval(() => {
             if(++secs==60) {
                 mins+=1;
-                secs = 0;
+                secs = 0
             }
+            price = parseFloat($(`#price-${id}`).html())
             let m = (mins+'').length == 1 ? `0${mins}` : mins,
-                s = (secs+'').length == 1 ? `0${secs}` : secs;
+                s = (secs+'').length == 1 ? `0${secs}` : secs,
+                pr = Math.round((price+ppm)*1000)/1000;
             $(`#time-${id}`).html(`${m}:${s}`);
+            $(`#price-${id}`).html(pr)
         }, 1000)
     }
-
     function reopen(id, bug) {
         Swal.fire({
             title: 'Reabrir tarea',
@@ -154,15 +153,14 @@
         }).then(res => {
             if(res.isConfirmed){
                 $.ajax({
-                    url: "{{ route('tasks.reopen', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.reopen', ['task' => ':id']) }}".replace(':id',id),
                     type: 'POST',
-                    data: {id: id, bug: bug, description: res.value.text},
+                    data: {bug: bug, description: res.value.text},
                     success: () => location.reload()
                 })
             }
         })
     }
-
     function addTaskForm(id) {
         Swal.fire({
             title: 'Crear tarea',
@@ -175,14 +173,13 @@
                 const title = $("#title").val(),
                 description = $("#desc").val(),
                 details = $("#details").val();
-
                 return {title: title, description: description, details: details}
             }
         }).then(res => {
             if (res.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('tasks.create', ['project' => $project->id]) }}",
+                    url: "{{ route('tasks.store') }}",
                     data: {
                         project_id: id,
                         title : res.value.title,
@@ -194,7 +191,6 @@
             }
         });
     }
-
     function endCounter(id) {
         Swal.fire({
             title: 'Finalizar tarea',
@@ -207,9 +203,9 @@
         }).then(res => {
             if(res.isConfirmed){
                 $.ajax({
-            url: "{{ route('tasks.finish', ['project' => $project->id]) }}",
+            url: "{{ route('tasks.destroy', ['task' => ':id']) }}".replace(':id',id),
             type: "PUT",
-            data: {id: id, solution: res.value.text},
+            data: {solution: res.value.text},
             success: data => {
                 location.reload();
             }
@@ -217,12 +213,10 @@
         }
     })
 }
-
     function toggleCounter (id) {
         $.ajax({
-            url: "{{ route('tasks.toggle', ['project' => $project->id]) }}",
-            type: "POST",
-            data: {id: id},
+            url: "{{ route('tasks.toggle', ['task' => ':id']) }}".replace(':id',id),
+            type: "PUT",
             success: data => {
                 console.log(data)
                 if(data.value[0] != '-' && data.value[0] == 0) $(`#stop-${id}`).addClass('disabled');
@@ -231,7 +225,6 @@
             }
         })
     }
-
     function toggleStatus(e, id) {
         let old = stat = oldc = newc = ''
         if ($(`#run-${id}`).hasClass('active')) {
@@ -247,9 +240,8 @@
             oldc = 'warning'
             newc = 'success'
             $(`#row-${id}`).removeClass('bg-warning')
-            counting[id] = 0;
+            clearInterval(counting[id]);
         }
-
         $(`#${old}-${id}`).removeClass('active');
         $(`#${old}-${id}`).css('display', 'none');
         $(e).removeClass(`btn-${oldc}`)
@@ -258,7 +250,6 @@
         $(`#${stat}-${id}`).addClass('active');
         $(`#stop-${id}`).removeClass('disabled');
         toggleCounter(id);
-
     }
 </script>
 @endsection

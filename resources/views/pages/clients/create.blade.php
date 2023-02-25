@@ -2,11 +2,11 @@
 @section('clients-section', 'active')
 @section('title', 'Clientes')
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('clients') }}">Clientes</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('clients.index') }}">Clientes</a></li>
     <li class="breadcrumb-item active">Crear nuevo cliente</li>
 @endsection
 @section('content')
-<form method="post" action="{{ route('clients.create') }}">
+<form method="post" action="{{ route('clients.store') }}">
     @csrf
     <div class="row">
         <div class="col-md-6">

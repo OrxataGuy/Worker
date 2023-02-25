@@ -10,7 +10,7 @@
       <h3 class="card-title">Clientes</h3>
 
       <div class="card-tools">
-        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('clients.add') }}'">
+        <button type="button" class="btn btn-tool" onclick="location.href='{{ route('clients.create') }}'">
           <i class="fas fa-plus"></i>
         </button>
       </div>
@@ -59,11 +59,11 @@
                         {{ $client->projects->count() }}
                   </td>
                   <td class="project-actions text-right">
-                      <a class="btn btn-primary btn-sm" href="{{ route('payment.view', ['id' => $client->id]) }}">
+                      <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
                           <i class="fas fa-eye">
                           </i>
                       </a>
-                      <a class="btn btn-success btn-sm" href="{{ route('project.add', ['client' => $client->id]) }}">
+                      <a class="btn btn-success btn-sm" href="{{ route('projects.create', ['client' => $client->id]) }}">
                         <i class="fas fa-plus">
                         </i>
                         Proyecto
@@ -91,8 +91,7 @@
 
 function getClient(id) {
         return $.ajax({
-            url: "{{ route('clients.get') }}",
-            data: {id: id},
+            url: "{{ route('clients.show', ['client' => ':id']) }}".replace(':id', id)
         })
     }
 
@@ -115,8 +114,8 @@ function getClient(id) {
                     if (res.value.name && res.value.email && res.value.phone)
                         $.ajax({
                             type: 'PUT',
-                            url: "{{ route('clients.update') }}",
-                            data: {id: id, name: res.value.name, email: res.value.email, phone: res.value.phone},
+                            url: "{{ route('clients.update', ['client' => ':id']) }}".replace(':id', id),
+                            data: {name: res.value.name, email: res.value.email, phone: res.value.phone},
                             success: e => Swal.fire("Actualización existosa", "El cliente se ha actualizado correctamente. La página se va a recargar.", "success").then(() => location.reload())
                         })
                     else Swal.fire("Faltan datos", "No se ha podido actualizar el cliente.", "error")
@@ -134,7 +133,7 @@ function getClient(id) {
             if(res.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: "{{ route('clients.delete') }}",
+                    url: "{{ route('clients.destroy', ['client' => ':id']) }}".replace(':id', id),
                     data: {id: id},
                     success: e => Swal.fire('Cliente eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })

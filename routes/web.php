@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController as Clients;
 use App\Http\Controllers\ProjectController as Projects;
 use App\Http\Controllers\TaskController as Tasks;
 use App\Http\Controllers\PaymentController as Payments;
+use App\Http\Controllers\PlanificationController as Plans;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,17 +25,31 @@ Auth::routes();
 
 Route::get('/', [Home::class, 'index'])->name('home');
 
+
 Route::group(['middleware' => 'auth'], function () {
-    Route::group(['prefix' => 'clients'], function () {
-        Route::get('/', [Clients::class, 'index'])->name('clients');
-        Route::get('get', [Clients::class, 'get'])->name('clients.get');
-        Route::get('add', [Clients::class, 'add'])->name('clients.add');
-        Route::post('create', [Clients::class, 'create'])->name('clients.create');
-        Route::put('update', [Clients::class, 'update'])->name('clients.update');
-        Route::delete('delete', [Clients::class, 'delete'])->name('clients.delete');
+    Route::resource('clients', Clients::class)->only('index','store','create','show','update','destroy');
+    Route::resource('projects', Projects::class)->only('index','store','show','update','destroy');
+    Route::get('projects/create/{client}', [Projects::class, 'create'])->name('projects.create');
+    Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
+    Route::resource('tasks', Tasks::class)->only('show','store','update');
+    Route::group(['prefix' => 'tasks/{task}'], function () {
+        Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
+        Route::post('open', [Tasks::class, 'reopen'])->name('tasks.reopen');
+        Route::put('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
+        Route::put('finish', [Tasks::class, 'destroy'])->name('tasks.destroy');
+        Route::group(['prefix' => 'info'], function () {
+            Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.info.add');
+            Route::put('{info}/delete', [Tasks::class, 'delInfo'])->name('tasks.info.del');
+        });
+    });
+    Route::resource('payments', Payments::class)->only('store','update','destroy');
+    Route::group(['prefix' => 'payments'], function () {
+        Route::get('{client}/view', [Payments::class, 'view'])->name('payments.view');
     });
 
-    Route::group(['prefix' => 'projects'], function () {
+
+
+   /* Route::group(['prefix' => 'projects'], function () {
         Route::get('/', [Projects::class, 'index'])->name('projects');
         Route::get('get', [Projects::class, 'get'])->name('project.get');
         Route::get('add/{client}', [Projects::class, 'add'])->name('project.add');
@@ -65,5 +80,5 @@ Route::group(['middleware' => 'auth'], function () {
             Route::put('del', [Tasks::class, 'delInfo'])->name('tasks.del.details');
 
         });
-    });
+    });*/
 });
