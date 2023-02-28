@@ -2,7 +2,7 @@ version: '2'
 services:
   app:
     container_name: orxatasoftware_worker
-    image: orxatasoftware/worker:0.0.1.DEV
+    image: orxatasoftware/worker:0.0.2.DEV
     links:
       - mysql
     depends_on:
@@ -25,3 +25,6 @@ services:
       MYSQL_DATABASE: 'worker'
       MYSQL_USER: 'dev'
       MYSQL_PASSWORD: 'dev'
+networks:
+  laravel:
+    driver: bridge
