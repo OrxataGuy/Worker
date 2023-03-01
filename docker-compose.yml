@@ -1,14 +1,15 @@
-version: '2'
+version: '3.2'
 services:
   app:
-    container_name: orxatasoftware_worker
-    image: orxatasoftware/worker:0.0.1.RELEASE
+    build: .
+    container_name: orxatasoftware.dev
+    image: orxatasoftware/worker:0.0.1.DEV
     links:
       - mysql
     depends_on:
       - mysql
     ports:
-      - 8888:80
+      - 80:80
     volumes:
       - .:/app
     networks:
@@ -19,26 +20,31 @@ services:
       WEB_NO_CACHE_PATTERN: '\.(.*)$$'
       working_dir: '/app'
   mysql:
+    container_name: mysql
     image: mariadb:latest
     restart: always
     ports:
-      - 8889:3306
+      - 3306:3306
+    networks:
+      - laravel
     environment:
       MYSQL_ROOT_PASSWORD: 'dev'
       MYSQL_DATABASE: 'worker'
       MYSQL_USER: 'dev'
       MYSQL_PASSWORD: 'dev'
   phpmyadmin:
+    container_name: pma.service
     image: phpmyadmin/phpmyadmin:latest
     restart: always
     links:
       - mysql:db
+    networks:
+      - laravel
     ports:
-     - 8080:80
+     - 5000:80
     environment:
-      - PMA_HOST=mysql
-      - PMA_ARBRITARY=1
-
+      PMA_HOST: 'mysql'
+      PMA_ARBRITARY: '1'
 networks:
   laravel:
     driver: bridge
