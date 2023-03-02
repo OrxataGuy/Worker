@@ -147,6 +147,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Technology::create([
+            'name' => 'Bootstrap',
+            'icon' => env('APP_URL').'/img/tech/bootstrap.png',
+            'context' => 'FRONTEND'
+        ]);
+
+        Technology::create([
             'name' => 'ASP.NET',
             'icon' => env('APP_URL').'/img/tech/asp.png',
             'context' => 'FRONTEND'
