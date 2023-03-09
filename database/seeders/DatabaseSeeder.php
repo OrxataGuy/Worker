@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->technologies();
+        //$this->technologies();
     }
 
     public function technologies() : void
