@@ -206,13 +206,11 @@ class TaskController extends Controller
         ));
     }
 
-    public function delInfo($task_id, $id) : JsonResponse {
-        dd($id);
+    public function delInfo($task, $id) : JsonResponse {
         $advanced = AdvancedTask::find($id);
         $advanced->visible = 0;
         $advanced->save();
-        dd($advanced);
-        $task = Task::find($advanced->task_id);
+        $task = Task::find($task);
         $project = Project::with('client')->find($task->project_id);
         Log::create([
             'user_id' => auth()->user()->id,
