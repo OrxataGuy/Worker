@@ -22,7 +22,8 @@
 
     /* Desktop*/
     @media screen and (min-width: 768px) {
-    .showHide  { display: initial; }
+    .showHide  { display: initial;
+    margin-left: 1em;}
     }
   </style>
   @yield('styles')
