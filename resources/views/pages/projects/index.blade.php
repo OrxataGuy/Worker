@@ -94,19 +94,23 @@
                       <a class="btn btn-primary btn-sm" href="{{ route('tasks.index', ['project' => $project->id]) }}">
                           <i class="fas fa-folder">
                           </i>
+                          <span class="showHide">Abrir</span>
                       </a>
                       <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
                           <i class="fas fa-pencil-alt">
                           </i>
+                          <span class="showHide">Editar</span>
                       </a>
                       <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
                         <i class="fas fa-dollar-sign">
                         </i>
+                        <span class="showHide">Cobrar</span>
                       </a>
                       <a class="btn btn-danger btn-sm" href="#" onclick="abortForm({{ $project->id }})">
                           <i class="fas fa-trash">
                           </i>
                       </a>
+                      <span class="showHide">Eliminar</span>
                   </td>
               </tr>
               @endforeach

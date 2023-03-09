@@ -53,7 +53,7 @@
                   <td>
                     {{ $payment->amount }} €
                   </td>
-                  <td class="project-actions text-right">
+                  <td class="project-actions float-right">
                       @if(!$payment->confirmed)
                       <a class="btn btn-primary btn-sm" onclick="confirmForm({{ $payment->id }})">
                           <i class="fas fa-check">
