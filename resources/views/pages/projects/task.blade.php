@@ -116,7 +116,7 @@
 
 <div class="card">
     <div class="card-header" >
-    <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Detalles adicionales </h3>
+    <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Comentarios adicionales </h3>
     <div class="card-tools">
         <button type="button" class="btn btn-tool" onclick="addAdvancedTask({{ $task->id }})">
             <i class="fas fa-plus"></i>
@@ -214,7 +214,7 @@
         $.ajax({
                 type: 'PUT',
                 url: "{{ route('tasks.info.del', ['task' => ':task', 'info' => ':id']) }}".replace(':task', '{{ $task->id }}').replace(':id', id),
-                success: data => Swal.fire("Detalle eliminado", "El detalle se ha eliminado correctamente. La página se va a recargar.", "success").then(() => location.reload())
+                success: data => Swal.fire("Comentario eliminado", "El comentario se ha eliminado correctamente. La página se va a recargar.", "success").then(() => location.reload())
         })
     }
 
@@ -284,7 +284,7 @@
 
     function addAdvancedTask(id) {
         Swal.fire({
-            title: 'Añadir detalles',
+            title: 'Añadir comentario',
             html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
