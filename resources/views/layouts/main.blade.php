@@ -22,7 +22,7 @@
 
     /* Desktop*/
     @media screen and (min-width: 768px) {
-    .showHide  { display: inherit; }
+    .showHide  { display: initial; }
     }
   </style>
   @yield('styles')
