@@ -144,7 +144,7 @@
                       @if(explode('/',$atask->document->type)[0] == 'image')
                           <div class="card">
                             <div class="card-header photo-card" data-card-widget="collapse">
-                                {!! nl2br($atask->description) !!}
+                                <i class="fas fa-image"></i> {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
                                 <img src="{{ $atask->document->url }}" data-card-widget="maximize" alt="{{ $atask->description }}" />
@@ -286,7 +286,7 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir comentario',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5" required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
 
