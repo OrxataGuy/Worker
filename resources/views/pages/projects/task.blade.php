@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped projects">
+      <table class="table table-striped table-responsive projects">
           <thead>
               <tr>
                 <th>
@@ -122,7 +122,7 @@
     </div>
   </div>
   <div class="card-body p-0">
-    <table class="table table-striped projects">
+    <table class="table table-striped table-responsive projects">
         <thead>
             <tr>
               <th>

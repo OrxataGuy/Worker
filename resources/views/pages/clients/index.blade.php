@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped projects">
+      <table class="table table-striped table-responsive projects">
           <thead>
               <tr>
                   <th style="width: 1%">
@@ -66,7 +66,6 @@
                       <a class="btn btn-success btn-sm" href="{{ route('projects.create', ['client' => $client->id]) }}">
                         <i class="fas fa-plus">
                         </i>
-                        Proyecto
                     </a>
                       <a class="btn btn-info btn-sm" href="#" onclick="updateForm({{ $client->id }})">
                           <i class="fas fa-pencil-alt">

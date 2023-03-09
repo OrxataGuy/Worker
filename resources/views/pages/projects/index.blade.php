@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped projects">
+      <table class="table table-striped table-responsive projects">
           <thead>
               <tr>
                   <th style="width: 1%">
@@ -94,22 +94,18 @@
                       <a class="btn btn-primary btn-sm" href="{{ route('tasks.index', ['project' => $project->id]) }}">
                           <i class="fas fa-folder">
                           </i>
-                          Abrir
                       </a>
                       <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
                           <i class="fas fa-pencil-alt">
                           </i>
-                          Editar
                       </a>
                       <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
                         <i class="fas fa-dollar-sign">
                         </i>
-                            Pago
                       </a>
                       <a class="btn btn-danger btn-sm" href="#" onclick="abortForm({{ $project->id }})">
                           <i class="fas fa-trash">
                           </i>
-                          Cancelar
                       </a>
                   </td>
               </tr>
