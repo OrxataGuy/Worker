@@ -8,6 +8,7 @@ use App\Http\Controllers\ProjectController as Projects;
 use App\Http\Controllers\TaskController as Tasks;
 use App\Http\Controllers\PaymentController as Payments;
 use App\Http\Controllers\PlanificationController as Plans;
+use App\Http\Controllers\DocumentController as Docs;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
 
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::post('store', Docs::class)->name('upload');
+
     Route::resource('clients', Clients::class)->only('index','store','create','show','update','destroy');
     Route::resource('projects', Projects::class)->only('index','store','show','update','destroy');
     Route::get('projects/create/{client}', [Projects::class, 'create'])->name('projects.create');

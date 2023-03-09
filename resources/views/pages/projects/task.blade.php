@@ -301,7 +301,7 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><br/><br/><input type="text" id="title" class="swal2-form" placeholder="Nombre de archivo" style="width:80%" /><select id="type" class="swal2-"><option value="" disabled selected>Tipo</option><option value="img">IMG</option><option value="pdf">PDF</option><option value="other">OTRO</option></select>`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><br/><br/><input type="text" id="title" class="swal2-form" placeholder="Nombre de archivo" style="width:80%" /><input type="file" id="input-file" onchange="call_upload()" />`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
 
@@ -390,6 +390,37 @@
         $(`#stop-${id}`).removeClass('disabled');
         toggleCounter(id);
 
+    }
+
+    function call_upload() {
+        var file_data = $("#input-file").prop("files")[0];
+
+        $("#photo-list").html("<div class='loading'></div>");
+        for (let x = 0; x < $("#input-camera-files").prop("files").length; x++) {
+            var file_data = $("#input-camera-files").prop("files")[x];
+            var form_data = new FormData();
+            form_data.append("file", file_data);
+            form_data.append("id", "{{ $task->id }}");
+			uploadInBack(form_data).then(data => addFile(data))
+        }
+    }
+
+
+    function addFile(res) {
+
+    }
+
+    function uploadInBack(form_data) {
+        return $.ajax({
+            url: "{{ route('upload') }}",
+            dataType: 'text',
+            cache: false,
+            contentType: false,
+            crossDomain: true,
+            processData: false,
+            data: form_data,
+            type: 'post'
+        });
     }
 </script>
 @endsection
