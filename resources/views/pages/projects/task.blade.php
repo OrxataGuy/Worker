@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped table-responsive projects">
+      <table class="table table-striped table-responsive-sm projects">
           <thead>
               <tr>
                 <th>
@@ -58,14 +58,16 @@
 
                       @if($task->counting == 0)
                       <i class="fas fa-play active" id="run-{{ $task->id }}">
-                        Iniciar </i>
+                      </i> <span class="showHide">Iniciar</span>
+
                         <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
-                            Pausar</i>
+                        </i> <span class="showHide">Pausar</span>
+
                       @else
                       <i class="fas fa-play" id="run-{{ $task->id }}" style="display: none;">
-                        Iniciar </i>
+                      </i> <span class="showHide">Iniciar</span>
                       <i class="fas fa-pause active" id="pause-{{ $task->id }}" >
-                        Pausar </i>
+                      </i> <span class="showHide">Pausar</span>
                       @endif
                     </a>
                   <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">

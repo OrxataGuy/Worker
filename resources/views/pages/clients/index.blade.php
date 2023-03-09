@@ -74,7 +74,6 @@
                       <a class="btn btn-danger btn-sm" href="#" onclick="deleteForm({{ $client->id }})">
                           <i class="fas fa-trash">
                           </i>
-                          <span class="showHide">Eliminar</span>
                       </a>
                   </td>
               </tr>
