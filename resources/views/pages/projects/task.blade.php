@@ -147,12 +147,12 @@
                                 {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
-                                <img src="{{ $atask->document->url }}" alt="{{ $atask->description }}" />
+                                <img src="{{ $atask->document->url }}" data-card-widget="collapse" alt="{{ $atask->description }}" />
                             </div>
                         </div>
                           @else
                           <div class="card">
-                            <div class="card-header" data-card-widget="collapse">
+                            <div class="card-header" data-card-widget="maximize">
                                 {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
