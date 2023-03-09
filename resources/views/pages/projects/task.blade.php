@@ -392,22 +392,18 @@
     }
 
     function call_upload() {
-        var form_data = new FormData();
-        form_data.append("file", $("#input-file").prop("files")[0]);
-        uploadInBack(form_data).then(data => {
-            console.log(data)
-            $('#url').val(data.value.url)
-            $('#url').addAttr("readonly", true)
-            $('#docid').val(data.value.id)
-        })
-    }
-
-    function uploadInBack(form_data) {
-        return $.ajax({
+        $.ajax({
             url: "{{ route('upload') }}",
-            data: form_data,
-            type: 'post'
-        });
+            type: 'POST',
+            success: data => {
+                console.log(data)
+                /*
+                $('#url').val(data.value.url)
+                $('#url').addAttr("readonly", true)
+                $('#docid').val(data.value.id)
+                */
+            }
+        })
     }
 </script>
 @endsection
