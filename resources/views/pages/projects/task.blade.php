@@ -72,7 +72,7 @@
                     </a>
                   <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
                       <i class="fas fa-stop">
-                      Finalizar</i>
+                        <span class="showHide">Finalizar</span></i>
                   </a>
                 </td>
                   <td id="time-{{ $task->id }}" class="@if($task->counting == 1) counting @endif">
