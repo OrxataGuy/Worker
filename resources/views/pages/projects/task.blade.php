@@ -394,7 +394,6 @@
     function call_upload() {
         var form_data = new FormData();
         form_data.append("file", $("#input-file").prop("files")[0]);
-        form_data.append("id", "{{ $task->id }}");
         uploadInBack(form_data).then(data => {
             console.log(data)
             $('#url').val(data.value.url)
