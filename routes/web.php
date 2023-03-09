@@ -30,7 +30,7 @@ Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::post('store', Docs::class)->name('upload');
+    Route::post('upload', [Docs::class, 'store'])->name('upload');
 
     Route::resource('clients', Clients::class)->only('index','store','create','show','update','destroy');
     Route::resource('projects', Projects::class)->only('index','store','show','update','destroy');
