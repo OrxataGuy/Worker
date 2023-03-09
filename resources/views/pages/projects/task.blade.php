@@ -395,6 +395,9 @@
         $.ajax({
             url: "{{ route('upload') }}",
             type: 'POST',
+            data: {
+                file: $("#input-file").prop("files")[0]
+            },
             success: data => {
                 console.log(data)
                 /*
