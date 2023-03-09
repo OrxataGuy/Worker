@@ -127,23 +127,12 @@
     <table class="table table-striped table-responsive-sm projects">
         <thead>
             <tr>
-              <th>
-                  Tipo
-              </th>
-                <th>Contenido</th>
-                <th></th>
+                <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
           @foreach ($advanced_tasks as $atask)
             <tr>
-              <td class="project-actions text-left">
-                 @if(!$atask->document)
-                  Comentario
-                  @else
-                  {{ strtoupper($atask->document->type) }}
-                  @endif
-              </td>
                 <td id="content-{{ $task->id }}" style="width:100%;">
                   @if(!$atask->document)
                   <div class="card">
