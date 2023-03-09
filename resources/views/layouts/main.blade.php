@@ -17,6 +17,14 @@
   <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+  <style>
+    .showHide { display:none; }
+
+    /* Desktop*/
+    @media screen and (min-width: 768px) {
+    .showHide  { display: block; }
+    }
+  </style>
   @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
