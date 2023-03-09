@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \Symfony\Component\HttpFoundation\JsonResponse;
+use \App\Models\Document;
 
 
 class DocumentController extends Controller
@@ -19,7 +20,7 @@ class DocumentController extends Controller
     {
         $fileName = time().'_'.$request->file->getClientOriginalName();
         $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
-
+        dd($request->file);
         return response()->json(array(
             'status' => '200',
             'value' => "https://dev.orxatasoftware.com/storage/$filePath"
