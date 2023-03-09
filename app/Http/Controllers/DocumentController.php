@@ -20,10 +20,16 @@ class DocumentController extends Controller
     {
         $fileName = time().'_'.$request->file->getClientOriginalName();
         $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
-        dd($request->file);
+
+        $doc = Document::create([
+            'name' => $request->file->getClientOriginalName(),
+            'type' => $request->file->getClientMimeType(),
+            'url' => "https://dev.orxatasoftware.com/storage/$filePath"
+        ]);
+
         return response()->json(array(
             'status' => '200',
-            'value' => "https://dev.orxatasoftware.com/storage/$filePath"
+            'value' => $doc
         ));
     }
 

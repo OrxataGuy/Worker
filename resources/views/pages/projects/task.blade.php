@@ -301,15 +301,14 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><br/><input type="file" id="input-file" onchange="call_upload()" />`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" onchange="call_upload()" /><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
 
                 const text = $("#text").val(),
-                    name = $("#title").val(),
-                    url = $("#url").val(),
-                    type = $("#type").val();
-                return {description: text, name: name, type: type, url: url}
+                    url = $("#url").val();
+
+                return {description: text, url: url}
             }
         }).then(res => {
             if (res.isConfirmed) {
@@ -396,7 +395,11 @@
         var form_data = new FormData();
         form_data.append("file", $("#input-file").prop("files")[0]);
         form_data.append("id", "{{ $task->id }}");
-        uploadInBack(form_data).then(data => $('#url').val(data.value))
+        uploadInBack(form_data).then(data => {
+            $('#url').val(data.value.url)
+            $('#url').addAttr("readonly", true)
+            $('#docid').val(data.value.id)
+        }
     }
 
     function uploadInBack(form_data) {
