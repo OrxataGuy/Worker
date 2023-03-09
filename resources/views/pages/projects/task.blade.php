@@ -378,7 +378,7 @@
             stat = 'run'
             oldc = 'warning'
             newc = 'success'
-            counting[id] = 0;
+            clearInterval(counting[id]);
         }
 
         $(`#${old}-${id}`).removeClass('active');
