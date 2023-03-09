@@ -393,21 +393,17 @@
     }
 
     function call_upload() {
-        var file_data = $("#input-file").prop("files")[0];
+        var form_data = new FormData();
+        form_data.append("file", $("#input-file").prop("files")[0]);
+        form_data.append("id", "{{ $task->id }}");
+        uploadInBack(form_data).then(data => addFile(data))
 
-        $("#photo-list").html("<div class='loading'></div>");
-        for (let x = 0; x < $("#input-camera-files").prop("files").length; x++) {
-            var file_data = $("#input-camera-files").prop("files")[x];
-            var form_data = new FormData();
-            form_data.append("file", file_data);
-            form_data.append("id", "{{ $task->id }}");
-			uploadInBack(form_data).then(data => addFile(data))
-        }
+
     }
 
 
     function addFile(res) {
-
+        console.log(data);
     }
 
     function uploadInBack(form_data) {
