@@ -24,6 +24,7 @@ use App\Http\Controllers\PlanificationController as Plans;
 Auth::routes();
 
 Route::get('/', [Home::class, 'index'])->name('home');
+Route::get('register', [Home::class, 'index'])->name('prevent.reg');
 
 
 Route::group(['middleware' => 'auth'], function () {
