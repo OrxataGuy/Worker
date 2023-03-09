@@ -143,7 +143,7 @@
                   @else
                       @if(explode('/',$atask->document->type)[0] == 'image')
                           <div class="card">
-                            <div class="card-header" data-card-widget="collapse" aria-expanded="false">
+                            <div class="card-header photo-card" data-card-widget="collapse">
                                 {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
