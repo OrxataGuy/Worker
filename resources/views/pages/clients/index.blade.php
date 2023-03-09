@@ -50,10 +50,16 @@
                       </a>
                   </td>
                   <td>
-                      {{ $client->email }}
+                    <a class="btn btn-warning btn-sm" href="mailto:{{ $client->email }}">
+                        <i class="fas fa-envelope">
+                        </i>
+                    </a>
                   </td>
                   <td>
-                    {{ $client->phone }}
+                    <a class="btn btn-warning btn-sm" href="tel:{{ $client->phone }}">
+                        <i class="fas fa-phone">
+                        </i>
+                    </a>
                 </td>
                   <td>
                         {{ $client->projects->count() }}
