@@ -206,7 +206,7 @@ class TaskController extends Controller
         ));
     }
 
-    public function delInfo($id) : JsonResponse {
+    public function delInfo($task_id, $id) : JsonResponse {
         dd($id);
         $advanced = AdvancedTask::find($id);
         $advanced->visible = 0;
