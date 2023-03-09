@@ -225,17 +225,39 @@ class TaskController extends Controller
         ));
     }
 
+    public function getMimeType(String $url) : String {
+        $list = explode('.',$url);
+        $type = strtolower($list[count($list)-1]);
+        $image_jpg = ['jpg','jpeg', 'jpe'];
+        $image_svg = ['svg'];
+        $image_gif = ['gif'];
+        $image_png = ['png'];
+        $image_bmp = ['cmp'];
+        $image_ico = ['ico'];
+        $image_webp = ['webp'];
+
+        if (in_array($type, $image_jpg)) return "image/jpeg";
+        if (in_array($type, $image_svg)) return "image/png";
+        if (in_array($type, $image_gif)) return "image/gif";
+        if (in_array($type, $image_png)) return "image/png";
+        if (in_array($type, $image_bmp)) return "image/bmp";
+        if (in_array($type, $image_ico)) return "image/x-icon";
+        if (in_array($type, $image_webp)) return "image/webp";
+        return "other";
+    }
+
     public function addInfo(Request $request, $id) : JsonResponse {
-        $document_id = null;
         $task = Task::find($id);
-        if($request->get('url') && $request->get('type') && $request->get('name')) {
+        if (!$request->get('doc_id') && $request->get('url')) {
             $document = Document::create([
-                'name' => $request->get('name'),
-                'type' => $request->get('type'),
+                'name' => "Archivo externo",
+                'type' => $this->getMimeType($request->get('url')),
                 'url' => $request->get('url')
             ]);
             $document_id = $document->id;
-        }
+        } else
+            $document_id = $request->get('doc_id') ? $request->get('doc_id') : null;
+
         AdvancedTask::create([
             'task_id' => $task->id,
             'document_id' => $document_id,

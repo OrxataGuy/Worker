@@ -23,7 +23,7 @@ class DocumentController extends Controller
 
         $doc = Document::create([
             'name' => $request->file->getClientOriginalName(),
-            'type' => $request->file->getClientMimeType(),
+            'type' => strtolower($request->file->getClientMimeType()),
             'url' => "https://dev.orxatasoftware.com/storage/$filePath"
         ]);
 

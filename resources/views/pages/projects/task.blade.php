@@ -151,10 +151,8 @@
                         {!! nl2br($atask->description) !!}
                     </div>
                 </div>
-
                   @else
-                      @switch($atask->document->type)
-                          @case('img')
+                      @if(explode('/',$atask->document->type)[0] == 'image')
                           <div class="card">
                             <div class="card-header" data-card-widget="collapse">
                                 {!! nl2br($atask->description) !!}
@@ -163,8 +161,7 @@
                                 <img src="{{ $atask->document->url }}" alt="{{ $atask->description }}" />
                             </div>
                         </div>
-                              @break
-                          @default
+                          @else
                           <div class="card">
                             <div class="card-header" data-card-widget="collapse">
                                 {!! nl2br($atask->description) !!}
@@ -173,9 +170,7 @@
                                 <a class="btn btn-primary" href="{{ $atask->document->url }}" target="_blank" title="{{ $atask->description }}">Ver adjunto</a>
                             </div>
                         </div>
-                          @break
-                      @endswitch
-
+                    @endif
                  @endif
               </td>
               <td><a class="btn btn-danger btn-sm" onclick="delete_advanced({{ $atask->id }})" href="#">
@@ -306,9 +301,10 @@
             preConfirm: () => {
 
                 const text = $("#text").val(),
-                    url = $("#url").val();
+                    url = $("#url").val(),
+                    docid = $("#docid").val();
 
-                return {description: text, url: url}
+                return {description: text, url: url, doc_id: docid}
             }
         }).then(res => {
             if (res.isConfirmed) {
@@ -316,8 +312,7 @@
                     type: 'POST',
                     url: "{{ route('tasks.info.add', ['task' => ':id']) }}".replace(':id', id),
                     data: {
-                        name: res.value.name,
-                        type: res.value.type,
+                        doc_id: res.value.doc_id,
                         url: res.value.url,
                         description: res.value.description
                     },
@@ -398,7 +393,7 @@
         uploadInBack(form_data).then(data => {
             console.log(data)
             $('#url').val(data.value.url)
-            $('#url').addAttr("readonly", true)
+            $('#url').attr("readonly", true)
             $('#docid').val(data.value.id)
         })
     }
