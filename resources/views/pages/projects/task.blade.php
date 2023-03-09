@@ -396,7 +396,7 @@
             url: "{{ route('upload') }}",
             type: 'POST',
             processData: false,
-            contentType: false
+            contentType: false,
             data: {
                 file: $("#input-file").prop("files")[0]
             },
