@@ -399,7 +399,7 @@
             $('#url').val(data.value.url)
             $('#url').addAttr("readonly", true)
             $('#docid').val(data.value.id)
-        }
+        })
     }
 
     function uploadInBack(form_data) {
