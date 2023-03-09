@@ -210,6 +210,7 @@ class TaskController extends Controller
         $advanced = AdvancedTask::find($id);
         $advanced->visible = 0;
         $advanced->save();
+        dd($advanced);
         $task = Task::find($advanced->task_id);
         $project = Project::with('client')->find($task->project_id);
         Log::create([
