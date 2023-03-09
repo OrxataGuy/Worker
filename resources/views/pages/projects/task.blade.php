@@ -144,7 +144,7 @@
                   {{ strtoupper($atask->document->type) }}
                   @endif
               </td>
-                <td id="content-{{ $task->id }}" >
+                <td id="content-{{ $task->id }}" style="width:100%;">
                   @if(!$atask->document)
                   <div class="card">
                     <div class="card-body">
