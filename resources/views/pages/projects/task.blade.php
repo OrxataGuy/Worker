@@ -403,7 +403,7 @@
 
 
     function addFile(res) {
-        console.log(data);
+        console.log(res);
     }
 
     function uploadInBack(form_data) {
