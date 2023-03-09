@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use \Illuminate\Http\JsonResponse;
 use \App\Models\Document;
 
 

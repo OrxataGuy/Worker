@@ -60,7 +60,7 @@ class PaymentController extends Controller
         return response()->json(array('status' => 200, 'value' => $payment));
     }
 
-    public function view($id) : View
+    public function view($id) : View|Redirection
     {
         $client = Client::find($id);
         $payments = Payment::where('client_id', '=', $client->id)->with('project')->get();

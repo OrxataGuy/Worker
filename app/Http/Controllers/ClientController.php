@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use \Illuminate\Http\RedirectResponse as Redirection;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Http\Request;
 
@@ -81,7 +81,7 @@ class ClientController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id) : JsonResponse
     {
@@ -97,7 +97,7 @@ class ClientController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id) : JsonResponse
     {
@@ -124,7 +124,7 @@ class ClientController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id) : JsonResponse
     {

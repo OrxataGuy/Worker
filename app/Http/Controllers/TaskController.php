@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use \Illuminate\Http\RedirectResponse as Redirection;
-use \Symfony\Component\HttpFoundation\JsonResponse;
+use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Http\Request;
 
