@@ -20,6 +20,11 @@
   <style>
     .showHide { display:none; }
 
+    img {
+        width: 100%;
+        height: auto;
+    }
+
     /* Desktop*/
     @media screen and (min-width: 768px) {
     .showHide  { display: initial;
