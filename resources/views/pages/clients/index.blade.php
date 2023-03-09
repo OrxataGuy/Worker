@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body">
       <table class="table table-striped table-responsive projects">
           <thead>
               <tr>
@@ -52,7 +52,7 @@
                         </i>
                     </a>
                 </td>
-                  <td class="project-actions text-right">
+                  <td class="project-actions">
                       <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
                           <i class="fas fa-eye">
                           </i>
