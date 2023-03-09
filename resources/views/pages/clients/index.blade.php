@@ -19,31 +19,22 @@
       <table class="table table-striped table-responsive projects">
           <thead>
               <tr>
-                  <th style="width: 1%">
-                      #
-                  </th>
-                  <th style="width: 20%">
+                  <th>
                       Nombre
                   </th>
-                  <th style="width: 30%">
+                  <th>
                       Email
                   </th>
                   <th>
                       Teléfono
                   </th>
-                  <th style="width: 8%" class="text-center">
-                      Proyectos
-                  </th>
-                  <th style="width: 20%">
+                  <th>
                   </th>
               </tr>
           </thead>
           <tbody>
             @foreach($clients as $client)
               <tr>
-                  <td>
-                      {{ $client->id }}
-                  </td>
                   <td>
                       <a>
                         {{ $client->name }}
@@ -61,9 +52,6 @@
                         </i>
                     </a>
                 </td>
-                  <td>
-                        {{ $client->projects->count() }}
-                  </td>
                   <td class="project-actions text-right">
                       <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
                           <i class="fas fa-eye">
