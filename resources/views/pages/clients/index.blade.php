@@ -55,7 +55,7 @@
                     <span class="showHide">{{ $client->phone }}</span>
 
                 </td>
-                  <td class="project-actions">
+                  <td class="project-actions float-right">
                       <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
                           <i class="fas fa-eye">
                           </i>
