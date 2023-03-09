@@ -396,6 +396,7 @@
         form_data.append("file", $("#input-file").prop("files")[0]);
         form_data.append("id", "{{ $task->id }}");
         uploadInBack(form_data).then(data => {
+            console.log(data)
             $('#url').val(data.value.url)
             $('#url').addAttr("readonly", true)
             $('#docid').val(data.value.id)
