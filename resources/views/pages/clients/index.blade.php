@@ -59,18 +59,22 @@
                       <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
                           <i class="fas fa-eye">
                           </i>
+                          <span class="showHide">Pagos</span>
                       </a>
                       <a class="btn btn-success btn-sm" href="{{ route('projects.create', ['client' => $client->id]) }}">
                         <i class="fas fa-plus">
                         </i>
+                        <span class="showHide">Proyecto</span>
                     </a>
                       <a class="btn btn-info btn-sm" href="#" onclick="updateForm({{ $client->id }})">
                           <i class="fas fa-pencil-alt">
                           </i>
+                          <span class="showHide">Editar</span>
                       </a>
                       <a class="btn btn-danger btn-sm" href="#" onclick="deleteForm({{ $client->id }})">
                           <i class="fas fa-trash">
                           </i>
+                          <span class="showHide">Eliminar</span>
                       </a>
                   </td>
               </tr>
