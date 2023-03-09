@@ -44,14 +44,16 @@
                     <a class="btn btn-warning btn-sm" href="mailto:{{ $client->email }}">
                         <i class="fas fa-envelope">
                         </i>
-                        <span class="showHide">{{ $client->email }}</span>
                     </a>
+                    <span class="showHide">{{ $client->email }}</span>
                   </td>
                   <td>
                     <a class="btn btn-warning btn-sm" href="tel:{{ $client->phone }}">
                         <i class="fas fa-phone">
                         </i>
                     </a>
+                    <span class="showHide">{{ $client->phone }}</span>
+
                 </td>
                   <td class="project-actions">
                       <a class="btn btn-primary btn-sm" href="{{ route('payments.view', ['client' => $client->id]) }}">
