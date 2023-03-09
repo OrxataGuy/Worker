@@ -58,16 +58,16 @@
 
                       @if($task->counting == 0)
                       <i class="fas fa-play active" id="run-{{ $task->id }}">
-                      </i> <span class="showHide">Iniciar</span>
+                        <span class="showHide">Iniciar</span> </i>
 
                         <i class="fas fa-pause" id="pause-{{ $task->id }}" style="display: none;">
-                        </i> <span class="showHide">Pausar</span>
+                            <span class="showHide">Pausar</span> </i>
 
                       @else
                       <i class="fas fa-play" id="run-{{ $task->id }}" style="display: none;">
-                      </i> <span class="showHide">Iniciar</span>
+                        <span class="showHide">Iniciar</span> </i>
                       <i class="fas fa-pause active" id="pause-{{ $task->id }}" >
-                      </i> <span class="showHide">Pausar</span>
+                        <span class="showHide">Pausar</span> </i>
                       @endif
                     </a>
                   <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
