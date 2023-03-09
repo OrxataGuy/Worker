@@ -143,16 +143,16 @@
                   @else
                       @if(explode('/',$atask->document->type)[0] == 'image')
                           <div class="card">
-                            <div class="card-header">
+                            <div class="card-header" data-card-widget="collapse">
                                 {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
-                                <img src="{{ $atask->document->url }}" data-card-widget="collapse" alt="{{ $atask->description }}" />
+                                <img src="{{ $atask->document->url }}" data-card-widget="maximize" alt="{{ $atask->description }}" />
                             </div>
                         </div>
                           @else
                           <div class="card">
-                            <div class="card-header" data-card-widget="maximize">
+                            <div class="card-header">
                                 {!! nl2br($atask->description) !!}
                             </div>
                             <div class="card-body">
