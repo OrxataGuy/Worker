@@ -44,6 +44,7 @@
                     <a class="btn btn-warning btn-sm" href="mailto:{{ $client->email }}">
                         <i class="fas fa-envelope">
                         </i>
+                        <span class="showHide">{{ $client->email }}</span>
                     </a>
                   </td>
                   <td>
