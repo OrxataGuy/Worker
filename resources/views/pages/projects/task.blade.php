@@ -296,7 +296,7 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" onchange="call_upload()" /><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5"></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
 
