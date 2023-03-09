@@ -406,11 +406,6 @@
     function uploadInBack(form_data) {
         return $.ajax({
             url: "{{ route('upload') }}",
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            crossDomain: true,
-            processData: false,
             data: form_data,
             type: 'post'
         });
