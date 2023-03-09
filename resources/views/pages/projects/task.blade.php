@@ -186,6 +186,7 @@
      $(() => {
         $('.counting').toArray().forEach(e => startCounter(e.id.split('-')[1]))
         $('.task-details').toArray().forEach(e => $(e).html(mkdown.makeHtml(e.innerText)))
+        $('.photo-card').click()
     });
 
     var counting = {};
