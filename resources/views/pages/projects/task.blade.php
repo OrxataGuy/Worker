@@ -286,12 +286,12 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir comentario',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentarios" rows="5" required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
+            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentario (Mínimo 5 catacteres)." rows="5" required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             willOpen: () => {
                 Swal.disableButtons()
                 $('#text').on('keyup', () => {
-                    if ($('#text').length() > 5) Swal.enableButtons()
+                    if ($('#text').val().length >= 5) Swal.enableButtons()
                     else Swal.disableButtons()
                 })
             },
