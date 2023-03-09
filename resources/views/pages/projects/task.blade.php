@@ -124,7 +124,7 @@
     </div>
   </div>
   <div class="card-body p-0">
-    <table class="table table-striped table-responsive projects">
+    <table class="table table-striped table-responsive-sm projects">
         <thead>
             <tr>
               <th>
