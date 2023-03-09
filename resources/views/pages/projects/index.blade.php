@@ -110,7 +110,6 @@
                           <i class="fas fa-trash">
                           </i>
                       </a>
-                      <span class="showHide">Eliminar</span>
                   </td>
               </tr>
               @endforeach
