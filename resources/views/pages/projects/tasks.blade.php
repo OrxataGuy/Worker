@@ -256,27 +256,34 @@
         toggleCounter(id);
     }
 
+    function getTask(id) {
+        return $.ajax({
+            url: "{{ route('tasks.show', ['task' => ':id']) }}"
+        })
+    }
+
     function configTime(id) {
-        Swal.fire({
-            title: 'Corregir tiempos',
-            html: '<input type="number" placeholder="Minutos" class="swal2-form" id="time" />',
-            confirmButtonText: 'Corregir',
-            preConfirm: () => {
-                const time = $("#time").val()
-                return {time: time}
-                }
-            }).then(e => {
-                if (e.isConfirmed) {
+        getTask(id).then(data => {
+            Swal.fire({
+                title: 'Corregir tiempos',
+                html: `<input type="number" placeholder="Minutos" class="swal2-form" value="${data.value.time}" id="time" /><br/><input type="number" value="${data.value.priority}" placeholder="Prioridad" class="swal2-form" id="priority" max="9" min="0" />`,
+                confirmButtonText: 'Corregir',
+                preConfirm: () => {
+                    const time = $("#time").val()
+                    return {time: time}
+                    }
+                }).then(e => {
+                    if (e.isConfirmed) {
 
-                    $.ajax({
-                        url: "{{ route('tasks.time', ['task' => ':id']) }}".replace(':id',id),
-                        data: {id:id, time: e.value.time},
-                        type: 'PUT',
-                        success: data => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
-                    })
-                }
-            })
-
+                        $.ajax({
+                            url: "{{ route('tasks.time', ['task' => ':id']) }}".replace(':id',id),
+                            data: {id:id, time: e.value.time},
+                            type: 'PUT',
+                            success: data => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
+                        })
+                    }
+                })
+        })
     }
 </script>
 @endsection
