@@ -210,7 +210,7 @@ class TaskController extends Controller
         $task = Task::find($request->get('id'));
         $task->time = $request->get('time');
         $task->save();
-        $task->calculate();
+        $task->reg();
         return response()->json(array(
             'status' => '200',
             'value' => $task

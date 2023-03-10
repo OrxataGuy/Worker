@@ -12,6 +12,12 @@ class Task extends Model
 
     protected $fillable = ['id', 'project_id', 'parent_task_id', 'title', 'description', 'details', 'price', 'time', 'finished', 'bug',  'solution'];
 
+    public function reg() {
+        $this->price = round($this->project->price_per_minute*$this->time, 2);
+        $this->save();
+        $this->project->calculate();
+    }
+
     public function calculate() {
         if ($this->counting) {
             $this->last_run = $this->updated_at;
