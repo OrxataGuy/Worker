@@ -267,9 +267,10 @@
                 }
             }).then(e => {
                 if (e.isConfirmed) {
+
                     $.ajax({
                         url: "{{ route('tasks.time', ['task' => ':id']) }}".replace(':id',id),
-                        data: {id:id, time: time},
+                        data: {id:id, time: e.value.time},
                         type: 'PUT',
                         success: data => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
                     })
