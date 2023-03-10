@@ -105,6 +105,9 @@
                         <i class="fas fa-bug">
                         </i>
                     </a>
+                    <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
                     @endif
                   </td>
               </tr>
