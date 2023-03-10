@@ -93,6 +93,10 @@
                         <i class="fas fa-stop">
                         </i>
                     </a>
+                    <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
+                        <i class="fas fa-gear">
+                          <span class="showHide">Corregir</span></i>
+                    </a>
                     @else
                     <a class="btn btn-warning btn-sm" onclick="reopen({{ $task->id }}, 0)" href="#">
                         <i class="fas fa-plus">
@@ -250,6 +254,27 @@
         $(`#${stat}-${id}`).addClass('active');
         $(`#stop-${id}`).removeClass('disabled');
         toggleCounter(id);
+    }
+
+    function configTime(id) {
+        Swal.fire({
+            title: 'Corregir tiempos',
+            html: '<input type="number" placeholder="Minutos" class="swal2-form" id="time" />',
+            confirmButtonText: 'Corregir',
+            preConfirm: () => {
+                const time = $("#time").val()
+                return {time: time}
+            }).then(e => {
+                if (e.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('tasks.time') }}",
+                        data: {time: time},
+                        type: 'PUT',
+                        success: () => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
+                    })
+                }
+            })
+        })
     }
 </script>
 @endsection

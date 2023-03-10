@@ -206,6 +206,17 @@ class TaskController extends Controller
         ));
     }
 
+    public function updateTime(Request $request) : JsonResponse {
+        $task = Task::find($request->get('id'));
+        $task->time = $request->get('time');
+        $task->save();
+        $task->calculate();
+        return response()->json(array(
+            'status' => '200',
+            'value' => $task
+        ));
+    }
+
     public function delInfo($task, $id) : JsonResponse {
         $advanced = AdvancedTask::find($id);
         $advanced->visible = 0;

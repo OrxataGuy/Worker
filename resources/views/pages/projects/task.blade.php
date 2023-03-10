@@ -70,10 +70,14 @@
                         <span class="showHide">Pausar</span> </i>
                       @endif
                     </a>
-                  <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
-                      <i class="fas fa-stop">
-                        <span class="showHide">Finalizar</span></i>
-                  </a>
+                    <a class="btn btn-danger btn-sm @if($task->time == 0) disabled @endif" id="stop-{{ $task->id }}" onclick="endCounter({{ $task->id }})" href="#">
+                        <i class="fas fa-stop">
+                          <span class="showHide">Finalizar</span></i>
+                    </a>
+                    <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
+                        <i class="fas fa-gear">
+                          <span class="showHide">Corregir</span></i>
+                    </a>
                 </td>
                   <td id="time-{{ $task->id }}" class="@if($task->counting == 1) counting @endif">
                     @if($task->counting == 1)
@@ -209,6 +213,27 @@
             $(`#time-${id}`).html(`${m}:${s}`);
             $(`#price-${id}`).html(pr)
         }, 1000)
+    }
+
+    function configTime(id) {
+        Swal.fire({
+            title: 'Corregir tiempos',
+            html: '<input type="number" placeholder="Minutos" class="swal2-form" id="time" />',
+            confirmButtonText: 'Corregir',
+            preConfirm: () => {
+                const time = $("#time").val()
+                return {time: time}
+            }).then(e => {
+                if (e.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('tasks.time') }}",
+                        data: {time: time},
+                        type: 'PUT',
+                        success: () => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
+                    })
+                }
+            })
+        })
     }
 
     function delete_advanced(id) {
