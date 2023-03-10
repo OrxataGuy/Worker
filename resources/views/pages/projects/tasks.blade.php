@@ -94,7 +94,7 @@
                         </i>
                     </a>
                     <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
-                        <i class="fas fa-gear">
+                        <i class="fas fa-gears">
                           <span class="showHide">Corregir</span></i>
                     </a>
                     @else
@@ -198,7 +198,7 @@
     function endCounter(id) {
         Swal.fire({
             title: 'Finalizar tarea',
-            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-input"></textarea>`,
+            html: `<textarea id="text" placeholder="Solución propuesta" style="height:5em;" cols="25"  class="swal2-input"></textarea>`,
             confirmButtonText: "Finalizar",
             preConfirm: () => {
                 const text = $("#text").val();
