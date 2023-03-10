@@ -271,7 +271,7 @@
                         url: "{{ route('tasks.time', ['task' => ':id']) }}".replace(':id',id),
                         data: {id:id, time: time},
                         type: 'PUT',
-                        success: () => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
+                        success: data => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
                     })
                 }
             })
