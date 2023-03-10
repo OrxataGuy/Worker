@@ -148,7 +148,7 @@
     function reopen(id, bug) {
         Swal.fire({
             title: 'Reabrir tarea',
-            html: bug ? `<textarea id="text" placeholder="Explicación del bug" class="swal2-form" style="width: 100%" rows="6"></textarea>` : `<textarea id="text" placeholder="Explicación de la ampliación" class="swal2-form" style="width: 100%" rows="6"></textarea>`,
+            html: bug ? `<textarea id="text" placeholder="Explicación del bug" class="swal2-input" style="width: 100%" rows="6"></textarea>` : `<textarea id="text" placeholder="Explicación de la ampliación" class="swal2-input" style="width: 100%" rows="6"></textarea>`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
                 const text = $("#text").val();
@@ -168,10 +168,10 @@
     function addTaskForm(id) {
         Swal.fire({
             title: 'Crear tarea',
-            html: `<input type="text" placeholder="Título" id="title" style="width:100%;" class="swal2-form" />
+            html: `<input type="text" placeholder="Título" id="title" style="width:100%;" class="swal2-input" />
             <br/><br/>
-            <textarea id="desc" class="swal2-form" style="width:100%"  rows="5" placeholder="Descripción"></textarea>
-            <br/><br/><textarea id="details" class="swal2-form" style="width:100%"   rows="5" placeholder="Detalles"></textarea>`,
+            <textarea id="desc" class="swal2-input" style="width:100%"  rows="5" placeholder="Descripción"></textarea>
+            <br/><br/><textarea id="details" class="swal2-input" style="width:100%"   rows="5" placeholder="Detalles"></textarea>`,
             confirmButtonText: 'Crear',
             preConfirm: () => {
                 const title = $("#title").val(),
@@ -198,7 +198,7 @@
     function endCounter(id) {
         Swal.fire({
             title: 'Finalizar tarea',
-            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-form"></textarea>`,
+            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-input"></textarea>`,
             confirmButtonText: "Finalizar",
             preConfirm: () => {
                 const text = $("#text").val();
@@ -266,18 +266,20 @@
         getTask(id).then(data => {
             Swal.fire({
                 title: 'Corregir tiempos',
-                html: `<input type="number" placeholder="Minutos" class="swal2-form" value="${data.value.time}" id="time" /><br/><input type="number" value="${data.value.priority}" placeholder="Prioridad" class="swal2-form" id="priority" max="9" min="0" />`,
+                html: `<input type="number" placeholder="Minutos" class="swal2-input" value="${data.value.time}" id="time" /><br/><br/><input type="number" value="${data.value.priority}" placeholder="Prioridad" class="swal2-input" id="priority" max="9" min="0" />`,
                 confirmButtonText: 'Corregir',
                 preConfirm: () => {
-                    const time = $("#time").val()
-                    return {time: time}
+                    const time = $("#time").val(),
+                        priority = $("#priority").val();
+
+                    return {time: time, priority: priority}
                     }
                 }).then(e => {
                     if (e.isConfirmed) {
 
                         $.ajax({
                             url: "{{ route('tasks.time', ['task' => ':id']) }}".replace(':id',id),
-                            data: {id:id, time: e.value.time},
+                            data: {id:id, time: e.value.time, priority: e.value.priority},
                             type: 'PUT',
                             success: data => Swal.fire('Tiempo corregido', 'La página se va a recargar', 'success').then(() => location.reload())
                         })

@@ -218,7 +218,7 @@
     function configTime(id) {
         Swal.fire({
             title: 'Corregir tiempos',
-            html: '<input type="number" placeholder="Minutos" class="swal2-form" id="time" />',
+            html: '<input type="number" placeholder="Minutos" class="swal2-input" id="time" />',
             confirmButtonText: 'Corregir',
             preConfirm: () => {
                 const time = $("#time").val()
@@ -249,7 +249,7 @@
     function updateDescription(id, el) {
         Swal.fire({
             title: 'Actualizar descripción',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${el.innerText}</textarea>`,
+            html: `<textarea id="text" class="swal2-input" style="width:100%" rows="10">${el.innerText}</textarea>`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
                 const text = $("#text").val();
@@ -274,7 +274,7 @@
     function updateDetails(id, el) {
         Swal.fire({
             title: 'Actualizar detalles',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" rows="10">${mkdown.makeMarkdown(el.innerHTML)}</textarea>`,
+            html: `<textarea id="text" class="swal2-input" style="width:100%" rows="10">${mkdown.makeMarkdown(el.innerHTML)}</textarea>`,
             confirmButtonText: 'Confirmar',
             showDenyButton: true,
             denyButtonText: 'Borrar',
@@ -313,7 +313,7 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir comentario',
-            html: `<textarea id="text" class="swal2-form" style="width:100%" placeholder="Comentario (Mínimo 5 catacteres)." rows="5" required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-form" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
+            html: `<textarea id="text" class="swal2-input" style="width:100%" placeholder="Comentario (Mínimo 5 catacteres)." rows="5" required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-input" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             willOpen: () => {
                 Swal.disableButtons()
@@ -350,7 +350,7 @@
     function endCounter(id) {
         Swal.fire({
             title: 'Finalizar tarea',
-            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-form"></textarea>`,
+            html: `<textarea id="text" placeholder="Solución propuesta" style="width:100%" cols="6" class="swal2-input"></textarea>`,
             confirmButtonText: "Finalizar",
             preConfirm: () => {
                 const text = $("#text").val();

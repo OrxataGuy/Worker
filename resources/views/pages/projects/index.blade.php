@@ -133,7 +133,7 @@
         getProject(id).then(data => {
             Swal.fire({
                 title: 'Editar nombre del proyecto',
-                html: `<input type="text" name="text" id="text" placeholder="Nuevo nombre del proyecto" value="${data.value.name}" class="swal2-form" />`,
+                html: `<input type="text" name="text" id="text" placeholder="Nuevo nombre del proyecto" value="${data.value.name}" class="swal2-input" />`,
                 confirmButtonText: 'Confirmar nombre',
                 preConfirm: () => {
                     const text = $("#text").val();

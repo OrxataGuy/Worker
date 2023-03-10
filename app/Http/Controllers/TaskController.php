@@ -209,6 +209,7 @@ class TaskController extends Controller
     public function updateTime(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
         $task->time = $request->get('time');
+        $task->priority = $request->get('priority');
         $task->save();
         $task->reg();
         return response()->json(array(
