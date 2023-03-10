@@ -150,7 +150,7 @@
     function reopen(id, bug) {
         Swal.fire({
             title: 'Reabrir tarea',
-            html: bug ? `<textarea id="text" placeholder="Explicación del bug" class="swal2-input" style="width: 100%" rows="6"></textarea>` : `<textarea id="text" placeholder="Explicación de la ampliación" class="swal2-input" style="width: 100%" rows="6"></textarea>`,
+            html: bug ? `<textarea id="text" placeholder="Explicación del bug" class="swal2-input" style="height:5em;"></textarea>` : `<textarea id="text" placeholder="Explicación de la ampliación" class="swal2-input" style="width: 100%" rows="6"></textarea>`,
             confirmButtonText: 'Confirmar',
             preConfirm: () => {
                 const text = $("#text").val();
@@ -172,8 +172,8 @@
             title: 'Crear tarea',
             html: `<input type="text" placeholder="Título" id="title" style="width:100%;" class="swal2-input" />
             <br/><br/>
-            <textarea id="desc" class="swal2-input" style="width:100%"  rows="5" placeholder="Descripción"></textarea>
-            <br/><br/><textarea id="details" class="swal2-input" style="width:100%"   rows="5" placeholder="Detalles"></textarea>`,
+            <textarea id="desc" class="swal2-input" style="height:5em;" placeholder="Descripción"></textarea>
+            <br/><br/><textarea id="details" class="swal2-input" style="height:5em;" placeholder="Detalles"></textarea>`,
             confirmButtonText: 'Crear',
             preConfirm: () => {
                 const title = $("#title").val(),
@@ -200,7 +200,7 @@
     function endCounter(id) {
         Swal.fire({
             title: 'Finalizar tarea',
-            html: `<textarea id="text" placeholder="Solución propuesta" style="height:5em;" cols="25"  class="swal2-input"></textarea>`,
+            html: `<textarea id="text" placeholder="Solución propuesta" style="height:5em;"  class="swal2-input"></textarea>`,
             confirmButtonText: "Finalizar",
             preConfirm: () => {
                 const text = $("#text").val();
