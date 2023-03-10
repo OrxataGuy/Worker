@@ -41,7 +41,7 @@
               </tr>
           </thead>
           <tbody>
-            @foreach($project->tasks as $task)
+            @foreach($project->tasks()->orderBy('finished', 'asc')->orderBy('priority','desc')->get() as $task)
               <tr id="row-{{ $task->id }}" class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @endif">
                   <td>
                       {{ $task->id }}
