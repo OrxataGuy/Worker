@@ -264,6 +264,7 @@
             preConfirm: () => {
                 const time = $("#time").val()
                 return {time: time}
+                }
             }).then(e => {
                 if (e.isConfirmed) {
                     $.ajax({
