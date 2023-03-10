@@ -94,8 +94,7 @@
                         </i>
                     </a>
                     <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
-                        <i class="fas fa-gears">
-                          <span class="showHide">Corregir</span></i>
+                        <i class="fas fa-gears"></i>
                     </a>
                     @else
                     <a class="btn btn-warning btn-sm" onclick="reopen({{ $task->id }}, 0)" href="#">
