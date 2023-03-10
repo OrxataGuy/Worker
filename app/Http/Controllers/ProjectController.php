@@ -73,7 +73,10 @@ class ProjectController extends Controller
      */
     public function show($id) : JsonResponse
     {
-        $project = Project::with('tasks')->find($id);
+        $project = Project::with(['tasks' => function ($query) {
+            $query->orderBy('finished', 'asc')->orderBy('priority', 'desc');
+        }])->find($id);
+
         return response()->json(array(
             'status' => '200',
             'value' => $project
