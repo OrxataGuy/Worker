@@ -75,7 +75,7 @@
                           <span class="showHide">Finalizar</span></i>
                     </a>
                     <a class="btn btn-secondary btn-sm" href="#" onclick="configTime({{ $task->id }})">
-                        <i class="fas fa-pencil">
+                        <i class="fas fa-pencil-alt">
                           <span class="showHide">Corregir</span></i>
                     </a>
                 </td>
