@@ -258,7 +258,7 @@
 
     function getTask(id) {
         return $.ajax({
-            url: "{{ route('tasks.show', ['task' => ':id']) }}"
+            url: "{{ route('tasks.show', ['task' => ':id']) }}".replace(':id', id)
         })
     }
 
