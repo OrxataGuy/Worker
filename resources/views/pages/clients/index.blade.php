@@ -1,8 +1,10 @@
 @if(auth()->user()->role==1)
-    @extends('layouts.main')
+    @php $layout = 'layouts.main'; @endphp
 @else
-    @extends('layouts.clients')
+    @php $layout = 'layouts.clients'; @endphp
 @endif
+
+@extends($layout)
 
 @section('clients-section', 'active')
 @section('title', 'Clientes')
