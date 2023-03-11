@@ -1,4 +1,4 @@
-@if(auth()->user()->role==1)
+@if(auth()->user()->role==0)
     @extends('layouts.main')
 @else
     @extends('layouts.clients')

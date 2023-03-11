@@ -21,7 +21,7 @@
 <div class="wrapper">
 
   <!-- include('partials.splash') -->
-  @include('partials.header')
+  @include('partials.header-cli')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="margin:0;">
