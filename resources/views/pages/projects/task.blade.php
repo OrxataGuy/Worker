@@ -27,7 +27,7 @@
 </div>
 
 @else
-@if(auth()->user()->isDeveloper())
+@if(auth()->user()->role == 1)
 <div class="card">
     <div class="card-header" data-card-widget="collapse" title="Collapse">
       <h3 class="card-title">Controles de la tarea</h3>

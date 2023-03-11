@@ -13,7 +13,7 @@
       <h3 class="card-title" data-card-widget="collapse" title="Collapse">Proyectos de {{ $client->name }}</h3>
 
       <div class="card-tools">
-        @if(auth()->user()-isDeveloper())
+        @if(auth()->user()-role == 1)
         <button type="button" class="btn btn-tool" onclick="location.href='{{ route('projects.create', ['client' => $client->id]) }}'">
           <i class="fas fa-plus"></i>
         </button>
