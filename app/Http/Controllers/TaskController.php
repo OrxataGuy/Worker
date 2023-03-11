@@ -218,6 +218,16 @@ class TaskController extends Controller
         ));
     }
 
+    public function updateWorkingOn(Request $request) : JsonResponse {
+        $task = Task::find($request->get('id'));
+        $task->workingOn = $request->get('working');
+        $task->save();
+        return response()->json(array(
+            'status' => '200',
+            'value' => $task
+        ));
+    }
+
     public function delInfo($task, $id) : JsonResponse {
         $advanced = AdvancedTask::find($id);
         $advanced->visible = 0;

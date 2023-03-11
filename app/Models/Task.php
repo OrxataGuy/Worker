@@ -27,11 +27,19 @@ class Task extends Model
             return [$this->getTime(), $this->price];
         }
 
+
+
         $start = (new DateTime($this->last_run))->getTimestamp();
         $end = (new DateTime($this->updated_at))->getTimestamp();
 
         $time = ($end - $start)/60;
         $this->time += $time;
+        TaskTime::create([
+            'task_id' => $this->id,
+            'technology_id' => $this->workingOn,
+            'time' => $time
+        ]);
+        $this->workingOn = null;
         if($this->time > 0) {
             $this->mins = (int)($this->time);
             $this->secs = ($this->time*60)%60;

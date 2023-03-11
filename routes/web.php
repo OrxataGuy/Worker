@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'tasks/{task}'], function () {
         Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
         Route::put('config', [Tasks::class, 'updateTime'])->name('tasks.time');
+        Route::put('work', [Tasks::class, 'updateWorkingOn'])->name('tasks.work');
         Route::post('open', [Tasks::class, 'reopen'])->name('tasks.reopen');
         Route::put('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
         Route::put('finish', [Tasks::class, 'destroy'])->name('tasks.destroy');
