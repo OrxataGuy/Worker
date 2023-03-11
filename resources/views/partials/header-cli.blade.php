@@ -59,6 +59,4 @@
                                     </form>
                                 </div>
   -->
-<script>
-    $('body').addClass('sidebar-collapse');
-</script>
+
