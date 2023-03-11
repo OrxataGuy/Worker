@@ -1,4 +1,9 @@
-@extends('layouts.main')
+@if(auth()->user()->role==1)
+    @extends('layouts.main')
+@else
+    @extends('layout.clients')
+@endif
+
 @section('projects-section', 'active')
 @section('title', 'Tarea')
 @section('breadcrumb')
