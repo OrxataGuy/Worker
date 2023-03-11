@@ -16,7 +16,7 @@ class OnlyDev
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->isDeveloper())
+        if(auth()->user()->role==1)
             return $next($request);
         abort(404);
     }

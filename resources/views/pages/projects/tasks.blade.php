@@ -12,7 +12,7 @@
       <h3 class="card-title">{{ $project->name }}</h3>
 
       <div class="card-tools">
-       @if(\Auth::user()->isDeveloper)
+       @if(auth()->user()->role==1)
         <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
           <i class="fas fa-plus"></i>
         </button>
@@ -76,7 +76,7 @@
                           <i class="fas fa-eye">
                           </i>
                       </a>
-                     @if(\Auth::user()->isDeveloper)
+                     @if(auth()->user()->role==1)
                       @if($task->finished==0)
                       <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
 

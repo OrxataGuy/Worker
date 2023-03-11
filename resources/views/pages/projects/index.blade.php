@@ -98,7 +98,7 @@
                           </i>
                           <span class="showHide">Abrir</span>
                       </a>
-                     @if(\Auth::user()->isDeveloper)
+                     @if(auth()->user()->role==1)
                             <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
                             <i class="fas fa-pencil-alt">
                             </i>
