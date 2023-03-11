@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
   @yield('styles')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<body class="hold-transition layout-fixed sidebar-collapse">
 <div class="wrapper">
 
   <!-- include('partials.splash') -->
