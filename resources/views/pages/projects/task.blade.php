@@ -392,7 +392,7 @@
             Swal.fire({
                 title: 'Selecciona tecnología',
                 html:`<h5>¿Con qué tecnología vas a trabajar?</h5>
-                    <div style="display:flex">
+                    <div style="display:flex; flex-wrap: wrap; flex-flow: space-around;">
                         @foreach($project->technologies as $tech)
                             <button type="button" style="margin:0.1em;" class="btn btn-primary">{{ $tech->name }} ({{ $tech->context }})</button>
                         @endforeach
