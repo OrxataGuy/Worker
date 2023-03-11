@@ -394,7 +394,7 @@
                 html:`<h5>¿Con qué tecnología vas a trabajar?</h5>
                     <div style="display:flex; flex-wrap: wrap; justify-content: space-around; align-content: center;">
                         @foreach($project->technologies as $tech)
-                            <button type="button" style="margin:0.1em;" onclick="setWorkTo('{{ $tech->context }}', () => Swal.close())" class="btn work-btn @if($tech->context=="FRONTEND") btn-info @elseif($tech->context=="DATABASE") btn-danger @elseif($tech->context=="BACKEND") btn-success @else  btn-primary @endif">{{ $tech->name }} ({{ $tech->context }})</button>
+                            <button type="button" style="margin:0.1em;" onclick="setWorkTo('${id}, {{ $tech->id }}, () => Swal.close())" class="btn work-btn @if($tech->context=="FRONTEND") btn-info @elseif($tech->context=="DATABASE") btn-danger @elseif($tech->context=="BACKEND") btn-success @else  btn-primary @endif">{{ $tech->name }} ({{ $tech->context }})</button>
                         @endforeach
                     </div>
                 `,
