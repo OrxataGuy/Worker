@@ -18,6 +18,6 @@ class OnlyDev
     {
         if(auth()->user()->isDeveloper())
             return $next($request);
-        abort(403);
+        abort(404);
     }
 }
