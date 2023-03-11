@@ -391,6 +391,7 @@
             newc = 'warning'
             Swal.fire({
                 title: 'Selecciona tecnología',
+                allowOutsideClick: false,
                 html:`<h5>¿Con qué tecnología vas a trabajar?</h5>
                     <div style="display:flex; flex-wrap: wrap; justify-content: space-around; align-content: center;">
                         @foreach($project->technologies as $tech)

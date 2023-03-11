@@ -231,6 +231,7 @@
             }
         })
     }
+
     function toggleStatus(e, id) {
         let old = stat = oldc = newc = ''
         if ($(`#run-${id}`).hasClass('active')) {
@@ -238,16 +239,31 @@
             stat = 'pause'
             oldc = 'success'
             newc = 'warning'
-            $(`#row-${id}`).addClass('bg-warning')
-            startCounter(id);
+            Swal.fire({
+                title: 'Selecciona tecnología',
+                allowOutsideClick: false,
+                html:`<h5>¿Con qué tecnología vas a trabajar?</h5>
+                    <div style="display:flex; flex-wrap: wrap; justify-content: space-around; align-content: center;">
+                        @foreach($project->technologies as $tech)
+                            <button type="button" style="margin:0.1em;" onclick="setWorkTo(${id}, {{ $tech->id }}, () => Swal.close())" class="btn work-btn @if($tech->context=="FRONTEND") btn-info @elseif($tech->context=="DATABASE") btn-danger @elseif($tech->context=="BACKEND") btn-success @else  btn-primary @endif">{{ $tech->name }} ({{ $tech->context }})</button>
+                        @endforeach
+                    </div>
+                `,
+                willOpen: () => {
+                    $('.swal2-confirm').css('display', 'none');
+                }
+            }).then(e => {
+                startCounter(id);
+            })
+
         }else{
             old = 'pause'
             stat = 'run'
             oldc = 'warning'
             newc = 'success'
-            $(`#row-${id}`).removeClass('bg-warning')
             clearInterval(counting[id]);
         }
+
         $(`#${old}-${id}`).removeClass('active');
         $(`#${old}-${id}`).css('display', 'none');
         $(e).removeClass(`btn-${oldc}`)
@@ -256,6 +272,16 @@
         $(`#${stat}-${id}`).addClass('active');
         $(`#stop-${id}`).removeClass('disabled');
         toggleCounter(id);
+
+    }
+
+    function setWorkTo(id, target, cb) {
+        $.ajax({
+            url: "{{ route('tasks.work', ['task' => ':id']) }}".replace(':id',id),
+            type: 'PUT',
+            data: {id: id, work: target},
+            success: () => cb()
+        })
     }
 
     function getTask(id) {
