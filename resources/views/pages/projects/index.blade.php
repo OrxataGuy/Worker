@@ -1,8 +1,5 @@
-@if(auth()->user()->role==0)
     @extends('layouts.main')
-@else
-    @extends('layouts.clients')
-@endif
+
 
 @section('projects-section', 'active')
 @section('title', 'Proyectos')
