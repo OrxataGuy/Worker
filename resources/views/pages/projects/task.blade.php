@@ -395,7 +395,7 @@
                     <div style="display:flex">
                         @foreach($project->technologies as $tech)
                             <button type="button" class="btn btn-primary">{{ $tech->name }} ({{ $tech->context }})</button>
-                        @endif
+                        @endforeach
                     </div>
                 `
             }).then(e => {
