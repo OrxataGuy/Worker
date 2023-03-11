@@ -389,7 +389,21 @@
             stat = 'pause'
             oldc = 'success'
             newc = 'warning'
-            startCounter(id);
+            Swal.fire({
+                title: 'Selecciona tecnología',
+                html:`<h5>¿Con qué tecnología vas a trabajar?</h5>
+                    <div style="display:flex">
+                        @foreach($project->technologies as $tech)
+                            <button type="button" class="btn btn-primary">{{ $tech->name }} ({{ $tech->context }})</button>
+                        @endif
+                    </div>
+                `
+            }).then(e => {
+                if(e.isConfirmed) {
+                    startCounter(id);
+                }
+            })
+
         }else{
             old = 'pause'
             stat = 'run'
