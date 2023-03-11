@@ -15,7 +15,7 @@ class AddTaskWorkingOn extends Migration
     {
         Schema::table('tasks', function($table)
         {
-            $table->unisgnedBigInteger('workingOn')->after('priority')->nullable();
+            $table->unsignedBigInteger('workingOn')->after('priority')->nullable();
             $table->foreign('workingOn')->references('id')->on('technologies')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
