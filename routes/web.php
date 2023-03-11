@@ -38,14 +38,10 @@ Route::group(['middleware' => ['auth', 'only-dev']], function () {
     Route::group(['prefix' => 'payments'], function () {
         Route::get('{client}/view', [Payments::class, 'view'])->name('payments.view');
     });
-});
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::resource('projects', Projects::class)->only('index','store','show','update','destroy');
-    Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
-    Route::resource('tasks', Tasks::class)->only('show','store','update');
+    Route::resource('projects', Projects::class)->only('store','update','destroy');
+    Route::resource('tasks', Tasks::class)->only('store','update');
     Route::group(['prefix' => 'tasks/{task}'], function () {
-        Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
         Route::put('config', [Tasks::class, 'updateTime'])->name('tasks.time');
         Route::put('work', [Tasks::class, 'updateWorkingOn'])->name('tasks.work');
         Route::post('open', [Tasks::class, 'reopen'])->name('tasks.reopen');
@@ -55,5 +51,14 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.info.add');
             Route::put('{info}/delete', [Tasks::class, 'delInfo'])->name('tasks.info.del');
         });
+    });
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('projects', Projects::class)->only('index','show');
+    Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
+    Route::resource('tasks', Tasks::class)->only('show');
+    Route::group(['prefix' => 'tasks/{task}'], function () {
+        Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
     });
 });
