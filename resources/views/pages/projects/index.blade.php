@@ -13,12 +13,14 @@
       <h3 class="card-title" data-card-widget="collapse" title="Collapse">Proyectos de {{ $client->name }}</h3>
 
       <div class="card-tools">
+        @if(auth()->user()-isDeveloper())
         <button type="button" class="btn btn-tool" onclick="location.href='{{ route('projects.create', ['client' => $client->id]) }}'">
           <i class="fas fa-plus"></i>
         </button>
         <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
           <i class="fas fa-times"></i>
         </button>
+        @endif
       </div>
     </div>
     <div class="card-body p-0">
@@ -96,20 +98,22 @@
                           </i>
                           <span class="showHide">Abrir</span>
                       </a>
-                      <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
-                          <i class="fas fa-pencil-alt">
-                          </i>
-                          <span class="showHide">Editar</span>
-                      </a>
-                      <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
-                        <i class="fas fa-dollar-sign">
-                        </i>
-                        <span class="showHide">Cobrar</span>
-                      </a>
-                      <a class="btn btn-danger btn-sm" href="#" onclick="abortForm({{ $project->id }})">
-                          <i class="fas fa-trash">
-                          </i>
-                      </a>
+                      @if(auth()->user()->isDeveloper())
+                            <a class="btn btn-info btn-sm" href="#" onclick="editForm({{ $project->id }})">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            <span class="showHide">Editar</span>
+                        </a>
+                        <a class="btn btn-success btn-sm" href="#" onclick="payForm({{ $project->id }})">
+                            <i class="fas fa-dollar-sign">
+                            </i>
+                            <span class="showHide">Cobrar</span>
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="#" onclick="abortForm({{ $project->id }})">
+                            <i class="fas fa-trash">
+                            </i>
+                        </a>
+                        @endif
                   </td>
               </tr>
               @endforeach

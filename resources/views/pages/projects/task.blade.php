@@ -27,6 +27,7 @@
 </div>
 
 @else
+@if(auth()->user()->isDeveloper())
 <div class="card">
     <div class="card-header" data-card-widget="collapse" title="Collapse">
       <h3 class="card-title">Controles de la tarea</h3>
@@ -97,6 +98,7 @@
     <!-- /.card-body -->
 </div>
 @endif
+@endif
 
 
 
@@ -104,9 +106,11 @@
     <div class="card-header" data-card-widget="collapse" title="Collapse">
     <h3 class="card-title">Descripción @if($task->details)y detalles @endif </h3>
     <div class="card-tools">
+        @if(auth()->user()->isDeveloper())
       <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
         <i class="fas fa-minus"></i>
       </button>
+      @endif
     </div>
   </div>
   <div class="card-body">
@@ -122,9 +126,11 @@
     <div class="card-header" >
     <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Comentarios adicionales </h3>
     <div class="card-tools">
+        @if(auth()->user()->isDeveloper())
         <button type="button" class="btn btn-tool" onclick="addAdvancedTask({{ $task->id }})">
             <i class="fas fa-plus"></i>
           </button>
+          @endif
     </div>
   </div>
   <div class="card-body p-0">
@@ -166,10 +172,14 @@
                     @endif
                  @endif
               </td>
-              <td><a class="btn btn-danger btn-sm" onclick="delete_advanced({{ $atask->id }})" href="#">
+              <td>
+                @if(auth()->user()->isDeveloper())
+                <a class="btn btn-danger btn-sm" onclick="delete_advanced({{ $atask->id }})" href="#">
                 <i class="fas fa-trash">
                 </i>
-            </a></td>
+            </a>
+            @endif
+        </td>
             </tr>
             @endforeach
         </tbody>
