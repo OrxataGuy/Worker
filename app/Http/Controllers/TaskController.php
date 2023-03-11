@@ -220,7 +220,7 @@ class TaskController extends Controller
 
     public function updateWorkingOn(Request $request) : JsonResponse {
         $task = Task::find($request->get('id'));
-        $task->workingOn = $request->get('working');
+        $task->workingOn = $request->get('work');
         $task->save();
         return response()->json(array(
             'status' => '200',
