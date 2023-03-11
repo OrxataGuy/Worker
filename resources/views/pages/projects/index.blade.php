@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.page')
 @section('projects-section', 'active')
 @section('title', 'Proyectos')
 @section('section-name', 'Proyectos')
