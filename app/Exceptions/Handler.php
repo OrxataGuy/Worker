@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use \Illuminate\Http\RedirectResponse as Redirection;
-use \Symfony\Component\HttpKernel\Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -51,8 +51,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if($exception instanceof \Symfony\Component\HttpKernel\Exception) {
-            dd($exception->getStatusCode());
+        if($exception instanceof HttpResponseException) {
+            dd($exception);
         }
         return parent::render($request, $exception);
     }
