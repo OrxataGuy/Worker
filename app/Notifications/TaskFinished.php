@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use NotificationChannels\PusherPushNotifications\PusherChannel;
 use NotificationChannels\PusherPushNotifications\PusherMessage;
 use Illuminate\Notifications\Notification;
@@ -10,6 +12,16 @@ use Illuminate\Notifications\Notification;
 class TaskFinished extends Notification
 {
     use Queueable;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
 
     public function via($notifiable)
     {
