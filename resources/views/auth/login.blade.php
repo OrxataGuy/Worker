@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Orxata</b>Software.<sub>WAW</sub></a>
+    <a href=""><b>Orxata</b>Software.<sub>{{ config('app.site') }}</sub></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

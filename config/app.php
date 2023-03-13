@@ -52,11 +52,11 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://dev.orxatasoftware.com'),
+    'url' => '',
 
     'version' => env('APP_VERSION', '0.0.1'),
 
-    'site' => 'DEV',
+    'site' => '',
 
     'asset_url' => env('ASSET_URL', null),
 
