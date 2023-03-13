@@ -18,6 +18,6 @@ class OnlyDev
     {
         if(auth()->user()->role==1)
             return $next($request);
-        abort(404);
+       return redirect()->route('projects');
     }
 }
