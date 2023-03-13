@@ -28,6 +28,6 @@ class HomeController extends Controller
      */
     public function index() : View|Redirection
     {
-        return auth()->user()->role==0 ? view('pages.home') : redirect('projects');
+        return auth()->user()->role==1 ? view('pages.home') : redirect('projects');
     }
 }
