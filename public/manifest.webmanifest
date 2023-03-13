@@ -1,0 +1,15 @@
+{
+    "background_color": "#f4f6f9",
+    "description": "Aplicación para controlar el flujo de trabajo en OrxataSoftware.",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "img/logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "name": "Orxata Software",
+    "short_name": "OrxataSoftware",
+    "start_url": "/projects"
+  }
