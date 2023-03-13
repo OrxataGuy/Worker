@@ -27,7 +27,7 @@ class SetAppConfigMiddleware
             }
         }else {
             $url = $request->get('url');
-            dd($request->headers()->get('host'));
+            dd($request->headers);
         }
         return $next($request);
     }
