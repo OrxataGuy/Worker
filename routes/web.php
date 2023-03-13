@@ -29,7 +29,7 @@ Route::get('/', [Home::class, 'index'])->name('home');
 Route::get('register', [Home::class, 'index'])->name('prevent.reg.get');
 Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
 Route::get('kitten', function() {
-    \Illuminate\Support\Facades\Notification::send(\App\Models\User::find(1), new \App\Notifications\TaskFinished(null));
+    \Illuminate\Support\Facades\Notification::sendNow(\App\Models\User::find(1), new \App\Notifications\TaskFinished(null));
 });
 
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
