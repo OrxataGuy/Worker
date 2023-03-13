@@ -62,7 +62,7 @@
         title: 'Es necesario cambiar la contraseña',
         html: `<p>Por favor, cambie la contraseña a una que le sea fácil de recordar.</p>
         <input type="password" id="password" value="" placeholder="Su contraseña" class="swal2-input" />
-        <sub>Recuerde que su contraseña debe contener al menos 8 caracteres, mayúsculas, minúsculas, números y caracteres especiales.</sub>`,
+        <br/><sub>Recuerde que su contraseña debe contener al menos 8 caracteres, mayúsculas, minúsculas, números y caracteres especiales.</sub>`,
         confirmButtonText: 'Confirmar contraseña',
         allowOutsideClick: false,
         willOpen: () => {
