@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Orxata</b>Software.<sub>{{ config('app.site') }}</sub></a>
+    <a href="" id="installApp"><b>Orxata</b>Software.<sub>{{ config('app.site') }}</sub></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -41,8 +41,6 @@
           </div>
         </div>
         <div class="row">
-            <button id="installApp" class="btn btn-secondary btn-block">Instalar</button>
-
           <div class="col-8">
             <div class="icheck-primary">
               <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
