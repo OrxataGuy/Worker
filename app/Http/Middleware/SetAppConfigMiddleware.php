@@ -19,16 +19,9 @@ class SetAppConfigMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $authorized = Auth::user();
-        if(!App::runningInConsole() && !is_null($authorized)) {
-            if($authorized->role==1) {
-                Config::set('url', 'https://clients.orxatasoftware.com');
-                Config::set('site', 'CLIENTS');
-            }
-        }else {
-            $url = $request->get('url');
-            dd($request->getHttpHost());
-        }
+        $url = explode('.',$request->getHttpHost());
+        Config::set('url', 'https://'.$request->getHttpHost());
+        Config::set('site', strtoupper($url[0]));
         return $next($request);
     }
 }
