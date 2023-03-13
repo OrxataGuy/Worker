@@ -33,7 +33,7 @@
   </style>
   @yield('styles')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition layout-fixed sidebar-collapse">
 <div class="wrapper">
 
   <!-- include('partials.splash') -->
