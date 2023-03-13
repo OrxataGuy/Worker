@@ -61,7 +61,7 @@
         Swal.fire({
         title: 'Es necesario cambiar la contraseña',
         html: `<p>Por favor, cambie la contraseña a una que le sea fácil de recordar.</p>
-        <input type="password" id="password" placeholder="Su contraseña" class="swal2-input" />
+        <input type="password" id="password" value="" placeholder="Su contraseña" class="swal2-input" />
         <sub>Recuerde que su contraseña debe contener al menos 8 caracteres, mayúsculas, minúsculas, números y caracteres especiales.</sub>`,
         confirmButtonText: 'Confirmar contraseña',
         allowOutsideClick: false,
@@ -75,6 +75,8 @@
             $('#password').on('keyup', e => {
                 if (checkPwd($('#password').val())) Swal.enableButtons()
                 else Swal.disableButtons()
+                let pwd = $('#password').val();
+                console.log(checkPwd(pwd) ? `${pwd} cumple los requerimientos` : `${pwd} no cumple los requerimientos`)
             })
         },
         preConfirm: () => {
