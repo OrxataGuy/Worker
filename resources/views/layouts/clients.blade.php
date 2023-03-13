@@ -66,7 +66,7 @@
         confirmButtonText: 'Confirmar contraseña',
         allowOutsideClick: false,
         willOpen: () => {
-            const checkPwd = str => {
+            function checkPwd(str) {
                 if (str.length < 8 || str.length > 50 || str.search(/\d/) == -1 || str.search(/[a-zA-Z]/) == -1 || str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1)
                     return false;
                 return true;
