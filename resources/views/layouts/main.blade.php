@@ -96,6 +96,9 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('plugins/showdown/showdown.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
+<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+
+
 <script>
     $.ajaxSetup({
     headers: {
