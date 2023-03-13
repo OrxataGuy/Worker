@@ -17,22 +17,59 @@
   <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+  <style>
+    .showHide { display:none; }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Desktop*/
+    @media screen and (min-width: 768px) {
+    .showHide  { display: initial;
+    margin-left: 0.5em;}
+    }
+  </style>
   @yield('styles')
 </head>
-<body class="hold-transition layout-fixed sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <!-- include('partials.splash') -->
+
+  @include('partials.splash')
+
   @include('partials.header-cli')
 
+
+  <!-- include('partials.aside') -->
+
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" style="margin:0;">
+  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-       <!-- /.content-header -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">@yield('section-name')</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                @yield('breadcrumb')
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
     <!-- Main content -->
     <section class="content">
+      <div class="container-fluid">
        @yield('content')
         <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
@@ -56,6 +93,7 @@
 <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<script src="{{ asset('plugins/showdown/showdown.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
 <script>
     $.ajaxSetup({
@@ -110,7 +148,6 @@
     })
 </script>
 @endif
-
 @yield('scripts')
 </body>
 </html>
