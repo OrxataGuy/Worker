@@ -57,7 +57,8 @@
 <script src="{{ asset('js/adminlte.js') }}"></script>
 @if(auth()->user()->password_changed == 0)
 <script>
-    Swal.fire({
+    $(() => {
+        Swal.fire({
         title: 'Es necesario cambiar la contraseña',
         html: `<p>Por favor, cambie la contraseña a una que le sea fácil de recordar.</p>
         <input type="password" id="password" placeholder="Su contraseña" class="swal2-input" />
@@ -93,6 +94,8 @@
                 })
             }
         })
+
+    })
 </script>
 @endif
 
