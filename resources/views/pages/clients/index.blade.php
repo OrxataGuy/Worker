@@ -105,9 +105,9 @@ function getClient(id) {
         getClient(id).then(data => {
             Swal.fire({
                 title: 'Actualizar cliente',
-                html: `<input type="text" class="swal2-input" placeholder="Nombre de cliente" id="name" value="${data.value.name}" style="width:100%;" /><br/><br/>
-                <input type="email" class="swal2-input" id="email" placeholder="mail@cliente.com" value="${data.value.email}" style="width:100%;" /><br/><br/>
-                <input type="tel" class="swal2-input" id="tel" placeholder="+00 111 22 33 44" value="${data.value.phone}" style="width:100%;" />`,
+                html: `<input type="text" class="swal2-input" placeholder="Nombre de cliente" id="name" value="${data.value.name}" /><br/><br/>
+                <input type="email" class="swal2-input" id="email" placeholder="mail@cliente.com" value="${data.value.email}" /><br/><br/>
+                <input type="tel" class="swal2-input" id="tel" placeholder="+00 111 22 33 44" value="${data.value.phone}" />`,
                 confirmButtonText: 'Editar cliente',
                 preConfirm: () => {
                     const email = $("#email").val(),

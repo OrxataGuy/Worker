@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController as Tasks;
 use App\Http\Controllers\PaymentController as Payments;
 use App\Http\Controllers\PlanificationController as Plans;
 use App\Http\Controllers\DocumentController as Docs;
+use App\Http\Controllers\UserController as Users;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,7 @@ Route::group(['middleware' => ['auth', 'only-dev']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::post('change-pwd', [Users::class, 'passwordChange'])->name('pwd.change');
     Route::resource('projects', Projects::class)->only('index','show');
     Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
     Route::resource('tasks', Tasks::class)->only('show');

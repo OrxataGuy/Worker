@@ -181,7 +181,7 @@
     function addTaskForm(id) {
         Swal.fire({
             title: 'Crear tarea',
-            html: `<input type="text" placeholder="Título" id="title" style="width:100%;" class="swal2-input" />
+            html: `<input type="text" placeholder="Título" id="title" class="swal2-input" />
             <br/><br/>
             <textarea id="desc" class="swal2-input" style="height:5em;" placeholder="Descripción"></textarea>
             <br/><br/><textarea id="details" class="swal2-input" style="height:5em;" placeholder="Detalles"></textarea>`,

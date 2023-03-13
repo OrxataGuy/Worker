@@ -55,6 +55,47 @@
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
+@if(auth()->user()->password_changed == 0)
+<script>
+    Swal.fire({
+        title: 'Es necesario cambiar la contraseña',
+        html: `<p>Por favor, cambie la contraseña a una que le sea fácil de recordar.</p>
+        <input type="password" id="password" placeholder="Su contraseña" class="swal2-input" />
+        <sub>Recuerde que su contraseña debe contener al menos 8 caracteres, mayúsculas, minúsculas, números y caracteres especiales.</sub>`,
+        confirmButtonText: 'Confirmar contraseña',
+        allowOutsideClick: false,
+        willOpen: () => {
+            const checkPwd = str => {
+                if (str.length < 8 || str.length > 50 || str.search(/\d/) == -1 || str.search(/[a-zA-Z]/) == -1 || str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1)
+                    return false;
+                return true;
+            }
+            Swal.disableButtons()
+            $('#password').on('keyup', e => {
+                if (checkPwd($('#password').val())) Swal.enableButtons()
+                else Swal.disableButtons()
+            })
+        },
+        preConfirm: () => {
+            const password = $('#password').val();
+            return {password: password}
+        }
+        }).then(e => {
+            if (e.isConfirmed){
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('pwd.change') }}",
+                    data: {password: e.value.password},
+                    success: data => {
+                        Swal.fire('Su contraseña se ha cambiado correctamente.', 'A continuación, su sesión se cerrará y podrá volver a entrar a la aplicación usando su nueva contraseña.', 'success')
+                        ->then(() => document.getElementById('logout-form').submit());
+                    }
+                })
+            }
+        })
+</script>
+@endif
+
 @yield('scripts')
 </body>
 </html>

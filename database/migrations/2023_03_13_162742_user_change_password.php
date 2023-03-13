@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserRoles extends Migration
+class UserChangePassword extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateUserRoles extends Migration
     {
         Schema::table('users', function($table)
         {
-            $table->tinyInteger('role')->after('email')->default(1);
+            $table->tinyInteger('password_changed')->after('password')->default(0);
         });
     }
 
@@ -26,5 +26,6 @@ class CreateUserRoles extends Migration
      */
     public function down()
     {
+        //
     }
 }

@@ -330,7 +330,7 @@
     function addAdvancedTask(id) {
         Swal.fire({
             title: 'Añadir comentario',
-            html: `<textarea id="text" class="swal2-input" style="height:5em;" placeholder="Comentario (Mínimo 5 catacteres)." required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-input" placeholder="URL" style="width:100%" id="url" /><input type="hidden" id="docid" value="" />`,
+            html: `<textarea id="text" class="swal2-input" style="height:5em;" placeholder="Comentario (Mínimo 5 catacteres)." required></textarea><br/><br/><h5>Adjuntos</h5><input type="file" id="input-file" class="swal2-file" onchange="call_upload()" /><br/><br/><input type="text" class="swal2-input" placeholder="URL" id="url" /><input type="hidden" id="docid" value="" />`,
             confirmButtonText: 'Confirmar',
             willOpen: () => {
                 Swal.disableButtons()
