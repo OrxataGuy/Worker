@@ -22,7 +22,9 @@ class ProjectController extends Controller
      */
     public function index() : View
     {
-        $clients = Client::with('projects')->get();
+        $clients = auth()->user()->role==1 ?
+                Client::with('projects')->get() :
+                Client::with('projects')->where('user_id', '=', auth()->user()->id)->get();
         return view('pages.projects.index', ['clients' => $clients]);
     }
 

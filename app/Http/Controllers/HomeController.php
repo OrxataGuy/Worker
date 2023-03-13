@@ -28,8 +28,6 @@ class HomeController extends Controller
      */
     public function index() : View|Redirection
     {
-        if(auth()->user()->role==1) return view('pages.home');
-        $clients = Client::with('projects')->where('user_id', '=', auth()->user()->id)->get();
-        return view('pages.projects.index', ['clients' => $clients]);
+        return auth()->user()->role==0 ? view('pages.home') : redirect('projects')
     }
 }
