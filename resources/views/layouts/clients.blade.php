@@ -89,7 +89,7 @@
                     data: {password: e.value.password},
                     success: data => {
                         Swal.fire('Su contraseña se ha cambiado correctamente.', 'A continuación, su sesión se cerrará y podrá volver a entrar a la aplicación usando su nueva contraseña.', 'success')
-                        ->then(() => document.getElementById('logout-form').submit());
+                        .then(() => document.getElementById('logout-form').submit());
                     }
                 })
             }
