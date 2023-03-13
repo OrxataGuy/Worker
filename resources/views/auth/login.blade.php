@@ -17,7 +17,8 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="" id="installApp"><b>Orxata</b>Software.<sub>{{ config('app.site') }}</sub></a>
+    <a href="" ><b>Orxata</b>Software.<sub>{{ config('app.site') }}</sub></a>
+    <button id="installApp">Instalar</button>
   </div>
   <!-- /.login-logo -->
   <div class="card">
