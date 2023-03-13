@@ -96,7 +96,6 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('plugins/showdown/showdown.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
-<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
 
 
 <script>
@@ -106,8 +105,8 @@
     }
 });
 </script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-  <script>
+<!--script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
@@ -120,7 +119,22 @@
     channel.bind('App\\Events\\TaskFinished', function(data) {
       console.log(JSON.stringify(data));
     });
+</script-->
+
+
+<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+<script>
+    const beamsClient = new PusherPushNotifications.Client({
+      instanceId: '03c68518-89e5-43f8-b4f0-742a52058335',
+    });
+
+    beamsClient.start()
+      .then(() => beamsClient.addDeviceInterest('hello'))
+      .then(() => console.log('Successfully registered and subscribed!'))
+      .catch(console.error);
   </script>
+
+
 @yield('scripts')
 </body>
 </html>
