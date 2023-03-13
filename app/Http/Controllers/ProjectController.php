@@ -24,7 +24,9 @@ class ProjectController extends Controller
     {
         $clients = auth()->user()->role==1 ?
                 Client::with('projects')->get() :
-                Client::with('projects')->where('user_id', '=', auth()->user()->id)->get();
+                Client::with('projects')->whereHas('client', function($query) {
+                    $query->where('user_id', '=', auth()->user()->id);
+                })->get();
         return view('pages.projects.index', ['clients' => $clients]);
     }
 
