@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $user->password = Hash::make($request->get('password'));
+        $user->password_changed = 1;
         $user->save();
         return response()->json(array('status' => 200));
     }
