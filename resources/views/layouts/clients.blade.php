@@ -63,6 +63,7 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+</script>
 @if(auth()->user()->password_changed == 0)
 <script>
     $(() => {
