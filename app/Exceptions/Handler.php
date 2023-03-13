@@ -51,8 +51,9 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         $authorized = auth()->user();
-        if(is_null($authorized) || !$authorized) return redirect('login');
+        if(is_null($authorized)) return redirect('login');
         if($authorized->role==0) return redirect('/');
+        if($exception->getCode() == 404) return redirect('/');
         return parent::render($request, $exception);
     }
 }
