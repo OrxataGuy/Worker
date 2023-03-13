@@ -41,6 +41,8 @@
           </div>
         </div>
         <div class="row">
+            <button id="installApp" class="btn btn-secondary btn-block">Instalar</button>
+
           <div class="col-8">
             <div class="icheck-primary">
               <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -52,7 +54,6 @@
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Acceder</button>
-            <button id="installApp" class="btn btn-secondary btn-block">Instalar</button>
           </div>
           <!-- /.col -->
         </div>
