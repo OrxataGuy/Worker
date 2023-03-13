@@ -51,10 +51,10 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if($exception instanceof HttpResponseException) {
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
             dd($exception);
         }
-        if($exception) dd($exception);
+
         return parent::render($request, $exception);
     }
 }
