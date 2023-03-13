@@ -67,16 +67,16 @@
         allowOutsideClick: false,
         willOpen: () => {
             function checkPwd(str) {
-                if (str.length < 8 || str.length > 50 || str.search(/\d/) == -1 || str.search(/[a-zA-Z]/) == -1 || str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1)
-                    return false;
-                return true;
-            }
+                return str.length >= 8
+                    && str.length < 50
+                    && str.search(/\d/) != -1
+                    && str.search(/[a-zA-Z]/) != -1
+                    && str.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1
+
             Swal.disableButtons()
             $('#password').on('keyup', e => {
                 if (checkPwd($('#password').val())) Swal.enableButtons()
                 else Swal.disableButtons()
-                let pwd = $('#password').val();
-                console.log(checkPwd(pwd) ? `${pwd} cumple los requerimientos` : `${pwd} no cumple los requerimientos`)
             })
         },
         preConfirm: () => {
