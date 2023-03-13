@@ -46,4 +46,12 @@ class Handler extends ExceptionHandler
             ));
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        $authorized = auth()->user();
+        if(is_null($authorized)) redirect('login');
+        if($authorized->role==0) redirect('projects');
+        return parent::render($request, $exception);
+    }
 }
