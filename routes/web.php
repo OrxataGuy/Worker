@@ -28,7 +28,10 @@ Auth::routes();
 Route::get('/', [Home::class, 'index'])->name('home');
 Route::get('register', [Home::class, 'index'])->name('prevent.reg.get');
 Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
-
+Route::get('kitten', function() {
+    event(new App\Events\TaskFinished('Notificaciones'));
+    return "Event sent";
+});
 
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
     Route::post('upload', [Docs::class, 'store'])->name('upload');

@@ -103,6 +103,21 @@
     }
 });
 </script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('0561f1d90a35bc2efbb3', {
+      cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe('task-finished');
+    channel.bind('App\\Events\\TaskFinished', function(data) {
+      console.log(JSON.stringify(data));
+    });
+  </script>
 @yield('scripts')
 </body>
 </html>
