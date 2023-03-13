@@ -22,6 +22,8 @@ class SetAppConfigMiddleware
         $url = explode('.',$request->getHttpHost());
         Config::set('url', 'https://'.$request->getHttpHost());
         Config::set('site', strtoupper($url[0]));
+
+        dd(config('app.site'));
         return $next($request);
     }
 }
