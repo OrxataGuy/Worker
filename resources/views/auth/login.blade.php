@@ -52,6 +52,7 @@
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Acceder</button>
+            <button id="installApp" class="btn btn-secondary btn-block">Instalar</button>
           </div>
           <!-- /.col -->
         </div>
