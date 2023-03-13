@@ -24,7 +24,7 @@ class DocumentController extends Controller
         $doc = Document::create([
             'name' => $request->file->getClientOriginalName(),
             'type' => strtolower($request->file->getClientMimeType()),
-            'url' => "https://dev.orxatasoftware.com/storage/$filePath"
+            'url' => config('app.url')."/storage/$filePath"
         ]);
 
         return response()->json(array(
