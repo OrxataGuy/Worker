@@ -99,6 +99,21 @@
         })
     }
 
-
+    function deleteForm(id) {
+        Swal.fire({
+            title: '¿Seguro que quieres eliminar el pago?',
+            text: "Esta acción no se puede deshacer. No quedará ningún registro de este pago.",
+            confirmButtonText: 'Eliminar pago'
+        }).then(res => {
+            if(res.isConfirmed) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: "{{ route('payments.update', ['payment' => ':id']) }}".replace(':id', id),
+                    data: {id: id},
+                    success: e => Swal.fire('Pago eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
+                })
+            }
+        })
+    }
 </script>
 @endsection
