@@ -81,7 +81,7 @@
                           <i class="fas fa-eye">
                           </i>
                       </a>
-                      @if(auth()->user()->role==0)
+                      @if(auth()->user()->role==0 && $task->finished==0)
 
                       <a class="btn btn-danger btn-sm" href="#" onclick="setPrioritary({{ $task->id }})">
                         <i class="fas fa-exclamation">
