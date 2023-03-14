@@ -14,40 +14,7 @@
 @endsection
 @section('content')
 <div class="card">
-    <div class="card-header">
-      <h3 class="card-title" data-card-widget="collapse" title="Collapse">Pagos de {{ $client->name }}</h3>
 
-      <div class="card-tools"></div>
-    </div>
-    <div class="card-body p-0">
-      <table class="table table-striped table-responsive projects">
-          <thead>
-              <tr>
-                  <th style="width: 1%">
-                      #
-                  </th>
-                  <th style="width: 20%">
-                      Proyecto
-                  </th>
-                  <th style="width: 30%">
-                      Fecha
-                  </th>
-                  <th>
-                      Concepto
-                  </th>
-                  <th style="width: 8%" class="text-center">
-                      Cantidad
-                  </th>
-                  <th style="width: 20%">
-                  </th>
-              </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-      </table>
-    </div>
-    <!-- /.card-body -->
   </div>
 @endsection
 
