@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="card-body">
-    <h5>{{ $task->updated_at }}</h5>
+    <h5>{{ date('d/m/Y H:i', strtotime($task->updated_at))                                                                                                                                            $task->updated_at }}</h5>
     <p>{{ $task->solution }}</p>
   </div>
   <!-- /.card-body -->
