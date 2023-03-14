@@ -299,7 +299,7 @@
                     url: "{{ route('tasks.prioritary', ['task' => ':id']) }}".replace(':id', id),
                     type: 'PUT',
                     data: {id: id},
-                    success: () => Swal.fire('La tarea ha sido marcada como urgente', 'La página se va a recargar.', 'success').then(() => location.reload())
+                    success: () => Swal.fire('La tarea ha sido marcada como urgente', 'La página se va a recargar.', 'success')
                 })
             }
         })
