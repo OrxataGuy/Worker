@@ -20,7 +20,7 @@
 
       <div class="card-tools">
         <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
-          <i class="fas fa-plus">Añadir tarea</i>
+          <i class="fas fa-plus"></i> <span>Añadir tarea</span>
         </button>
       </div>
     </div>
