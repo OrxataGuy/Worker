@@ -7,3 +7,5 @@
     <li class="breadcrumb-item active">Pagos de {{ $client->name }}</a></li>
 @endsection
 @section('content')
+
+@endsection
