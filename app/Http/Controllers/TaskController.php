@@ -137,6 +137,7 @@ class TaskController extends Controller
             $task->calculate();
         }
         $task->finished = 1;
+        $task->prioritary = 0;
         $task->solution = $request->get('solution');
         $task->save();
         $project = Project::with('client')->find($task->project_id);
@@ -210,6 +211,33 @@ class TaskController extends Controller
         return response()->json(array(
             'status' => '200',
             'value' => $value
+        ));
+    }
+
+    public function markAsPrioritary(Request $request) : JsonResponse
+    {
+        $task = Task::with('project')->find($request->get('id'));
+        foreach(Task::where('project_id', '=', $task->project_id)->get() as $t) {
+            $t->prioritary = 0;
+            $t->save();
+        }
+        $client = Client::find($task->project->client_id);
+
+        $task->prioritary = 1;
+        $task->save();
+
+        Log::publish([
+            'user_id' => auth()->user()->id,
+            'client_id' => $client->id,
+            'project_id' => $task->project->id,
+            'task_id' => $task->id,
+            'description' => "Se ha marcado la tarea #$task->id:$task->title como urgente"
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
+
+        return response()->json(array(
+            'status' => '200',
+            'value' => $task
         ));
     }
 

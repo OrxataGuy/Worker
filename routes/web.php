@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('tasks', Tasks::class)->only('show','store');
     Route::group(['prefix' => 'tasks/{task}'], function () {
         Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
+        Route::put('prioritary', [Tasks::class, 'markAsPrioritary'])->name('tasks.prioritary');
         Route::group(['prefix' => 'info'], function () {
             Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.info.add');
         });

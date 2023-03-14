@@ -48,8 +48,8 @@
               </tr>
           </thead>
           <tbody>
-            @foreach($project->tasks()->orderBy('finished', 'asc')->orderBy('priority','desc')->get() as $task)
-              <tr id="row-{{ $task->id }}" class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @endif">
+            @foreach($project->tasks()->orderBy('prioritary', 'desc')->orderBy('finished', 'asc')->orderBy('priority','desc')->get() as $task)
+              <tr id="row-{{ $task->id }}" class="@if($task->finished==1) bg-success @elseif($task->counting ==1) bg-warning @elseif($task->prioritary==1) bg-danger @endif">
                   <td>
                       {{ $task->id }}
                   </td>
@@ -81,6 +81,14 @@
                           <i class="fas fa-eye">
                           </i>
                       </a>
+                      @if(auth()->user()->role==0)
+
+                      <a class="btn btn-danger btn-sm" href="" onclick="setPrioritary({{ $task->id }})">
+                        <i class="fas fa-exclamation">
+                        </i>
+                    </a>
+
+                      @endif
                      @if(auth()->user()->role==1)
                       @if($task->finished==0)
                       <a class="btn @if($task->counting == 0) btn-success @else btn-warning @endif btn-sm" onclick="javascript:toggleStatus(this, {{ $task->id }})" href="#">
@@ -282,6 +290,19 @@
         $(`#stop-${id}`).removeClass('disabled');
         toggleCounter(id);
 
+    }
+
+    function setPrioritary(id) {
+        Swal.fire('Atención', 'Marcar esta tarea como urgente desmarcará todas las demás tareas del proyecto como urgente, ya que solo puede haber una sola tarea urgente. Si desea continuar con el proceso pulse "OK", de lo contrario pulse en cualquier otro sitio fuera de este mensaje.', 'warning').then(e => {
+            if (e.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('tasks.prioritary', ['task' => ':id']) }}".replace(':id', id),
+                    type: 'PUT',
+                    data: {id: id},
+                    success: () => Swal.fire('La tarea ha sido marcada como urgente', 'La página se va a recargar.', 'success').then(() => location.reload())
+                })
+            }
+        })
     }
 
     function setWorkTo(id, target, cb) {
