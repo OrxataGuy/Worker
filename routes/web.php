@@ -33,7 +33,6 @@ Route::get('kitten', function() {
 });
 
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
-    Route::post('upload', [Docs::class, 'store'])->name('upload');
 
     Route::resource('clients', Clients::class)->only('index','store','create','show','update','destroy');
     Route::get('projects/create/{client}', [Projects::class, 'create'])->name('projects.create');
@@ -57,6 +56,8 @@ Route::group(['middleware' => ['auth', 'only-dev']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::post('upload', [Docs::class, 'store'])->name('upload');
+
     Route::post('change-pwd', [Users::class, 'passwordChange'])->name('pwd.change');
     Route::resource('projects', Projects::class)->only('index','show');
     Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
