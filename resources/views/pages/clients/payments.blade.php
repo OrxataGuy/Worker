@@ -108,7 +108,7 @@
             if(res.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: "{{ route('payments.update', ['payment' => ':id']) }}".replace(':id', id),
+                    url: "{{ route('payments.delete', ['payment' => ':id']) }}".replace(':id', id),
                     data: {id: id},
                     success: e => Swal.fire('Pago eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })
