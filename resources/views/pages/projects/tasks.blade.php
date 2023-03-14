@@ -20,7 +20,7 @@
 
       <div class="card-tools">
         <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
-          <i class="fas fa-plus"></i>
+          <i class="fas fa-plus"></i> Añadir tarea
         </button>
       </div>
     </div>
@@ -115,7 +115,7 @@
                     @else
                     <a class="btn btn-warning btn-sm" onclick="reopen({{ $task->id }}, 0)" href="#">
                         <i class="fas fa-plus">
-                        </i> Añadir tarea
+                        </i>
                     </a>
                     <a class="btn btn-danger btn-sm" onclick="reopen({{ $task->id }}, 1)" href="#">
                         <i class="fas fa-bug">
