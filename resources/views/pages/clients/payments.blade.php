@@ -1,4 +1,10 @@
-@extends('layouts.main')
+@if(auth()->user()->role==1)
+    @php $layout = ; @endphp
+@else
+    @php $layout = 'layouts.clients'; @endphp
+@endif
+
+@extends($layout)
 
 @section('clients-section', 'active')
 @section('title', 'Clientes')
@@ -7,5 +13,77 @@
     <li class="breadcrumb-item active">Pagos de {{ $client->name }}</a></li>
 @endsection
 @section('content')
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title" data-card-widget="collapse" title="Collapse">Pagos de {{ $client->name }}</h3>
 
+      <div class="card-tools"></div>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped table-responsive projects">
+          <thead>
+              <tr>
+                  <th style="width: 1%">
+                      #
+                  </th>
+                  <th style="width: 20%">
+                      Proyecto
+                  </th>
+                  <th style="width: 30%">
+                      Fecha
+                  </th>
+                  <th>
+                      Concepto
+                  </th>
+                  <th style="width: 8%" class="text-center">
+                      Cantidad
+                  </th>
+                  <th style="width: 20%">
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+@endsection
+
+@section('scripts')
+<script>
+    function confirmForm(id) {
+        Swal.fire({
+            title: '¿Seguro que quieres confirmar el pago?',
+            text: "Una vez el pago sea confirmado, la fecha del pago se actualizará a la actual.",
+            confirmButtonText: 'Confirmar pago'
+        }).then(res => {
+            if(res.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: "{{ route('payments.update', ['payment' => ':id']) }}".replace(':id', id),
+                    success: e => Swal.fire('Pago confirmado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
+                })
+            }
+        })
+    }
+
+    function deleteForm(id) {
+        Swal.fire({
+            title: '¿Seguro que quieres eliminar el pago?',
+            text: "Esta acción no se puede deshacer. No quedará ningún registro de este pago.",
+            confirmButtonText: 'Eliminar pago'
+        }).then(res => {
+            if(res.isConfirmed) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: "{{ route('payments.delete', ['payment' => ':id']) }}".replace(':id', id),
+                    data: {id: id},
+                    success: e => Swal.fire('Pago eliminado correctamente', 'La página se va a recargar.', 'success').then(() => location.reload())
+                })
+            }
+        })
+    }
+</script>
 @endsection
