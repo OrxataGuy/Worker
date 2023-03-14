@@ -134,7 +134,7 @@
     <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Comentarios adicionales </h3>
     <div class="card-tools">
         <button type="button" class="btn btn-tool" onclick="addAdvancedTask({{ $task->id }})">
-            <i class="fas fa-plus"></i>
+            <i class="fas fa-plus"></i> <span style="margin-left:0.2em;font-size:medium;">Añadir</span>
           </button>
     </div>
   </div>
