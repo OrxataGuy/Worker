@@ -55,7 +55,7 @@
                     {{ $payment->concept }}
                   </td>
                   <td>
-                    {{ $payment->updated_at }}
+                    {{ date('d/m/Y H:i', strtotime($payment->updated_at)) }}
                   </td>
                   <td>
                     {{ $payment->amount }} €
