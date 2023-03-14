@@ -83,7 +83,7 @@
                       </a>
                       @if(auth()->user()->role==0)
 
-                      <a class="btn btn-danger btn-sm" href="" onclick="setPrioritary({{ $task->id }})">
+                      <a class="btn btn-danger btn-sm" href="#" onclick="setPrioritary({{ $task->id }})">
                         <i class="fas fa-exclamation">
                         </i>
                     </a>
@@ -299,7 +299,7 @@
                     url: "{{ route('tasks.prioritary', ['task' => ':id']) }}".replace(':id', id),
                     type: 'PUT',
                     data: {id: id},
-                    success: () => Swal.fire('La tarea ha sido marcada como urgente', 'La página se va a recargar.', 'success')
+                    success: () => Swal.fire('La tarea ha sido marcada como urgente', 'La página se va a recargar.', 'success').then(() => location.reload())
                 })
             }
         })
