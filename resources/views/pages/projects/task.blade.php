@@ -122,9 +122,9 @@
   </div>
   <div class="card-body">
     <h5>Descripción de la tarea</h5>
-    <p onclick="updateDescription({{ $task->id }}, this)">{!! nl2br($task->description) !!}</p>
+    <p  @if(auth()->user()->role==1) onclick="updateDescription({{ $task->id }}, this)" @endif>{!! nl2br($task->description) !!}</p>
     <h5>Detalles</h5>
-    <p class="task-details" onclick="updateDetails({{ $task->id }}, this)">@if($task->details) {!! nl2br($task->details) !!} @else No hay detalles. @endif</p>
+    <p class="task-details" @if(auth()->user()->role==1) onclick="updateDetails({{ $task->id }}, this)" @endif>@if($task->details) {!! nl2br($task->details) !!} @else No hay detalles. @endif</p>
   </div>
   <!-- /.card-body -->
 </div>
@@ -133,11 +133,9 @@
     <div class="card-header" >
     <h3 class="card-title"  data-card-widget="collapse" title="Collapse">Comentarios adicionales </h3>
     <div class="card-tools">
-       @if(auth()->user()->role==1)
         <button type="button" class="btn btn-tool" onclick="addAdvancedTask({{ $task->id }})">
             <i class="fas fa-plus"></i>
           </button>
-          @endif
     </div>
   </div>
   <div class="card-body p-0">

@@ -11,6 +11,12 @@ class Log extends Model
 
     protected $fillable = ['id', 'user_id', 'client_id', 'project_id', 'task_id', 'payment_id', 'description'];
 
+
+    public static function publish($content, $users) : Log {
+        $log = Log::create($content);
+        return $log;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

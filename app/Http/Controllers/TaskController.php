@@ -45,13 +45,14 @@ class TaskController extends Controller
 
         $project = Project::with('client')->find($task->project_id);
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se genera una nueva tarea para el proyecto #$project->id, $task->title"
-        ]);
+            'description' => "Se ha generado una nueva tarea para el proyecto #$project->id, $task->title"
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -106,13 +107,14 @@ class TaskController extends Controller
 
         $project = Project::with('client')->find($task->project_id);
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se realiza una modificación en la tarea del proyecto #".$task->project->id."."
-        ]);
+            'description' => "Se ha realizado una modificación en la tarea del proyecto #".$task->project->id."."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -139,13 +141,14 @@ class TaskController extends Controller
         $task->save();
         $project = Project::with('client')->find($task->project_id);
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se finaliza una tarea del proyecto #".$task->project->id."."
-        ]);
+            'description' => "Se ha finalizado una tarea del proyecto #".$task->project->id."."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
 
         return response()->json(array(
@@ -160,20 +163,22 @@ class TaskController extends Controller
         $task->save();
         $value = $task->calculate();
         $client = Client::find($task->project->client_id);
-        if($task->counting) Log::create([
+        if($task->counting) Log::publish([
                 'user_id' => auth()->user()->id,
                 'client_id' => $client->id,
                 'project_id' => $task->project->id,
                 'task_id' => $task->id,
-                'description' => "Se reanuda la actividad en la tarea $task->title"
-            ]);
-        else Log::create([
+                'description' => "Se ha reanudado la actividad en la tarea $task->title"
+            ],
+            \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
+        else Log::publish([
                 'user_id' => auth()->user()->id,
                 'client_id' => $client->id,
                 'project_id' => $task->project->id,
                 'task_id' => $task->id,
-                'description' => "Se pausa la actividad en la tarea $task->title"
-            ]);
+                'description' => "Se ha pausado la actividad en la tarea $task->title"
+            ],
+            \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
         return response()->json(array(
             'status' => '200',
             'value' => $value
@@ -186,20 +191,22 @@ class TaskController extends Controller
 
         $client = Client::find($task->project->client_id);
 
-        if($request->get('bug') == 1) Log::create([
+        if($request->get('bug') == 1) Log::publish([
                 'user_id' => auth()->user()->id,
                 'client_id' => $client->id,
                 'project_id' => $task->project->id,
                 'task_id' => $task->id,
-                'description' => "Se genera una nueva tarea a partir de un bug encontrado en la tarea $task->title"
-            ]);
-        else Log::create([
+                'description' => "Se ha generado una nueva tarea a partir de un bug encontrado en la tarea $task->title"
+            ],
+            \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
+        else Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se genera una nueva tarea a partir de una ampliación pedida para la tarea $task->title"
-        ]);
+            'description' => "Se ha generado una nueva tarea a partir de una ampliación pedida para la tarea $task->title"
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
         return response()->json(array(
             'status' => '200',
             'value' => $value
@@ -234,13 +241,14 @@ class TaskController extends Controller
         $advanced->save();
         $task = Task::find($task);
         $project = Project::with('client')->find($task->project_id);
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se elimina información de una tarea en el proyecto #".$task->project->id."."
-        ]);
+            'description' => "Se ha eliminado información de una tarea en el proyecto #".$task->project->id."."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -290,13 +298,14 @@ class TaskController extends Controller
         $advanced = AdvancedTask::where('task_id', '=', $task->id)->with('document')->get();
 
         $project = Project::with('client')->find($task->project_id);
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $task->project->id,
             'task_id' => $task->id,
-            'description' => "Se añade información a una tarea en el proyecto #".$task->project->id."."
-        ]);
+            'description' => "Se ha añadido información a una tarea en el proyecto #".$task->project->id."."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
         return response()->json(array(
             'status' => '200',
             'value' => [$task, $advanced]

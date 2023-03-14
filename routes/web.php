@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth', 'only-dev']], function () {
     });
 
     Route::resource('projects', Projects::class)->only('store','update','destroy');
-    Route::resource('tasks', Tasks::class)->only('store','update');
+    Route::resource('tasks', Tasks::class)->only('update');
     Route::group(['prefix' => 'tasks/{task}'], function () {
         Route::put('config', [Tasks::class, 'updateTime'])->name('tasks.time');
         Route::put('work', [Tasks::class, 'updateWorkingOn'])->name('tasks.work');
@@ -51,7 +51,6 @@ Route::group(['middleware' => ['auth', 'only-dev']], function () {
         Route::put('toggle', [Tasks::class, 'toggleCounter'])->name('tasks.toggle');
         Route::put('finish', [Tasks::class, 'destroy'])->name('tasks.destroy');
         Route::group(['prefix' => 'info'], function () {
-            Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.info.add');
             Route::put('{info}/delete', [Tasks::class, 'delInfo'])->name('tasks.info.del');
         });
     });
@@ -61,8 +60,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('change-pwd', [Users::class, 'passwordChange'])->name('pwd.change');
     Route::resource('projects', Projects::class)->only('index','show');
     Route::get('projects/{project}/tasks', [Tasks::class, 'index'])->name('tasks.index');
-    Route::resource('tasks', Tasks::class)->only('show');
+    Route::resource('tasks', Tasks::class)->only('show','store');
     Route::group(['prefix' => 'tasks/{task}'], function () {
         Route::get('view', [Tasks::class, 'view'])->name('tasks.view');
+        Route::group(['prefix' => 'info'], function () {
+            Route::post('add', [Tasks::class, 'addInfo'])->name('tasks.info.add');
+        });
     });
 });

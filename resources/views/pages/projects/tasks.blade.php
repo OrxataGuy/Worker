@@ -19,11 +19,9 @@
       <h3 class="card-title">{{ $project->name }}</h3>
 
       <div class="card-tools">
-       @if(auth()->user()->role==1)
         <button type="button" class="btn btn-tool" onclick="addTaskForm({{ $project->id }})">
           <i class="fas fa-plus"></i>
         </button>
-        @endif
       </div>
     </div>
     <div class="card-body p-0">

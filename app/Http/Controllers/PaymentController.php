@@ -33,13 +33,14 @@ class PaymentController extends Controller
         ]);
         $project->registerPayment();
             $acuenta = $request->get('tasks') ? "" : " a cuenta";
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client_id,
             'project_id' => $project->id,
             'payment_id' => $payment->id,
-            'description' => "Se realiza un pago".$acuenta." por el cliente ".$project->client->name." en el proyecto #$project->id: ".$project->name." con un importe de ".$payment->amount."€."
-        ]);
+            'description' => "Se ha realizado un pago".$acuenta." por el cliente ".$project->client->name." en el proyecto #$project->id: ".$project->name." con un importe de ".$payment->amount."€."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         if($request->get('tasks')) {
             $tasks = Task::whereIn('id', explode(',',$request->get('tasks')))->get();
@@ -64,7 +65,6 @@ class PaymentController extends Controller
     {
         $client = Client::find($id);
         $payments = Payment::where('client_id', '=', $client->id)->with('project')->get();
-     //   dd($client->payments->count());
         return $client->payments->count() ? view('pages.clients.payments', ['client' => $client, 'payments' => $payments]) : redirect()->route('clients.index');
     }
 
@@ -80,13 +80,15 @@ class PaymentController extends Controller
         $payment = Payment::find($id);
         $payment->confirmed = 1;
         $payment->save();
-        Log::create([
+        $client = Client::find($payment->client_id);
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $payment->client_id,
             'project_id' => $payment->project_id,
             'payment_id' => $payment->id,
-            'description' => "Se confirma un pago del proyecto #$payment->project_id con un importe de $payment->amount €."
-        ]);
+            'description' => "Se ha confirmado un pago del proyecto #$payment->project_id con un importe de $payment->amount €."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
         return response()->json(array('status' => 200, 'value' => $payment));
     }
 
@@ -104,14 +106,15 @@ class PaymentController extends Controller
             $task->paid =0;
             $task->save();
         }
-        $project = Project::find($payment->project_id);
-        Log::create([
+        $project = Project::with('client')->find($payment->project_id);
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $payment->client_id,
             'project_id' => $payment->project_id,
             'payment_id' => $payment->id,
-            'description' => "Se elimina un pago del proyecto #$payment->project_id con un importe de $payment->amount €."
-        ]);
+            'description' => "Se ha eliminado un pago del proyecto #$payment->project_id con un importe de $payment->amount €."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
         $payment->delete();
         if($project) $project->registerPayment();
         return response()->json(array('status' => 200));

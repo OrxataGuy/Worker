@@ -66,13 +66,14 @@ class ClientController extends Controller
             'project_id' => $project->id
         ]);
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client->id,
             'project_id' => $project->id,
             'task_id' => $task->id,
-            'description' => "Se crea el cliente $client->name con el proyecto #".$project->id." como proyecto inicial."
-        ]);
+            'description' => "Se ha creado el cliente $client->name con el proyecto #".$project->id." como proyecto inicial."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
 
         return $request->get('client_id') ? redirect()->route('projects.index') : redirect()->route('clients.index');
     }
@@ -108,11 +109,12 @@ class ClientController extends Controller
         $client->phone = $request->get('phone');
         $client->save();
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $client->id,
-            'description' => "Se modifica el nombre del cliente $oldName, ahora se llama $client->name."
-        ]);
+            'description' => "Se ha modificado el nombre del cliente $oldName, ahora se llama $client->name."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -137,15 +139,16 @@ class ClientController extends Controller
             $amount += $project->price-$project->paid;
         }
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $client->id,
-            'description' => "Se elimina el cliente $client->name, junto a sus proyectos y sus pagos con una deuda de $amount €.
+            'description' => "Se ha eliminado el cliente $client->name, junto a sus proyectos y sus pagos con una deuda de $amount €.
             Información de contacto:
             - Nombre: $client->name.
             - Email: $client->email.
             - Teléfono: $client->phone."
-        ]);
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
 
         $client->delete();
 

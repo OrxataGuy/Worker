@@ -54,12 +54,15 @@ class ProjectController extends Controller
             'price_per_minute' => auth()->user()->price_per_minute
         ]);
 
-        Log::create([
+        $client = Client::find($project->client_id);
+
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client_id,
             'project_id' => $project->id,
-            'description' => "Se crea el proyecto #$project->id: $project->name para el cliente $client->name."
-        ]);
+            'description' => "Se ha creado el proyecto #$project->id: $project->name para el cliente $client->name."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -91,17 +94,18 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $project = Project::find($id);
+        $project = Project::with('client')->find($id);
         $oldName = $project->name;
         $project->name = $request->get('name');
         $project->save();
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client_id,
             'project_id' => $project->id,
-            'description' => "Se modifica el nombre del proyecto #$project->id: $oldName, ahora el proyecto se llama $project->name."
-        ]);
+            'description' => "Se ha modificado el nombre del proyecto #$project->id: $oldName, ahora el proyecto se llama $project->name."
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         return response()->json(array(
             'status' => '200',
@@ -117,16 +121,17 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $project = Project::find($id);
+        $project = Project::with('client')->find($id);
         $project->calculate();
         $project->registerPayment();
 
-        Log::create([
+        Log::publish([
             'user_id' => auth()->user()->id,
             'client_id' => $project->client_id,
             'project_id' => $project->id,
-            'description' => "Se elimina el proyecto #$project->id, junto a sus respectivos pagos y tareas con un pago pendiente de ".($project->price-$project->paid)."€"
-        ]);
+            'description' => "Se ha eliminado el proyecto #$project->id, junto a sus respectivos pagos y tareas con un pago pendiente de ".($project->price-$project->paid)."€"
+        ],
+        \App\Models\User::where('role','=', 1)->orWhere('id', '=', $project->client->user_id)->get());
 
         $project->delete();
         return response()->json(array(
