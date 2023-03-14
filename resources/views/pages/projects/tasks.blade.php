@@ -115,7 +115,7 @@
                     @else
                     <a class="btn btn-warning btn-sm" onclick="reopen({{ $task->id }}, 0)" href="#">
                         <i class="fas fa-plus">
-                        </i>
+                        </i> Añadir tarea
                     </a>
                     <a class="btn btn-danger btn-sm" onclick="reopen({{ $task->id }}, 1)" href="#">
                         <i class="fas fa-bug">
