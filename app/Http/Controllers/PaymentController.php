@@ -64,6 +64,7 @@ class PaymentController extends Controller
     {
         $client = Client::find($id);
         $payments = Payment::where('client_id', '=', $client->id)->with('project')->get();
+        dd($payments);
         return $client->payments->count() ? view('pages.clients.payments', ['client' => $client, 'payments' => $payments]) : redirect()->route('clients.index');
     }
 
