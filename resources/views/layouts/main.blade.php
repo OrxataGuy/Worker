@@ -105,35 +105,7 @@
     }
 });
 </script>
-<!--script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-<script>
-
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('0561f1d90a35bc2efbb3', {
-      cluster: 'eu'
-    });
-
-    var channel = pusher.subscribe('task-finished');
-    channel.bind('App\\Events\\TaskFinished', function(data) {
-      console.log(JSON.stringify(data));
-    });
-</script-->
-
-<script src="{{ asset('js/enable-push.js') }}" defer></script>
-<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
-<script>
-    const beamsClient = new PusherPushNotifications.Client({
-      instanceId: '03c68518-89e5-43f8-b4f0-742a52058335',
-    });
-
-    beamsClient.start()
-      .then(() => beamsClient.addDeviceInterest('hello'))
-      .then(() => console.log('Successfully registered and subscribed!'))
-      .catch(console.error);
-  </script>
-
+<script src="{{ asset('enable-push.js') }}" defer></script>
 
 @yield('scripts')
 </body>
