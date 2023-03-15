@@ -14,7 +14,7 @@ function initSW() {
     }
 
     //register the service worker
-    navigator.serviceWorker.register('sw.js')
+    navigator.serviceWorker.register('https://dev.orxatasoftware.com/sw.js')
         .then(() => {
             console.log('serviceWorker installed!')
             initPush();
