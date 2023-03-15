@@ -8,8 +8,8 @@ return [
      */
     'vapid' => [
         'subject' => env('VAPID_SUBJECT'),
-        'public_key' => 'BA28HpW-Ub3eFJORMFk-gvXBWf4Yd2udCLrZe4yy2valY8SYsJlg7rGgL2UESDxpROfQPcc9QU3saPVun72quLw',
-        'private_key' => 'aB2fOiJfYRG9IZFHyJc-SkpSAlIy6FjA681RtOXUz9I',
+        'public_key' => env('VAPID_PUBLIC_KEY'),
+        'private_key' => env('VAPID_PRIVATE_KEY'),
         'pem_file' => env('VAPID_PEM_FILE'),
     ],
 
