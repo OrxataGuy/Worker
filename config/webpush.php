@@ -8,8 +8,8 @@ return [
      */
     'vapid' => [
         'subject' => env('VAPID_SUBJECT'),
-        'public_key' => 'BM8vwsJY9NY24AzQyIXsiEmcLf8qHxxXErAKJY5CGyzVuFVPVQnbxZL7-_ExROAvApMflG5tGgi5xN_hRwhsPAk',
-        'private_key' => 'WfOlwoxcVykexyRZ9AGLNXW4YqEa7ydZZaidmpUnHvg',
+        'public_key' => 'BA28HpW-Ub3eFJORMFk-gvXBWf4Yd2udCLrZe4yy2valY8SYsJlg7rGgL2UESDxpROfQPcc9QU3saPVun72quLw',
+        'private_key' => 'aB2fOiJfYRG9IZFHyJc-SkpSAlIy6FjA681RtOXUz9I',
         'pem_file' => env('VAPID_PEM_FILE'),
     ],
 

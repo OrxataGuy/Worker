@@ -52,7 +52,7 @@ function subscribeUser() {
             const subscribeOptions = {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(
-                    'BM8vwsJY9NY24AzQyIXsiEmcLf8qHxxXErAKJY5CGyzVuFVPVQnbxZL7-_ExROAvApMflG5tGgi5xN_hRwhsPAk'
+                    'BA28HpW-Ub3eFJORMFk-gvXBWf4Yd2udCLrZe4yy2valY8SYsJlg7rGgL2UESDxpROfQPcc9QU3saPVun72quLw'
                 )
             };
 
