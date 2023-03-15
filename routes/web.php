@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentController as Payments;
 use App\Http\Controllers\PlanificationController as Plans;
 use App\Http\Controllers\DocumentController as Docs;
 use App\Http\Controllers\UserController as Users;
+use App\Http\Controllers\PushController as Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,8 @@ Auth::routes();
 Route::get('/', [Home::class, 'index'])->name('home');
 Route::get('register', [Home::class, 'index'])->name('prevent.reg.get');
 Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
-Route::post('/push','PushController@store');
-Route::get('/push','PushController@push')->name('push');
+Route::post('/push',[Pusher::class, 'store']);
+Route::get('/push',[Pusher::class, 'push'])->name('push');
 
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
 
