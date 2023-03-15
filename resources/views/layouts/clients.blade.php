@@ -95,6 +95,7 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('plugins/showdown/showdown.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
+<script src="{{ asset('js/enable-push.js') }}" defer></script>
 <script>
     $.ajaxSetup({
     headers: {
