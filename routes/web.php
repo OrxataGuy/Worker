@@ -28,9 +28,8 @@ Auth::routes();
 Route::get('/', [Home::class, 'index'])->name('home');
 Route::get('register', [Home::class, 'index'])->name('prevent.reg.get');
 Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
-Route::get('kitten', function() {
-    \App\Models\User::find(1)->notify(new \App\Notifications\TaskFinished());
-});
+Route::post('/push','PushController@store');
+Route::get('/push','PushController@push')->name('push');
 
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
 
