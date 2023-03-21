@@ -14,9 +14,8 @@ class PushController extends Controller
       $this->middleware('auth');
     }
 
-    public function push(){
-        Notification::send(User::all(),new PushDemo);
-        return redirect()->back();
+    public function push(User $user, $notification){
+        $user->notify($notification);
     }
 
     /**
