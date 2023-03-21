@@ -31,10 +31,7 @@ Route::get('register', [Home::class, 'index'])->name('prevent.reg.get');
 Route::post('register', [Home::class, 'index'])->name('prevent.reg.post');
 Route::post('/push',[Pusher::class, 'store']);
 Route::get('/push',[Pusher::class, 'push'])->name('push');
-Route::get('kitten', function () {
-    $notification = new \App\Notifications\PushDemo;
-    app('App\Http\Controllers\PushController')->push(\App\Models\User::first(), $notification);
-});
+
 Route::group(['middleware' => ['auth', 'only-dev']], function () {
 
     Route::resource('clients', Clients::class)->only('index','store','create','show','update','destroy');

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Notifications\AppNotification;
+
 class Log extends Model
 {
     use HasFactory;
@@ -14,6 +16,9 @@ class Log extends Model
 
     public static function publish($content, $users) : Log {
         $log = Log::create($content);
+
+        foreach($users as $user)
+            app('App\Http\Controllers\PushController')->push($user, $notification);
         return $log;
     }
 

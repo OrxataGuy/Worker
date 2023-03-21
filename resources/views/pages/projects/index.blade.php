@@ -14,7 +14,6 @@
     <li class="breadcrumb-item active">Proyectos</li>
 @endsection
 @section('content')
-<a href="{{route('push')}}" class="btn btn-outline-primary btn-block">Make a Push Notification!</a>
 
 @foreach($clients as $client)
 <div class="card">
