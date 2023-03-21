@@ -16,9 +16,8 @@ class Log extends Model
 
     public static function publish($content, $users) : Log {
         $log = Log::create($content);
-
         foreach($users as $user)
-            app('App\Http\Controllers\PushController')->push($user, $notification);
+            app('App\Http\Controllers\PushController')->push($user, new AppNotification($user, $log));
         return $log;
     }
 
