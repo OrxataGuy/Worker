@@ -119,7 +119,7 @@
                     && str.length < 50
                     && str.search(/\d/) != -1
                     && str.search(/[a-zA-Z]/) != -1
-                    && str.search(/[^a-zA-Z0-9\!\#\$\%\(\)]/) != -1
+                    && str.search(/[^a-zA-Z0-9\!\$\%\(\)]/) != -1
             }
 
             Swal.disableButtons()
